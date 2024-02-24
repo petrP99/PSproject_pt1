@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -23,6 +25,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"id", "clientTo", "cardNoTo"})
+@ToString(exclude = {"clientTo", "cardNoTo"})
 @Builder
 @Entity
 public class Replenishment {
@@ -31,12 +35,12 @@ public class Replenishment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_to")
     private Client clientTo;
 
-    @ManyToOne
-    @JoinColumn(name = "card_no_to")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id_to")
     private Card cardNoTo;
 
     private BigDecimal amount;
