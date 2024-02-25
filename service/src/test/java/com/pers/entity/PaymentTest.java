@@ -31,7 +31,6 @@ class PaymentTest {
         session.getTransaction().rollback();
     }
 
-
     @Test
     void createPayment() {
         User user = User.builder()
@@ -122,7 +121,6 @@ class PaymentTest {
         var currentStatus = payment.getStatus();
 
         assertThat(currentStatus).isEqualTo(Status.FAILED);
-
     }
 
     @Test

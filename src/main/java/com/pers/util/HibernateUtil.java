@@ -1,6 +1,5 @@
 package com.pers.util;
 
-import com.pers.converter.BirthdayConverter;
 import com.pers.entity.Card;
 import com.pers.entity.Client;
 import com.pers.entity.Payment;
