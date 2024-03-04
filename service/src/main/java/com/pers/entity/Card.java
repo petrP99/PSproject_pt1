@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @ToString(exclude = "client")
 @Builder
 @Entity
-public class Card {
+public class Card implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

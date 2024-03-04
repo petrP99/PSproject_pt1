@@ -14,6 +14,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
 
+import java.lang.reflect.Proxy;
+
 @UtilityClass
 public class HibernateUtil {
 
@@ -33,13 +35,14 @@ public class HibernateUtil {
         return configuration.buildSessionFactory();
     }
 
-    public static void startSession(Object object, SessionFactory sessionFactory) {
-        try (Session session1 = sessionFactory.openSession()) {
-            session1.beginTransaction();
-            session1.persist(object);
-            session1.getTransaction().commit();
-        }
+    public Session buildSessionProxy(SessionFactory sessionFactory) {
+        return (Session) Proxy.newProxyInstance(
+                SessionFactory.class.getClassLoader(),
+                new Class[]{Session.class},
+                (proxy, method, args) -> method.invoke(sessionFactory.getCurrentSession(), args)
+        );
     }
 }
+
 
 

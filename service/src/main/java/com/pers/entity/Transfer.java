@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = {"cardNoFrom", "cardNoTo"})
 @Builder
 @Entity
-public class Transfer {
+public class Transfer implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

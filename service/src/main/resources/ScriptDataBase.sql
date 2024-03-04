@@ -1,7 +1,5 @@
 create DATABASE payments_system;
 
--- create DATABASE payments_system;
-
 create TABLE users
 (
     id       BIGSERIAL PRIMARY KEY,
@@ -39,7 +37,7 @@ create TABLE payment
     shop_name        VARCHAR(128)                                       NOT NULL,
     amount           NUMERIC(10, 2)                                     NOT NULL,
     pay_by_client_id BIGSERIAL REFERENCES client (id) ON DELETE CASCADE NOT NULL,
-    pay_by_card_no   INT REFERENCES card (card_no)                      NOT NULL,
+    pay_by_card_no   INT REFERENCES card (id)                      NOT NULL,
     time_of_pay      TIMESTAMP                                          NOT NULL,
     status           VARCHAR(20)                                        NOT NULL
 );
@@ -48,8 +46,8 @@ create TABLE payment
 create TABLE transfer
 (
     id               BIGSERIAL PRIMARY KEY,
-    card_no_from     INT REFERENCES card (card_no) NOT NULL,
-    card_no_to       INT REFERENCES card (card_no) NOT NULL,
+    card_no_from     INT REFERENCES card (id) NOT NULL,
+    card_no_to       INT REFERENCES card (id) NOT NULL,
     amount           NUMERIC(10, 2)                NOT NULL,
     time_of_transfer TIMESTAMP                     NOT NULL,
     status           VARCHAR(20)                   NOT NULL
@@ -59,7 +57,7 @@ create TABLE replenishment
 (
     id                    BIGSERIAL PRIMARY KEY,
     client_to             BIGSERIAL REFERENCES client (id) ON DELETE CASCADE NOT NULL,
-    card_no_to            INT REFERENCES card (card_no)                      NOT NULL,
+    card_no_to            INT REFERENCES card (id)                      NOT NULL,
     amount                NUMERIC(10, 2)                                     NOT NULL,
     time_of_replenishment TIMESTAMP                                          NOT NULL,
     status                VARCHAR(20)                                        NOT NULL

@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = {"client", "card"})
 @Builder
 @Entity
-public class Payment {
+public class Payment implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

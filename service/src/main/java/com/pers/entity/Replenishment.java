@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = {"clientTo", "cardNoTo"})
 @Builder
 @Entity
-public class Replenishment {
+public class Replenishment implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
