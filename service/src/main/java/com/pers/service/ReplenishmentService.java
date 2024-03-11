@@ -1,6 +1,6 @@
 package com.pers.service;
 
-import com.pers.dao.ReplenishmentRepository;
+import com.pers.repository.ReplenishmentRepository;
 import com.pers.dto.ReplenishmentCreateDto;
 import com.pers.dto.ReplenishmentReadDto;
 import com.pers.mapper.ReplenishmentCreateMapper;
@@ -27,7 +27,7 @@ public class ReplenishmentService {
 
     public boolean delete(Long id) {
         var mayBeReplenishment = replenishmentRepository.findById(id);
-        mayBeReplenishment.ifPresent(replenishment -> replenishmentRepository.delete(replenishment.getId()));
+        mayBeReplenishment.ifPresent(replenishmentRepository::delete);
         return mayBeReplenishment.isPresent();
     }
     

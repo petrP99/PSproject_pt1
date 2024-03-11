@@ -1,7 +1,7 @@
 package com.pers.mapper;
 
-import com.pers.dao.CardRepository;
-import com.pers.dao.ClientRepository;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.entity.Payment;
 import lombok.RequiredArgsConstructor;

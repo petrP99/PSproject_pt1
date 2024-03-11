@@ -1,6 +1,6 @@
 package com.pers.service;
 
-import com.pers.dao.CardRepository;
+import com.pers.repository.CardRepository;
 import com.pers.dto.CardCreateDto;
 import com.pers.dto.CardReadDto;
 import com.pers.mapper.CardCreateMapper;
@@ -27,7 +27,7 @@ public class CardService {
 
     public boolean delete(Long id) {
         var mayBeCard = cardRepository.findById(id);
-        mayBeCard.ifPresent(card -> cardRepository.delete(card.getId()));
+        mayBeCard.ifPresent(cardRepository::delete);
         return mayBeCard.isPresent();
     }
 }

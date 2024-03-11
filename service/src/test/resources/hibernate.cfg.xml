@@ -12,6 +12,8 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="hbm2ddl.auto">create</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
         <mapping class="com.pers.entity.User"/>
         <mapping class="com.pers.entity.Client"/>
         <mapping class="com.pers.entity.Card"/>

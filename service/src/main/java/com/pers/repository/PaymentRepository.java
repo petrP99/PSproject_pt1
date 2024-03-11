@@ -1,21 +1,19 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.Payment;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.pers.entity.QPayment.payment;
 
+@Repository
 public class PaymentRepository extends BaseRepository<Long, Payment> {
     public PaymentRepository(EntityManager entityManager) {
         super(Payment.class, entityManager);
-    }
-
-    public Optional<Payment> findById(Long id) {
-        return Optional.empty();
     }
 
     public List<Payment> findByClientIdAndCardNo(Long clientId, Integer cardNo) {

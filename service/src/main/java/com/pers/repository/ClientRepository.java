@@ -1,16 +1,15 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.Client;
-import com.pers.entity.QClient;
-import com.pers.entity.User;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.pers.entity.QClient.client;
-import static com.pers.entity.QUser.user;
 
+@Repository
 public class ClientRepository extends BaseRepository<Long, Client> {
     public ClientRepository(EntityManager entityManager) {
         super(Client.class, entityManager);
@@ -23,5 +22,4 @@ public class ClientRepository extends BaseRepository<Long, Client> {
                 .where(client.user.id.eq(userId))
                 .fetch();
     }
-
 }

@@ -17,7 +17,7 @@ import org.hibernate.cfg.Configuration;
 import java.lang.reflect.Proxy;
 
 @UtilityClass
-public class HibernateUtil {
+public class HibernateTestUtil {
 
     public Configuration buildConfiguration() {
         Configuration configuration = new Configuration();
@@ -34,8 +34,8 @@ public class HibernateUtil {
         return configuration;
     }
 
-    public  SessionFactory buildSessionFactory() {
-        return HibernateUtil.buildConfiguration().buildSessionFactory();
+    public SessionFactory buildSessionFactory() {
+        return HibernateTestUtil.buildConfiguration().buildSessionFactory();
     }
 }
 

@@ -1,6 +1,6 @@
 package com.pers.service;
 
-import com.pers.dao.ClientRepository;
+import com.pers.repository.ClientRepository;
 import com.pers.dto.ClientCreateDto;
 import com.pers.dto.ClientReadDto;
 import com.pers.mapper.ClientCreateMapper;
@@ -27,7 +27,7 @@ public class ClientService {
 
     public boolean delete(Long id) {
         var mayBeClient = clientRepository.findById(id);
-        mayBeClient.ifPresent(client -> clientRepository.delete(client.getId()));
+        mayBeClient.ifPresent(clientRepository::delete);
         return mayBeClient.isPresent();
     }
 }

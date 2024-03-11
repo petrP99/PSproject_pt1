@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CardReadMapper implements Mapper<Card, CardReadDto> {
 
-    CardReadMapper cardReadMapper;
+    private final CardReadMapper cardReadMapper;
 
     @Override
     public CardReadDto mapFrom(Card object) {

@@ -1,6 +1,6 @@
 package com.pers.service;
 
-import com.pers.dao.UserRepository;
+import com.pers.repository.UserRepository;
 import com.pers.dto.UserCreateDto;
 import com.pers.dto.UserReadDto;
 import com.pers.mapper.UserCreateMapper;
@@ -27,7 +27,7 @@ public class UserService {
 
     public boolean delete(Long id) {
         var mayBeUser = userRepository.findById(id);
-        mayBeUser.ifPresent(user -> userRepository.delete(user.getId()));
+        mayBeUser.ifPresent(userRepository::delete);
         return mayBeUser.isPresent();
     }
 }

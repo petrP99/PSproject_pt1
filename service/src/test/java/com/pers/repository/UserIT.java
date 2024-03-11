@@ -1,51 +1,25 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.Role;
 import com.pers.entity.User;
-import com.pers.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserIT {
+public class UserIT extends BaseTestRepositoryIT {
 
-    private static SessionFactory sessionFactory;
-    private static Session session;
-
-    @BeforeAll
-    static void init() {
-        sessionFactory = HibernateUtil.buildSessionFactory();
-//        Session proxySession = HibernateUtil.buildSessionProxy(sessionFactory);
-//        userRepository = new UserRepository(proxySession);
-    }
-
-    @AfterAll
-    static void close() {
-        sessionFactory.close();
-    }
+    UserRepository userRepository;
 
     @BeforeEach
-    void openSession() {
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-    }
-
-    @AfterEach
-    void clean() {
-        session.getTransaction().rollback();
-        session.close();
+    void prepare() {
+        entityManager.getTransaction().begin();
+        userRepository = context.getBean(UserRepository.class);
     }
 
     @Test
     void createUser() {
-        UserRepository userRepository = new UserRepository(session);
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -62,7 +36,6 @@ public class UserIT {
 
     @Test
     void findById() {
-        UserRepository userRepository = new UserRepository(session);
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -78,7 +51,6 @@ public class UserIT {
 
     @Test
     void findAllByRole() {
-        UserRepository userRepository = new UserRepository(session);
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")

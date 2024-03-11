@@ -1,16 +1,10 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.Card;
 import com.pers.entity.Client;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
-import com.pers.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,39 +16,22 @@ import static com.pers.util.ExpireDateUtil.calculateExpireDate;
 import static com.pers.util.GenerateNumberCardUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CardIT {
+public class CardIT extends BaseTestRepositoryIT {
 
-    private static SessionFactory sessionFactory;
-    private static Session session;
-
-    @BeforeAll
-    static void init() {
-        sessionFactory = HibernateUtil.buildSessionFactory();
-    }
-
-    @AfterAll
-    static void close() {
-        sessionFactory.close();
-    }
+    private UserRepository userRepository;
+    private ClientRepository clientRepository;
+    private CardRepository cardRepository;
 
     @BeforeEach
     void openSession() {
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-    }
-
-    @AfterEach
-    void clean() {
-        session.getTransaction().rollback();
-        session.close();
+        entityManager.getTransaction().begin();
+        userRepository = context.getBean(UserRepository.class);
+        clientRepository = context.getBean(ClientRepository.class);
+        cardRepository = context.getBean(CardRepository.class);
     }
 
     @Test
     void createCard() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-        CardRepository cardRepository = new CardRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -91,10 +68,6 @@ public class CardIT {
 
     @Test
     void findByClientId() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-        CardRepository cardRepository = new CardRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -131,10 +104,6 @@ public class CardIT {
 
     @Test
     void findByStatus() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-        CardRepository cardRepository = new CardRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")

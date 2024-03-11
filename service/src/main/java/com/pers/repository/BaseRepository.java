@@ -1,4 +1,4 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.BaseEntity;
 import jakarta.persistence.EntityManager;
@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,8 +23,8 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
     }
 
     @Override
-    public void delete(K id) {
-        entityManager.remove(entityManager.find(clazz, id));
+    public void delete(E entity) {
+        entityManager.remove(entity);
         entityManager.flush();
     }
 

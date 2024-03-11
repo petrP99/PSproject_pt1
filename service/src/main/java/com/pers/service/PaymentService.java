@@ -1,7 +1,7 @@
 package com.pers.service;
 
 
-import com.pers.dao.PaymentRepository;
+import com.pers.repository.PaymentRepository;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.dto.PaymentReadDto;
 import com.pers.mapper.PaymentCreateMapper;
@@ -29,7 +29,7 @@ public class PaymentService {
 
     public boolean delete(Long id) {
         var mayBePayment = paymentRepository.findById(id);
-        mayBePayment.ifPresent(payment -> paymentRepository.delete(payment.getId()));
+        mayBePayment.ifPresent(paymentRepository::delete);
         return mayBePayment.isPresent();
     }
     

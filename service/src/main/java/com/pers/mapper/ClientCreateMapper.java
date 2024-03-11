@@ -1,6 +1,6 @@
 package com.pers.mapper;
 
-import com.pers.dao.UserRepository;
+import com.pers.repository.UserRepository;
 import com.pers.dto.ClientCreateDto;
 import com.pers.entity.Client;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClientCreateMapper implements Mapper<ClientCreateDto, Client> {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Client mapFrom(ClientCreateDto object) {

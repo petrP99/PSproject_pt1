@@ -1,19 +1,16 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Collections.emptyMap;
 
 public interface Repository<K extends Serializable, E extends BaseEntity<K>> {
 
     E save(E entity);
 
-    void delete(K id);
+    void delete(E entity);
 
     void update(E entity);
 

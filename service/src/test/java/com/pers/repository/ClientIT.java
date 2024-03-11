@@ -1,15 +1,9 @@
-package com.pers.dao;
+package com.pers.repository;
 
 import com.pers.entity.Client;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
-import com.pers.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,37 +12,20 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientIT {
-    private static SessionFactory sessionFactory;
-    private static Session session;
+public class ClientIT extends BaseTestRepositoryIT {
 
-    @BeforeAll
-    static void init() {
-        sessionFactory = HibernateUtil.buildSessionFactory();
-    }
-
-    @AfterAll
-    static void close() {
-        sessionFactory.close();
-    }
+    private UserRepository userRepository;
+    private ClientRepository clientRepository;
 
     @BeforeEach
     void openSession() {
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-    }
-
-    @AfterEach
-    void clean() {
-        session.getTransaction().rollback();
-        session.close();
+        entityManager.getTransaction().begin();
+        userRepository = context.getBean(UserRepository.class);
+        clientRepository = context.getBean(ClientRepository.class);
     }
 
     @Test
     void createClient() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -74,9 +51,6 @@ public class ClientIT {
 
     @Test
     void deleteClient() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -94,7 +68,7 @@ public class ClientIT {
 
         userRepository.save(user);
         clientRepository.save(client);
-        clientRepository.delete(client.getId());
+        clientRepository.delete(client);
         var result = clientRepository.findAll();
 
         assertThat(result).isEmpty();
@@ -103,9 +77,6 @@ public class ClientIT {
 
     @Test
     void findByUserId() {
-        UserRepository userRepository = new UserRepository(session);
-        ClientRepository clientRepository = new ClientRepository(session);
-
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")

@@ -1,6 +1,6 @@
 package com.pers.service;
 
-import com.pers.dao.TransferRepository;
+import com.pers.repository.TransferRepository;
 import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.mapper.TransferCreateMapper;
@@ -26,7 +26,7 @@ public class TransferService {
 
     public boolean delete(Long id) {
         var mayBeTransfer = transferRepository.findById(id);
-        mayBeTransfer.ifPresent(transfer -> transferRepository.delete(transfer.getId()));
+        mayBeTransfer.ifPresent(transferRepository::delete);
         return mayBeTransfer.isPresent();
     }
 }
