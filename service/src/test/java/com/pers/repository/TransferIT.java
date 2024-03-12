@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.pers.util.CheckBeforeAction.checkTransfer;
+import static com.pers.util.CheckOfOperationUtil.checkTransfer;
 import static com.pers.util.ExpireDateUtil.calculateExpireDate;
 import static com.pers.util.GenerateNumberCardUtil.generateNumber;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,7 +84,7 @@ public class TransferIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
-        BigDecimal amount = new BigDecimal(1000);
+        var amount = new BigDecimal(1000);
         var status = checkTransfer(card2, card, amount);
 
         var transfer = Transfer.builder()
@@ -161,12 +161,15 @@ public class TransferIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
+        var amount = new BigDecimal(1000);
+        var status = checkTransfer(card2, card, amount);
+
         var transfer = Transfer.builder()
                 .cardNoFrom(card2)
                 .cardNoTo(card)
-                .amount(new BigDecimal(368))
+                .amount(amount)
                 .timeOfTransfer(LocalDateTime.now())
-                .status(Status.SUCCESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);
@@ -233,16 +236,15 @@ public class TransferIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
-        BigDecimal amount = new BigDecimal(1000);
-        card.setBalance(card.getBalance().add(amount));
-        card2.setBalance(card2.getBalance().subtract(amount));
+        var amount = new BigDecimal(1000);
+        var status = checkTransfer(card2, card, amount);
 
         var transfer = Transfer.builder()
                 .cardNoFrom(card2)
                 .cardNoTo(card)
                 .amount(amount)
                 .timeOfTransfer(LocalDateTime.now())
-                .status(Status.SUCCESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);

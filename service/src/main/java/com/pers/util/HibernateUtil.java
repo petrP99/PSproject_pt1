@@ -19,6 +19,10 @@ import java.lang.reflect.Proxy;
 @UtilityClass
 public class HibernateUtil {
 
+    public  SessionFactory buildSessionFactory() {
+        return buildConfiguration().buildSessionFactory();
+    }
+
     public Configuration buildConfiguration() {
         Configuration configuration = new Configuration();
         configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
@@ -32,10 +36,6 @@ public class HibernateUtil {
         configuration.addAnnotatedClass(Transfer.class);
         configuration.configure();
         return configuration;
-    }
-
-    public  SessionFactory buildSessionFactory() {
-        return HibernateUtil.buildConfiguration().buildSessionFactory();
     }
 }
 

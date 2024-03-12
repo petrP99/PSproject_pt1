@@ -6,6 +6,7 @@ import com.pers.entity.Payment;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
+import com.pers.util.CheckOfOperationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,13 +60,16 @@ public class PaymentIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
+        var amount = new BigDecimal(1000);
+        var status = CheckOfOperationUtil.checkPayment(client, card, amount);
+
         var payment = Payment.builder()
                 .shopName("Apple")
-                .amount(new BigDecimal(152.4))
+                .amount(amount)
                 .client(client)
                 .card(card)
                 .timeOfPay(LocalDateTime.now())
-                .status(Status.SUCCESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);
@@ -105,13 +109,16 @@ public class PaymentIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
+        var amount = new BigDecimal(1000);
+        var status = CheckOfOperationUtil.checkPayment(client, card, amount);
+
         var payment = Payment.builder()
                 .shopName("Apple")
-                .amount(new BigDecimal(152.4))
+                .amount(amount)
                 .client(client)
                 .card(card)
                 .timeOfPay(LocalDateTime.now())
-                .status(Status.SUCCESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);

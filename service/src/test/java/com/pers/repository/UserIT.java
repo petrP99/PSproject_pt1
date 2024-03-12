@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserIT extends BaseTestRepositoryIT {
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @BeforeEach
     void prepare() {

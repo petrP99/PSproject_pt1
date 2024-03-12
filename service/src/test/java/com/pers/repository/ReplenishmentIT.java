@@ -6,6 +6,7 @@ import com.pers.entity.Replenishment;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
+import com.pers.util.CheckOfOperationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,20 +60,24 @@ public class ReplenishmentIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
+        var amount = new BigDecimal(753);
+        var amount2 = new BigDecimal(900);
+        var status = CheckOfOperationUtil.checkReplenishment(client, card, amount);
+
         var replenishment = Replenishment.builder()
                 .clientTo(client)
                 .cardNoTo(card)
-                .amount(new BigDecimal(52))
+                .amount(amount)
                 .timeOfReplenishment(LocalDateTime.now())
-                .status(Status.IN_PROGRESS)
+                .status(status)
                 .build();
 
         var replenishment2 = Replenishment.builder()
                 .clientTo(client)
                 .cardNoTo(card)
-                .amount(new BigDecimal(1457))
+                .amount(amount2)
                 .timeOfReplenishment(LocalDateTime.now())
-                .status(Status.IN_PROGRESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);
@@ -122,20 +127,24 @@ public class ReplenishmentIT extends BaseTestRepositoryIT {
                 .status(Status.ACTIVE)
                 .build();
 
+        var amount = new BigDecimal(753);
+        var amount2 = new BigDecimal(900);
+        var status = CheckOfOperationUtil.checkReplenishment(client, card, amount);
+
         var replenishment = Replenishment.builder()
                 .clientTo(client)
                 .cardNoTo(card)
-                .amount(new BigDecimal(52))
+                .amount(amount)
                 .timeOfReplenishment(LocalDateTime.now())
-                .status(Status.IN_PROGRESS)
+                .status(status)
                 .build();
 
         var replenishment2 = Replenishment.builder()
                 .clientTo(client)
                 .cardNoTo(card2)
-                .amount(new BigDecimal(1457))
+                .amount(amount2)
                 .timeOfReplenishment(LocalDateTime.now())
-                .status(Status.IN_PROGRESS)
+                .status(status)
                 .build();
 
         userRepository.save(user);

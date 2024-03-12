@@ -1,6 +1,6 @@
 package com.pers.repository;
 
-import com.pers.config.ApplicationConfigurationTest;
+import com.pers.config.ApplicationConfigurationIT;
 import jakarta.persistence.EntityManager;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -16,7 +16,7 @@ public abstract class BaseTestRepositoryIT {
 
     @BeforeAll
     static void init() {
-        context = new AnnotationConfigApplicationContext(ApplicationConfigurationTest.class);
+        context = new AnnotationConfigApplicationContext(ApplicationConfigurationIT.class);
         sessionFactory = context.getBean(SessionFactory.class);
         entityManager = context.getBean(EntityManager.class);
     }

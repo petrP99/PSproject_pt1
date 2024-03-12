@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy;
 
 @Configuration
 @ComponentScan(basePackages = "com.pers.repository")
-public class ApplicationConfigurationTest {
+public class ApplicationConfigurationIT {
 
     @Bean(destroyMethod = "close")
     public SessionFactory getSessionFactory() {
