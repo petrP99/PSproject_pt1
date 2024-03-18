@@ -12,7 +12,6 @@ import com.pers.repository.PaymentRepository;
 import com.pers.repository.UserRepository;
 import com.pers.util.CheckOfOperationUtil;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

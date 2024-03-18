@@ -9,7 +9,6 @@ import com.pers.repository.CardRepository;
 import com.pers.repository.ClientRepository;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

@@ -1,8 +1,6 @@
 package com.pers.integration.annotation;
 
 
-import com.pers.integration.repository.BaseIntegrationIT;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;

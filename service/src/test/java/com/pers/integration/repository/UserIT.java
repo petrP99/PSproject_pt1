@@ -3,7 +3,6 @@ package com.pers.integration.repository;
 import com.pers.entity.Role;
 import com.pers.entity.User;
 import com.pers.repository.UserRepository;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
