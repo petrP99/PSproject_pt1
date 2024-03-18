@@ -4,7 +4,6 @@ import com.pers.entity.Card;
 import com.pers.entity.Status;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

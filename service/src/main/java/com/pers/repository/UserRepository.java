@@ -31,8 +31,5 @@ public class UserRepository extends BaseRepository<Long, User> {
                 .where(user.role.eq(role))
                 .fetch();
     }
-
-
-
 }
 

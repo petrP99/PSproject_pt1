@@ -1,4 +1,4 @@
-package com.pers.repository;
+package com.pers.integration.repository;
 
 import com.pers.entity.Card;
 import com.pers.entity.Client;
@@ -6,6 +6,11 @@ import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.Transfer;
 import com.pers.entity.User;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
+import com.pers.repository.TransferRepository;
+import com.pers.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,26 +18,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.pers.util.CheckOfOperationUtil.*;
 import static com.pers.util.CheckOfOperationUtil.checkTransfer;
 import static com.pers.util.ExpireDateUtil.calculateExpireDate;
 import static com.pers.util.GenerateNumberCardUtil.generateNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TransferIT extends BaseTestRepositoryIT {
+@RequiredArgsConstructor
+public class TransferIT extends BaseIntegrationIT {
 
-    private UserRepository userRepository;
-    private ClientRepository clientRepository;
-    private CardRepository cardRepository;
-    private TransferRepository transferRepository;
-
-    @BeforeEach
-    void openSession() {
-        entityManager.getTransaction().begin();
-        userRepository = context.getBean(UserRepository.class);
-        clientRepository = context.getBean(ClientRepository.class);
-        cardRepository = context.getBean(CardRepository.class);
-        transferRepository = context.getBean(TransferRepository.class);
-    }
+    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final CardRepository cardRepository;
+    private final TransferRepository transferRepository;
 
     @Test
     void createTransfer() {
@@ -102,6 +100,8 @@ public class TransferIT extends BaseTestRepositoryIT {
         cardRepository.save(card);
         cardRepository.save(card2);
         transferRepository.save(transfer);
+        updateClientBalance(client, cardRepository);
+        updateClientBalance(client2, cardRepository);
 
         var result = transferRepository.findAll();
         var newCardBalance = cardRepository.findByCardId(card2.getId());
@@ -179,6 +179,8 @@ public class TransferIT extends BaseTestRepositoryIT {
         cardRepository.save(card);
         cardRepository.save(card2);
         transferRepository.save(transfer);
+        updateClientBalance(client, cardRepository);
+        updateClientBalance(client2, cardRepository);
 
         var result = transferRepository.findByCardNoTo(card.getCardNo());
 
@@ -255,6 +257,9 @@ public class TransferIT extends BaseTestRepositoryIT {
         cardRepository.save(card2);
         transferRepository.save(transfer);
         transferRepository.delete(transfer);
+        updateClientBalance(client, cardRepository);
+        updateClientBalance(client2, cardRepository);
+
         var result = transferRepository.findById(transfer.getId());
 
         assertThat(result).isEmpty();

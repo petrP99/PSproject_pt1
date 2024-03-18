@@ -1,22 +1,19 @@
-package com.pers.repository;
+package com.pers.integration.repository;
 
 import com.pers.entity.Role;
 import com.pers.entity.User;
-import org.junit.jupiter.api.BeforeEach;
+import com.pers.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserIT extends BaseTestRepositoryIT {
+@RequiredArgsConstructor
+public class UserIT extends BaseIntegrationIT {
 
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void prepare() {
-        entityManager.getTransaction().begin();
-        userRepository = context.getBean(UserRepository.class);
-    }
+    private final UserRepository userRepository;
 
     @Test
     void createUser() {

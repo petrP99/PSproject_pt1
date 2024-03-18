@@ -1,4 +1,4 @@
-package com.pers.repository;
+package com.pers.integration.repository;
 
 import com.pers.entity.Card;
 import com.pers.entity.Client;
@@ -6,7 +6,12 @@ import com.pers.entity.Replenishment;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
+import com.pers.repository.ReplenishmentRepository;
+import com.pers.repository.UserRepository;
 import com.pers.util.CheckOfOperationUtil;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,25 +19,18 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.pers.util.CheckOfOperationUtil.updateClientBalance;
 import static com.pers.util.ExpireDateUtil.calculateExpireDate;
 import static com.pers.util.GenerateNumberCardUtil.generateNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReplenishmentIT extends BaseTestRepositoryIT {
+@RequiredArgsConstructor
+public class ReplenishmentIT extends BaseIntegrationIT {
 
-    private UserRepository userRepository;
-    private ClientRepository clientRepository;
-    private CardRepository cardRepository;
-    private ReplenishmentRepository replenishmentRepository;
-
-    @BeforeEach
-    void openSession() {
-        entityManager.getTransaction().begin();
-        userRepository = context.getBean(UserRepository.class);
-        clientRepository = context.getBean(ClientRepository.class);
-        cardRepository = context.getBean(CardRepository.class);
-        replenishmentRepository = context.getBean(ReplenishmentRepository.class);
-    }
+    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final CardRepository cardRepository;
+    private final ReplenishmentRepository replenishmentRepository;
 
     @Test
     void createTransfer() {
@@ -85,6 +83,7 @@ public class ReplenishmentIT extends BaseTestRepositoryIT {
         cardRepository.save(card);
         replenishmentRepository.save(replenishment);
         replenishmentRepository.save(replenishment2);
+        updateClientBalance(client, cardRepository);
 
         var result = replenishmentRepository.findAll();
 
@@ -153,6 +152,7 @@ public class ReplenishmentIT extends BaseTestRepositoryIT {
         cardRepository.save(card2);
         replenishmentRepository.save(replenishment);
         replenishmentRepository.save(replenishment2);
+        updateClientBalance(client, cardRepository);
 
         var result = replenishmentRepository.findByClientIdAndCardNo(client.getId(), card.getCardNo());
 

@@ -1,12 +1,14 @@
-package com.pers.repository;
+package com.pers.integration.repository;
 
 import com.pers.entity.Card;
 import com.pers.entity.Client;
-import com.pers.entity.Payment;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
-import com.pers.util.CheckOfOperationUtil;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
+import com.pers.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,28 +16,20 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.pers.util.CheckOfOperationUtil.updateClientBalance;
 import static com.pers.util.ExpireDateUtil.calculateExpireDate;
-import static com.pers.util.GenerateNumberCardUtil.generateNumber;
+import static com.pers.util.GenerateNumberCardUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PaymentIT extends BaseTestRepositoryIT {
+@RequiredArgsConstructor
+public class CardIT extends BaseIntegrationIT {
 
-    private UserRepository userRepository;
-    private ClientRepository clientRepository;
-    private CardRepository cardRepository;
-    private PaymentRepository paymentRepository;
-
-    @BeforeEach
-    void openSession() {
-        entityManager.getTransaction().begin();
-        userRepository = context.getBean(UserRepository.class);
-        clientRepository = context.getBean(ClientRepository.class);
-        cardRepository = context.getBean(CardRepository.class);
-        paymentRepository = context.getBean(PaymentRepository.class);
-    }
+    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final CardRepository cardRepository;
 
     @Test
-    void createPayment() {
+    void createCard() {
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -54,37 +48,25 @@ public class PaymentIT extends BaseTestRepositoryIT {
         var card = Card.builder()
                 .client(client)
                 .cardNo(generateNumber())
-                .balance(new BigDecimal(777))
+                .balance(BigDecimal.ZERO)
                 .createdDate(LocalDate.now())
                 .expireDate(calculateExpireDate())
                 .status(Status.ACTIVE)
                 .build();
 
-        var amount = new BigDecimal(1000);
-        var status = CheckOfOperationUtil.checkPayment(client, card, amount);
-
-        var payment = Payment.builder()
-                .shopName("Apple")
-                .amount(amount)
-                .client(client)
-                .card(card)
-                .timeOfPay(LocalDateTime.now())
-                .status(status)
-                .build();
-
         userRepository.save(user);
         clientRepository.save(client);
         cardRepository.save(card);
-        paymentRepository.save(payment);
+        updateClientBalance(client, cardRepository);
 
-        var result = paymentRepository.findAll();
+        var result = cardRepository.findAll();
 
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(1);
     }
 
     @Test
-    void findByClientIdAndCardNo() {
+    void findByClientId() {
         var user = User.builder()
                 .login("userEx1@mail.ru")
                 .password("123")
@@ -103,32 +85,67 @@ public class PaymentIT extends BaseTestRepositoryIT {
         var card = Card.builder()
                 .client(client)
                 .cardNo(generateNumber())
-                .balance(new BigDecimal(777))
+                .balance(BigDecimal.ZERO)
                 .createdDate(LocalDate.now())
                 .expireDate(calculateExpireDate())
                 .status(Status.ACTIVE)
                 .build();
 
-        var amount = new BigDecimal(1000);
-        var status = CheckOfOperationUtil.checkPayment(client, card, amount);
+        userRepository.save(user);
+        clientRepository.save(client);
+        cardRepository.save(card);
+        updateClientBalance(client, cardRepository);
 
-        var payment = Payment.builder()
-                .shopName("Apple")
-                .amount(amount)
+        var result = cardRepository.findByClientId(client.getId());
+
+        assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void findByStatus() {
+        var user = User.builder()
+                .login("userEx1@mail.ru")
+                .password("123")
+                .role(Role.USER)
+                .build();
+
+        var client = Client.builder()
+                .user(user)
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .balance(new BigDecimal(10000))
+                .createdTime(LocalDateTime.now())
+                .status(Status.INACTIVE)
+                .build();
+
+        var card = Card.builder()
                 .client(client)
-                .card(card)
-                .timeOfPay(LocalDateTime.now())
-                .status(status)
+                .cardNo(generateNumber())
+                .balance(BigDecimal.ZERO)
+                .createdDate(LocalDate.now())
+                .expireDate(calculateExpireDate())
+                .status(Status.BLOCKED)
+                .build();
+
+        var card2 = Card.builder()
+                .client(client)
+                .cardNo(generateNumber())
+                .balance(new BigDecimal(888))
+                .createdDate(LocalDate.now())
+                .expireDate(calculateExpireDate())
+                .status(Status.BLOCKED)
                 .build();
 
         userRepository.save(user);
         clientRepository.save(client);
         cardRepository.save(card);
-        paymentRepository.save(payment);
+        cardRepository.save(card2);
+        updateClientBalance(client, cardRepository);
 
-        var result = paymentRepository.findByClientIdAndCardNo(client.getId(), card.getCardNo());
+        var result = cardRepository.findByStatus(Status.BLOCKED);
 
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(1);
+        assertThat(result).hasSize(2);
     }
 }

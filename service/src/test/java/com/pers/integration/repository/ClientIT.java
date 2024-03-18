@@ -1,9 +1,12 @@
-package com.pers.repository;
+package com.pers.integration.repository;
 
 import com.pers.entity.Client;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
+import com.pers.repository.ClientRepository;
+import com.pers.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,17 +15,12 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientIT extends BaseTestRepositoryIT {
 
-    private UserRepository userRepository;
-    private ClientRepository clientRepository;
+@RequiredArgsConstructor
+public class ClientIT extends BaseIntegrationIT {
 
-    @BeforeEach
-    void openSession() {
-        entityManager.getTransaction().begin();
-        userRepository = context.getBean(UserRepository.class);
-        clientRepository = context.getBean(ClientRepository.class);
-    }
+    private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
 
     @Test
     void createClient() {
