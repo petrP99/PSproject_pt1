@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -42,6 +43,10 @@ public class Transfer implements BaseEntity<Long> {
     private BigDecimal amount;
     private LocalDateTime timeOfTransfer;
 
+    private String recipient;
+    private String message;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
 }

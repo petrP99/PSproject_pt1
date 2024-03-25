@@ -5,4 +5,3 @@ spring:
   jpa:
     properties.hibernate:
       hbm2ddl.auto: create
-      current_session_context_class: thread

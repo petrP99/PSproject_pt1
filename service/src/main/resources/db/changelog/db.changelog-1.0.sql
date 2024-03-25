@@ -1,6 +1,7 @@
-create DATABASE payments_system;
+--liquibase formatted sql
 
-create TABLE users
+--changeset pers:1
+create TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(50) UNIQUE NOT NULL,
@@ -8,7 +9,8 @@ create TABLE users
     role     VARCHAR(20)        NOT NULL
 );
 
-create TABLE client
+--changeset pers:2
+create TABLE IF NOT EXISTS client
 (
     id           BIGSERIAL PRIMARY KEY,
     user_id      BIGSERIAL REFERENCES users (id) ON DELETE CASCADE NOT NULL,
@@ -19,7 +21,8 @@ create TABLE client
     created_time TIMESTAMP                                         NOT NULL
 );
 
-create TABLE card
+--changeset pers:3
+create TABLE IF NOT EXISTS card
 (
     id           BIGSERIAL PRIMARY KEY,
     client_id    BIGSERIAL REFERENCES client (id) ON DELETE CASCADE NOT NULL,
@@ -30,8 +33,8 @@ create TABLE card
     status       VARCHAR(56)                                        NOT NULL
 );
 
-
-create TABLE payment
+--changeset pers:4
+create TABLE IF NOT EXISTS payment
 (
     id               BIGSERIAL PRIMARY KEY,
     shop_name        VARCHAR(128)                                       NOT NULL,
@@ -42,18 +45,21 @@ create TABLE payment
     status           VARCHAR(20)                                        NOT NULL
 );
 
-
-create TABLE transfer
+--changeset pers:5
+create TABLE IF NOT EXISTS transfer
 (
     id               BIGSERIAL PRIMARY KEY,
     card_no_from     INT REFERENCES card (id) NOT NULL,
     card_no_to       INT REFERENCES card (id) NOT NULL,
-    amount           NUMERIC(10, 2)                NOT NULL,
-    time_of_transfer TIMESTAMP                     NOT NULL,
-    status           VARCHAR(20)                   NOT NULL
+    amount           NUMERIC(10, 2)           NOT NULL,
+    recipient        VARCHAR(120)             NOT NULL,
+    message          VARCHAR(120),
+    time_of_transfer TIMESTAMP                NOT NULL,
+    status           VARCHAR(20)              NOT NULL
 );
 
-create TABLE replenishment
+--changeset pers:6
+create TABLE IF NOT EXISTS replenishment
 (
     id                    BIGSERIAL PRIMARY KEY,
     client_to             BIGSERIAL REFERENCES client (id) ON DELETE CASCADE NOT NULL,

@@ -1,30 +1,14 @@
 package com.pers.repository;
 
+import com.pers.entity.Card;
 import com.pers.entity.Transfer;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
-import static com.pers.entity.QTransfer.transfer;
 
-@Repository
-public class TransferRepository extends BaseRepository<Long, Transfer> {
-    public TransferRepository(EntityManager entityManager) {
-        super(Transfer.class, entityManager);
-    }
+public interface TransferRepository extends Repository<Transfer, Long> {
 
-    public Optional<Transfer> findById(Long id) {
-        return Optional.empty();
-    }
+    Optional<Transfer> findById(Long id);
 
-    public List<Transfer> findByCardNoTo(Integer cardId) {
-        return new JPAQuery<Transfer>(getEntityManager())
-                .select(transfer)
-                .from(transfer)
-                .where(transfer.cardNoTo.cardNo.eq(cardId))
-                .fetch();
-    }
 }

@@ -7,10 +7,12 @@ import java.time.LocalDateTime;
 
 public record TransferReadDto(
         Long id,
-        Long cardNoFrom,
-        Long cardNoTo,
+        Integer cardNoFrom,
+        Integer cardNoTo,
         BigDecimal amount,
         LocalDateTime timeOfTransfer,
+        String recipient,
+        String message,
         Status status
 ) {
 }

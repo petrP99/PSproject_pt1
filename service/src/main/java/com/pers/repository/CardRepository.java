@@ -1,43 +1,20 @@
 package com.pers.repository;
 
 import com.pers.entity.Card;
-import com.pers.entity.Status;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-import static com.pers.entity.QCard.card;
 
-@Repository
-public class CardRepository extends BaseRepository<Long, Card> {
+public interface CardRepository extends Repository<Card, Long> {
 
-    public CardRepository(EntityManager entityManager) {
-        super(Card.class, entityManager);
-    }
+    Optional<Card> findById(Long id);
 
-    public List<Card> findByCardId(Long id) {
-        return new JPAQuery<Card>(getEntityManager())
-                .select(card)
-                .from(card)
-                .where(card.id.eq(id))
-                .fetch();
-    }
+    @Query("select c from Card c where c.cardNo = :cardNo")
+    Optional<Card> findByCardNoFrom(Integer cardNo);
 
-    public List<Card> findByClientId(Long clientId) {
-        return new JPAQuery<Card>(getEntityManager())
-                .select(card)
-                .from(card)
-                .where(card.client.id.eq(clientId))
-                .fetch();
-    }
+    @Query("select c from Card c where c.cardNo = :cardNo")
+    Optional<Card> findByCardNoTo(Integer cardNo);
 
-    public List<Card> findByStatus(Status status) {
-        return new JPAQuery<Card>(getEntityManager())
-                .select(card)
-                .from(card)
-                .where(card.status.eq(status))
-                .fetch();
-    }
 }

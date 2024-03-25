@@ -45,7 +45,7 @@ public class CheckOfOperationUtil {
     }
 
     public BigDecimal updateClientBalance(Client client, CardRepository cardRepository) {
-        return cardRepository.findByClientId(client.getId()).stream()
+        return cardRepository.findById(client.getId()).stream()
                 .map(Card::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

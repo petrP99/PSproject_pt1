@@ -1,35 +1,15 @@
 package com.pers.repository;
 
-import com.pers.entity.Role;
+import com.pers.entity.Card;
 import com.pers.entity.User;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-import static com.pers.entity.QUser.user;
 
-@Repository
-public class UserRepository extends BaseRepository<Long, User> {
-    public UserRepository(EntityManager entityManager) {
-        super(User.class, entityManager);
-    }
+public interface UserRepository extends Repository<User, Long> {
 
-    public List<User> findAllById(Long id) {
-        return new JPAQuery<User>(getEntityManager())
-                .select(user)
-                .from(user)
-                .where(user.id.eq(id))
-                .fetch();
-    }
+    Optional<User> findById(Long id);
 
-    public List<User> findAllByRole(Role role) {
-        return new JPAQuery<User>(getEntityManager())
-                .select(user)
-                .from(user)
-                .where(user.role.eq(role))
-                .fetch();
-    }
 }
 

@@ -1,25 +1,14 @@
 package com.pers.repository;
 
+import com.pers.entity.Card;
 import com.pers.entity.Client;
-import com.querydsl.jpa.impl.JPAQuery;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-import static com.pers.entity.QClient.client;
 
-@Repository
-public class ClientRepository extends BaseRepository<Long, Client> {
-    public ClientRepository(EntityManager entityManager) {
-        super(Client.class, entityManager);
-    }
+public interface ClientRepository extends Repository<Client, Long> {
 
-    public List<Client> findByUserId(Long userId) {
-        return new JPAQuery<Client>(getEntityManager())
-                .select(client)
-                .from(client)
-                .where(client.user.id.eq(userId))
-                .fetch();
-    }
+    Optional<Client> findById(Long id);
+
 }
