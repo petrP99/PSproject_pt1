@@ -10,6 +10,7 @@ public record ClientReadDto(Long id,
                             BigDecimal balance,
                             String firstName,
                             String lastName,
+                            String phone,
                             Status status,
                             LocalDateTime createdTime) {
 }

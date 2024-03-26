@@ -1,10 +1,16 @@
 package com.pers.mapper;
 
+import com.pers.entity.Status;
 import com.pers.repository.UserRepository;
 import com.pers.dto.ClientCreateDto;
 import com.pers.entity.Client;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Component
 @RequiredArgsConstructor
 public class ClientCreateMapper implements Mapper<ClientCreateDto, Client> {
 
@@ -17,8 +23,9 @@ public class ClientCreateMapper implements Mapper<ClientCreateDto, Client> {
                 .balance(object.balance())
                 .firstName(object.firstName())
                 .lastName(object.lastName())
-                .status(object.status())
-                .createdTime(object.createdTime())
+                .phone(object.phone())
+                .status(Status.ACTIVE)
+                .createdTime(LocalDateTime.now())
                 .build();
     }
 }

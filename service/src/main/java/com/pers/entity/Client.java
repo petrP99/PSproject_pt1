@@ -35,15 +35,13 @@ public class Client implements BaseEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private BigDecimal balance;
-
-    private String firstName;
-
-    private String lastName;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private BigDecimal balance;
     private LocalDateTime createdTime;
 
 }

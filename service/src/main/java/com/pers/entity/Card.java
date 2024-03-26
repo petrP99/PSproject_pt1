@@ -36,8 +36,6 @@ public class Card implements BaseEntity<Long> {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private Integer cardNo;
-
     private BigDecimal balance;
 
     private LocalDate createdDate;

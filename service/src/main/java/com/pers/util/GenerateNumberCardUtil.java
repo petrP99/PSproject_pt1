@@ -7,16 +7,14 @@ import java.util.Set;
 
 @UtilityClass
 public class GenerateNumberCardUtil {
-    Set<Integer> numbersOfCards = new HashSet<>();
+    Set<Long> numbersOfCards = new HashSet<>();
 
-    public static Integer generateNumber() {
-        int number = (int) (Math.random() * 10907 + Math.random() * 1000);
+    public static Long generateNumber() {
+        long number = (long) (Math.random() * 99660789L + 7733000000000000L);
         if (numbersOfCards.add(number)) {
             return number;
         } else {
-            int newNumber = number + 1;
-            numbersOfCards.add(newNumber);
-            return newNumber;
+            return generateNumber();
         }
     }
 }

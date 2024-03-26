@@ -15,8 +15,8 @@ public class TransferCreateMapper implements Mapper<TransferCreateDto, Transfer>
     @Override
     public Transfer mapFrom(TransferCreateDto object) {
         return Transfer.builder()
-                .cardNoFrom(cardRepository.findByCardNoFrom(object.cardNoFrom()).orElseThrow(IllegalArgumentException::new))
-                .cardNoTo(cardRepository.findByCardNoTo(object.cardNoTo()).orElseThrow(IllegalArgumentException::new))
+                .cardNoFrom(cardRepository.findById(object.cardNoFrom()).orElseThrow(IllegalArgumentException::new))
+                .cardNoTo(cardRepository.findById(object.cardNoTo()).orElseThrow(IllegalArgumentException::new))
                 .recipient(object.recipient())
                 .message(object.message())
                 .timeOfTransfer(object.timeOfTransfer())

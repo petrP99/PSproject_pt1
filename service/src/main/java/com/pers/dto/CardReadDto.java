@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public record CardReadDto(Long id,
                           Long clientId,
-                          Integer cardNo,
                           BigDecimal balance,
                           LocalDate createdDate,
                           LocalDate expireDate,

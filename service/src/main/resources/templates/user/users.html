@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form action="/users">
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label for="login">Login:
+                            <input id="login" type="text" name="login" th:value="${filter.login()}">
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <label for="page">Page:
+                            <input id="page" type="number" name="page" th:value="${users.metadata.page}">
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <label for="size">Size:
+                            <input id="size" type="number" name="size" th:value="${users.metadata.size}">
+                        </label>
+                    </div>
+                </div>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Users list</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Login</th>
+            <th>Role</th>
+            <th>Action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users.content}">
+            <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getId()}"></a></td>
+            <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getLogin()}"></a></td>
+            <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getRole().name()}"
+                   th:class="${user.getRole().name()  ==  'USER' ? 'text-success' : 'text-danger'}"></a></td>
+            <td>
+                <form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'USER'}"
+                      method="post">
+                    <button type="submit" onclick="return confirmDelete()">Remove User</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this user?" +
+            "After this action, the client, all his cards and transaction history will be deleted in a cascade ");
+    }
+</script>
+</body>
+</html>
+
+

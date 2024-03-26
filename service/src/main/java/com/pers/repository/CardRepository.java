@@ -1,20 +1,20 @@
 package com.pers.repository;
 
 import com.pers.entity.Card;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import com.pers.repository.filter.FilterCardRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 
-public interface CardRepository extends Repository<Card, Long> {
+@Repository
+public interface CardRepository extends JpaRepository<Card, Long>,
+        FilterCardRepository,
+        QuerydslPredicateExecutor<Card> {
 
-    Optional<Card> findById(Long id);
+    Optional<Card> findByClientId(Long clientId);
 
-    @Query("select c from Card c where c.cardNo = :cardNo")
-    Optional<Card> findByCardNoFrom(Integer cardNo);
-
-    @Query("select c from Card c where c.cardNo = :cardNo")
-    Optional<Card> findByCardNoTo(Integer cardNo);
 
 }

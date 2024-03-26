@@ -38,7 +38,7 @@ public class Replenishment implements BaseEntity<Long> {
     private Client clientTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id_to")
+    @JoinColumn(name = "card_no_to")
     private Card cardNoTo;
 
     private BigDecimal amount;

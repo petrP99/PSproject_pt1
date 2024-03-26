@@ -3,7 +3,9 @@ package com.pers.mapper;
 import com.pers.dto.ClientReadDto;
 import com.pers.entity.Client;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class ClientReadMapper implements Mapper<Client, ClientReadDto> {
 
@@ -17,6 +19,7 @@ public class ClientReadMapper implements Mapper<Client, ClientReadDto> {
                 object.getBalance(),
                 object.getFirstName(),
                 object.getLastName(),
+                object.getPhone(),
                 object.getStatus(),
                 object.getCreatedTime()
         );

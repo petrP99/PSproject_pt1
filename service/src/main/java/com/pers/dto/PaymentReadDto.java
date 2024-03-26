@@ -11,6 +11,5 @@ public record PaymentReadDto(Long id,
                              Long clientId,
                              Long cardId,
                              LocalDateTime timeOfPay,
-                             
                              Status status) {
 }

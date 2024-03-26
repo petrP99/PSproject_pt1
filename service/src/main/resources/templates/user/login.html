@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Login</title>
+</head>
+<body>
+<form action="/login" method="post">
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="username" class="col-form-label">username</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" id="username" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+    </div>
+    <label for="password">Password
+        <input id="password" type="password" name="password">
+    </label><br>
+    <button type="submit">Login</button>
+</form>
+<form action="/users/registration">
+    <button type="submit">Registration</button>
+</form>
+</body>
+</html>

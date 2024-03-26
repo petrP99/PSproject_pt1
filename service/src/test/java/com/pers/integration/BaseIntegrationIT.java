@@ -1,9 +1,10 @@
-package com.pers.integration.repository;
+package com.pers.integration;
 
 import com.pers.integration.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @IT

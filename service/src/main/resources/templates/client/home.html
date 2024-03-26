@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: darkgrey;
+            background-size: cover;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        section {
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <form th:action="@{/cards}" method="post" th:object="${card}">
+        <input type="hidden" id="clientId" name="clientId" th:value="${id}">
+    </form>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="nav-link" href="/cards">Cards</a>
+        <a class="nav-link" href="/payment">Раздел 2</a>
+    </nav>
+
+    <div class="row">
+        <section>
+            <div class="col-md-3">
+                <a href="">
+                    <img src="https://azbukainterneta.ru/schoolbook/textbook/module_4/2.11.png" alt="Image 2"
+                         class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                </a>
+            </div>
+
+        </section>
+        <section>
+            <div class="col-md-3">
+                <a th:href="@{/cards/cards}">
+                    <img src="https://azbukainterneta.ru/schoolbook/textbook/module_4/2.1.png" alt="Image 1"
+                         class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                    <h1 style="color: black" class="text-center">Cards</h1>
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+</div>
+</body>
+</html>

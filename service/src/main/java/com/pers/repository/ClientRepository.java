@@ -1,14 +1,25 @@
 package com.pers.repository;
 
-import com.pers.entity.Card;
+import com.pers.dto.filter.ClientFilterDto;
 import com.pers.entity.Client;
-import org.springframework.data.repository.Repository;
+
+import java.util.List;
+
+import com.pers.repository.filter.FilterClientRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 
-public interface ClientRepository extends Repository<Client, Long> {
+@Repository
+public interface ClientRepository extends JpaRepository<Client, Long>,
+        FilterClientRepository,
+        QuerydslPredicateExecutor<Client> {
 
     Optional<Client> findById(Long id);
+
+    Optional<Client> findByUserId(Long id);
 
 }
