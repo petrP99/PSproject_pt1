@@ -8,6 +8,7 @@ create TABLE IF NOT EXISTS users
     password VARCHAR(255)       NOT NULL,
     role     VARCHAR(20)        NOT NULL
 );
+--rollback DROP TABLE users;
 
 --changeset pers:2
 create TABLE IF NOT EXISTS client
@@ -20,6 +21,7 @@ create TABLE IF NOT EXISTS client
     status       VARCHAR(56)                                       NOT NULL,
     created_time TIMESTAMP                                         NOT NULL
 );
+--rollback DROP TABLE client;
 
 --changeset pers:3
 create TABLE IF NOT EXISTS card
@@ -32,6 +34,7 @@ create TABLE IF NOT EXISTS card
     expire_date  DATE                                               NOT NULL,
     status       VARCHAR(56)                                        NOT NULL
 );
+--rollback DROP TABLE card;
 
 --changeset pers:4
 create TABLE IF NOT EXISTS payment
@@ -44,6 +47,7 @@ create TABLE IF NOT EXISTS payment
     time_of_pay      TIMESTAMP                                          NOT NULL,
     status           VARCHAR(20)                                        NOT NULL
 );
+--rollback DROP TABLE payment;
 
 --changeset pers:5
 create TABLE IF NOT EXISTS transfer
@@ -57,6 +61,7 @@ create TABLE IF NOT EXISTS transfer
     time_of_transfer TIMESTAMP                NOT NULL,
     status           VARCHAR(20)              NOT NULL
 );
+--rollback DROP TABLE transfer;
 
 --changeset pers:6
 create TABLE IF NOT EXISTS replenishment
@@ -68,5 +73,6 @@ create TABLE IF NOT EXISTS replenishment
     time_of_replenishment TIMESTAMP                                          NOT NULL,
     status                VARCHAR(20)                                        NOT NULL
 );
+--rollback DROP TABLE replenishment;
 
 
