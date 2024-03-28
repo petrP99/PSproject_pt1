@@ -18,6 +18,7 @@ create TABLE IF NOT EXISTS client
     balance      NUMERIC(10, 2),
     first_name   VARCHAR(128)                                      NOT NULL,
     last_name    VARCHAR(128)                                      NOT NULL,
+    phone        VARCHAR(20) NOT NULL;
     status       VARCHAR(56)                                       NOT NULL,
     created_time TIMESTAMP                                         NOT NULL
 );

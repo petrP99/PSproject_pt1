@@ -9,8 +9,8 @@ spring:
     spring:
       mvc:
         view:
-          prefix: /WEB_INF/jsp/
-          suffix: .jsp
+          prefix: /WEB-INF/jsp/
+          suffix: .html
 
     jpa:
     properties:
