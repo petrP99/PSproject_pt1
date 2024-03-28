@@ -10,11 +10,6 @@ import java.util.Optional;
 public interface CardRepository extends Repository<Card, Long> {
 
     Optional<Card> findById(Long id);
-
-    @Query("select c from Card c where c.cardNo = :cardNo")
-    Optional<Card> findByCardNoFrom(Integer cardNo);
-
-    @Query("select c from Card c where c.cardNo = :cardNo")
-    Optional<Card> findByCardNoTo(Integer cardNo);
+    Optional<Card> findByCardNo(Integer cardNo);
 
 }

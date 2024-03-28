@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CardCreateDto(Long clientId,
-                            Integer cardNo,
+                            Long cardNo,
                             BigDecimal balance,
                             LocalDate createdDate,
                             LocalDate expireDate,

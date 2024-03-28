@@ -36,7 +36,7 @@ public class Card implements BaseEntity<Long> {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private Integer cardNo;
+    private Long cardNo;
 
     private BigDecimal balance;
 

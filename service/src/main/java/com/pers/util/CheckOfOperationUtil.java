@@ -13,8 +13,8 @@ public class CheckOfOperationUtil {
 
     public static Status checkTransfer(Card cardFrom, Card cardTo, BigDecimal amount) {
         if (amount.compareTo(cardFrom.getBalance()) <= 0
-            && cardFrom.getStatus() == Status.ACTIVE
-            && cardTo.getStatus() == Status.ACTIVE) {
+                && cardFrom.getStatus() == Status.ACTIVE
+                && cardTo.getStatus() == Status.ACTIVE) {
             cardTo.setBalance(cardTo.getBalance().add(amount));
             cardFrom.setBalance(cardFrom.getBalance().subtract(amount));
             return Status.SUCCESS;
@@ -25,8 +25,8 @@ public class CheckOfOperationUtil {
 
     public static Status checkPayment(Client client, Card card, BigDecimal amount) {
         if (client.getStatus() == Status.ACTIVE
-            && card.getStatus() == Status.ACTIVE
-            && amount.compareTo(card.getBalance()) <= 0) {
+                && card.getStatus() == Status.ACTIVE
+                && amount.compareTo(card.getBalance()) <= 0) {
             card.setBalance(card.getBalance().subtract(amount));
             return Status.SUCCESS;
         } else {
@@ -36,7 +36,7 @@ public class CheckOfOperationUtil {
 
     public static Status checkReplenishment(Client client, Card card, BigDecimal amount) {
         if (client.getStatus() == Status.ACTIVE
-            && card.getStatus() == Status.ACTIVE) {
+                && card.getStatus() == Status.ACTIVE) {
             card.setBalance(card.getBalance().add(amount));
             return Status.SUCCESS;
         } else {
