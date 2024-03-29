@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransferCreateDto(
-        Integer cardNoFrom,
-        Integer cardNoTo,
+        Long cardNoFrom,
+        Long cardNoTo,
         BigDecimal amount,
         LocalDateTime timeOfTransfer,
         String recipient,

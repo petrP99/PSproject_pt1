@@ -10,7 +10,7 @@ spring:
       mvc:
         view:
           prefix: /WEB-INF/jsp/
-          suffix: .html
+          suffix: .jsp
 
     jpa:
     properties:

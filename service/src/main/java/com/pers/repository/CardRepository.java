@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface CardRepository extends Repository<Card, Long> {
 
     Optional<Card> findById(Long id);
-    Optional<Card> findByCardNo(Integer cardNo);
+    Optional<Card> findByCardNo(Long cardNo);
 
 }
