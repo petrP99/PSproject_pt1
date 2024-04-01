@@ -1,9 +1,11 @@
 package com.pers.service;
 
 import com.pers.dto.UserCreateDto;
+import com.pers.dto.UserFilterDto;
 import com.pers.dto.UserReadDto;
 import com.pers.mapper.UserCreateMapper;
 import com.pers.mapper.UserReadMapper;
+import com.pers.repository.FilterUserRepository;
 import com.pers.repository.UserRepository;
 
 import java.util.List;
@@ -62,19 +64,12 @@ public class UserService {
                 .orElse(false);
     }
 
-//    public List<UserReadDtoHttp> findAll(UserFilterDto filter) {
-//        return userRepository.findAllByFilter(filter).stream()
-//                .map(userReadMapper::mapFrom)
-//                .toList();
-//    }
-
-}
-
-
-
-
-
-
+    public List<UserReadDto> findAll(UserFilterDto filter) {
+        return userRepository.findAllByFilter(filter).stream()
+                .map(userReadMapper::mapFrom)
+                .toList();
+    }
+    }
 
 
 

@@ -6,8 +6,17 @@
     <title>Users</title>
 </head>
 <body>
+<form action="/users">
+    <label for="login">Login:
+        <input id="login" type="text" name="login">
+    </label>
+    <label for="role">Role:
+        <input id="role" type="text" name="role">
+    </label>
+    <button type="submit">Filter</button>
+</form>
 <div th:each="user : ${users}">
-<a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.login}|">User</a>
+    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.login}|">User</a>
 </div>
 
 </body>

@@ -57,11 +57,11 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping()
-    public String findAll(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "user/users";
-    }
+//    @GetMapping()
+//    public String findAll(Model model) {
+//        model.addAttribute("users", userService.findAll());
+//        return "user/users";
+//    }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model) {
@@ -73,11 +73,10 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-
-//    @GetMapping()
-//    public String findAll(Model model, UserFilterDto filter) {
-//        model.addAttribute("users", userService.findAll());
-//        return "user/users";
-//    }
+    @GetMapping()
+    public String findAll(Model model, UserFilterDto filter) {
+        model.addAttribute("users", userService.findAll(filter));
+        return "user/users";
+    }
 
 }

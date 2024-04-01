@@ -1,8 +1,9 @@
-package com.pers.service;
+package com.pers.integration.service;
 
 import com.pers.dto.UserReadDto;
 import com.pers.entity.User;
-import com.pers.integration.repository.BaseIntegrationIT;
+import com.pers.integration.BaseIntegrationIT;
+import com.pers.service.UserService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
