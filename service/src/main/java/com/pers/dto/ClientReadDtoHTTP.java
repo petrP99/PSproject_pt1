@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class ClientReadDtoHTTP {
     Long id;
-    UserReadDtoHttp user;
+    UserReadDto user;
     Status status;
     String firstName;
     String lastName;

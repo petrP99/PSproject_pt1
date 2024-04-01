@@ -33,11 +33,11 @@ public class Transfer implements BaseEntity<Long> {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id_from")
+    @JoinColumn(name = "card_no_from")
     private Card cardNoFrom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id_to")
+    @JoinColumn(name = "card_no_to")
     private Card cardNoTo;
 
     private BigDecimal amount;

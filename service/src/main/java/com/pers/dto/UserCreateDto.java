@@ -1,8 +1,13 @@
 package com.pers.dto;
 
 import com.pers.entity.Role;
+import lombok.Value;
+import lombok.experimental.FieldNameConstants;
 
-public record UserCreateDto(String login,
-                            String password,
-                            Role role) {
+@Value
+@FieldNameConstants
+public class UserCreateDto {
+    String login;
+    String password;
+    Role role;
 }

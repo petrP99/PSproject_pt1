@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>User</title>
+</head>
+<body>
+<form th:action="@{/users/{userId}/update(userId=${user.id})}" method="post" th:object="${user}">
+    <label for="login">Login:
+    <input id="login" type="text" name="login" th:value="*{login}">
+    </label><br>
+    <label for="password">Password:
+        <input id="password" type="password" name="password" th:value="*{password}">
+    </label><br>
+    <button type="submit">Update</button>
+</form>
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'ADMIN'}" method="post">
+    <button type="submit">Remove</button>
+</form>
+
+</body>
+</html>

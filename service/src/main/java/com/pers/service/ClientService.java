@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 
     private final ClientRepository clientRepository;
-    private final ClientReadMapper clientReadMapper;
+//    private final ClientReadMapper clientReadMapper;
 
-    public List<ClientReadDtoHTTP> findAll() {
-        return clientRepository.findAll().stream()
-                .map(clientReadMapper::mapFrom)
-                .toList();
-    }
+//    public List<ClientReadDtoHTTP> findAll() {
+//        return clientRepository.findAll().stream()
+//                .map(clientReadMapper::mapFrom)
+//                .toList();
+//    }
 }
 

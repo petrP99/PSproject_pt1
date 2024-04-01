@@ -41,7 +41,7 @@ public class Payment implements BaseEntity<Long> {
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pay_by_card_id")
+    @JoinColumn(name = "pay_by_card_no")
     private Card card;
 
     private LocalDateTime timeOfPay;

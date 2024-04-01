@@ -4,9 +4,11 @@ import com.pers.integration.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @IT
+@Sql({"classpath:sql/data.sql"})
 public abstract class BaseIntegrationIT {
 
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
