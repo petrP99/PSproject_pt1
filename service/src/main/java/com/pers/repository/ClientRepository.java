@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 
-@Repository
 public interface ClientRepository extends JpaRepository<Client, Long>,
         FilterClientRepository,
         QuerydslPredicateExecutor<Client> {

@@ -11,6 +11,5 @@ public record ClientFilterDto(
         String firstName,
         String lastName,
         String phone,
-        BigDecimal balance,
-        LocalDateTime createdTime) {
+        BigDecimal balance) {
 }

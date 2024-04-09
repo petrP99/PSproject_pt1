@@ -22,10 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long>,
     Optional<User> findById(Long id);
 
     List<User> findAll();
-
-    @Query(value = "select u from User u",
-            countQuery = "select count(distinct u.login) from User u")
-    Page<User> findAllBy(UserFilterDto filterDto, Pageable pageable);
-
+    
 }
 
