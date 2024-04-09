@@ -7,10 +7,11 @@ import java.math.*;
 import java.time.*;
 
 public record ClientFilterDto(
-        Status status,
+        Long id,
+        Long userId,
         String firstName,
         String lastName,
-        String phone,
         BigDecimal balance,
-        LocalDateTime createdTime) {
+        String phone,
+        Status status) {
 }

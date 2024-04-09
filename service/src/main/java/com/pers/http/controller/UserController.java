@@ -5,16 +5,20 @@ import com.pers.dto.UserReadDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.dto.filter.UserFilterDto;
 import com.pers.service.UserService;
-import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.*;
-import org.springframework.validation.annotation.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,8 +39,23 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/users/registration";
         }
-        return "redirect:client/registration/" + userService.create(user).getId();
+        userService.create(user);
+        return "redirect:/login";
     }
+
+
+    @PostMapping("/admin/create")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    public String createAdmin(@Validated UserCreateDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/users/registration";
+        }
+        userService.createAdmin(user);
+        return "redirect:/login";
+    }
+
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id, @ModelAttribute @Validated UserCreateDto user) {
@@ -45,6 +64,8 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
         if (!userService.delete(id)) {
@@ -54,6 +75,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, UserFilterDto filter, Pageable pageable) {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         model.addAttribute("users", PageResponse.of(page));
@@ -76,5 +98,6 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/registration";
     }
+
 
 }

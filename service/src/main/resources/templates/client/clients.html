@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .btn-filter {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-update-status {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt6-m">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form action="/clients">
+                <div class="form-row align-items-xl-center">
+                    <div class="col-auto">
+                        <label for="id">Id:</label>
+                        <input id="id" type="text" name="id" th:value="${filter.id()}" class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="userId">User Id:</label>
+                        <input id="userId" type="text" name="userId" th:value="${filter.userId()}" class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="firstName">First name:</label>
+                        <input id="firstName" type="text" name="firstName" th:value="${filter.firstName()}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="lastName">Last name:</label>
+                        <input id="lastName" type="text" name="lastName" th:value="${filter.lastName()}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="phone">Phone:</label>
+                        <input id="phone" type="text" name="phone" th:value="${filter.phone()}" class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="balance">Balance:</label>
+                        <input id="balance" type="text" name="balance" th:value="${filter.balance()}"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-auto">
+                        <label for="status">Status:</label>
+                        <input id="status" type="text" name="status" th:value="${filter.status()}" class="form-control">
+                    </div>
+                    <!--                    <div class="col-auto">-->
+                    <!--                        <label for="page">Page:</label>-->
+                    <!--                        <input id="page" type="number" name="page" th:value="${clients.metadata.page}"-->
+                    <!--                               class="form-control">-->
+                    <!--                    </div>-->
+                    <div class="col-auto">
+                        <label for="size">Size:</label>
+                        <select id="size" name="size" th:value="${clients.metadata.size}" class="form-control">
+                            <option value="5">5</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-filter">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <h1>Clients list</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserId</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Phone</th>
+            <th>Balance</th>
+            <th>Status</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client : ${clients.content}">
+            <td><a th:href="@{'/clients/' + ${client.id}}" th:text="${client.getId()}"></a></td>
+            <td><a th:href="@{'/users/' + ${client.userId}}" th:text="${client.getUserId().getId()}"></a></td>
+            <td th:text="${client.getFirstName()}"></td>
+            <td th:text="${client.getLastName()}"></td>
+            <td th:text="${client.getPhone()}"></td>
+            <td th:text="${client.getBalance()}"></td>
+            <td th:text="${client.getStatus()}"></td>
+            <td>
+
+                <a th:href="@{/clients/{clientId}/update(clientId=${client.id})}"
+                   class="btn btn-primary btn-update-status">Update
+                    status</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pagination">
+    <ul>
+        <li th:each="pageNumber : ${#numbers.sequence(1, clients.metadata.getTotalElements())}">
+            <a th:href="@{'?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>
+        </li>
+    </ul>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

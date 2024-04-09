@@ -26,10 +26,10 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @GetMapping
-    public Page<UserReadDto> findAll(UserFilterDto filter, Pageable pageable) {
-        return userService.findAll(filter, pageable);
-    }
+//    @GetMapping
+//    public Page<UserReadDto> findAll(UserFilterDto filter, Pageable pageable) {
+//        return userService.findAll(filter, pageable);
+//    }
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -52,7 +52,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public UserReadDto findById(@PathVariable("id") Long id, Model model) {
+    public UserReadDto findById(@PathVariable("id") Long id) {
         return userService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }

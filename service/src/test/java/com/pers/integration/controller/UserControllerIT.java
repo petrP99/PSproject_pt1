@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.pers.dto.UserCreateDto.Fields.login;
-import static com.pers.dto.UserCreateDto.Fields.password;
 import static com.pers.dto.UserCreateDto.Fields.role;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,7 +37,6 @@ class UserControllerIT extends BaseIntegrationIT {
     void create() throws Exception {
         mockMvc.perform(post("/users")
                         .param(login, "1@mail.ru")
-                        .param(password, "123")
                         .param(role, "USER"))
                 .andExpectAll(
                         status().is3xxRedirection(),
@@ -58,8 +56,7 @@ class UserControllerIT extends BaseIntegrationIT {
     @Test
     void update() throws Exception {
         mockMvc.perform(post("/users/{id}/update", user.getId())
-                        .param(login, "user1@mail.ru")
-                        .param(password, "456"))
+                        .param(login, "user1@mail.ru"))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrlPattern("/users/*")

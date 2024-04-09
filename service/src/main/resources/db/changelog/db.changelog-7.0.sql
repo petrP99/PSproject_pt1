@@ -5,12 +5,13 @@ create TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255)       NOT NULL,
+    password VARCHAR(255)        DEFAULT '{noop}123',
     role     VARCHAR(20)        NOT NULL
 );
 --rollback DROP TABLE users;
 
 --changeset pers:2
+CREATE SEQUENCE IF NOT EXISTS card_id_seq RESTART WITH 100000 INCREMENT BY 56909;
 create TABLE IF NOT EXISTS client
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -18,12 +19,11 @@ create TABLE IF NOT EXISTS client
     first_name   VARCHAR(128)                                      NOT NULL,
     last_name    VARCHAR(128)                                      NOT NULL,
     phone        VARCHAR(20)                                UNIQUE NOT NULL,
-    balance      NUMERIC(10, 2)                                    NOT NULL,
+    balance      NUMERIC(10, 2)                                    DEFAULT '0',
     created_time TIMESTAMP                                         NOT NULL,
     status       VARCHAR(56)                                       NOT NULL
 );
 --rollback DROP TABLE client;
-
 
 --changeset pers:3
 
@@ -31,14 +31,12 @@ create TABLE IF NOT EXISTS card
 (
     id BIGINT DEFAULT nextval('card_id_seq') PRIMARY KEY,
     client_id    BIGINT REFERENCES client (id) ON DELETE CASCADE NOT NULL,
-    balance      NUMERIC(10, 2)                                     NOT NULL,
+    balance      NUMERIC(10, 2)                                    DEFAULT '0',
     created_date DATE                                               NOT NULL,
     expire_date  DATE                                               NOT NULL,
     status       VARCHAR(56)                                        NOT NULL
-    );
+);
 
-
-ALTER SEQUENCE card_id_seq RESTART WITH 100000 INCREMENT BY 56909;
 --rollback DROP TABLE card;
 
 --changeset pers:4
@@ -79,5 +77,7 @@ create TABLE IF NOT EXISTS replenishment
     status                VARCHAR(20)                                        NOT NULL
 );
 --rollback DROP TABLE replenishment;
+
+
 
 

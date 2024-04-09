@@ -1,27 +1,94 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Центрирование формы */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <title>Login</title>
+        /* Стили для кнопок */
+        .btn-login {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-link {
+            background-color: #444444;
+            color: #ffffff;
+        }
+
+        .form-container {
+            text-align: center; /* Выравнивание содержимого по центру */
+        }
+
+        .form-container button {
+            margin: 10px; /* Расстояние между кнопками */
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%; /* Ширина поля ввода на всю ширину родительского элемента */
+            padding: 8px; /* Внутренний отступ */
+            margin: 5px 0; /* Внешний отступ сверху и снизу */
+            box-sizing: border-box; /* Учитывать padding и border в общей ширине элемента */
+        }
+
+        label {
+            text-align: center; /* Центрирование текста внутри label */
+            display: block; /* Отображать каждый label на новой строке */
+        }
+
+        h3 {
+            text-align: center; /* Центрирование текста внутри label */
+        }
+    </style>
 </head>
 <body>
-<form action="/login" method="post">
-    <div class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="username" class="col-form-label">username</label>
-        </div>
-        <div class="col-auto">
-            <input type="text" id="username" class="form-control" aria-describedby="passwordHelpInline">
+<h3 class="center">Login</h3>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Login:
+                        <input id="username" type="email" name="username">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:
+                        <input id="password" type="password" name="password">
+                    </label>
+                </div>
+                <div class="form-container">
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div>
+
+                <div class="form-container">
+                    <form action="/users/registration">
+                        <button type="submit" class="btn btn-link">Registration</button>
+                    </form>
+                </div>
+            </form>
         </div>
     </div>
-    <label for="password">Password
-        <input id="password" type="password" name="password">
-    </label><br>
-    <button type="submit">Login</button>
-</form>
-<form action="/users/registration">
-    <button type="submit">Registration</button>
-</form>
+</div>
+<div style="color:red" th:if="${param.error}">Bad credentials</div>
+
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error Message</p>
+</div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -3,11 +3,10 @@ package com.pers.service;
 import com.pers.dto.CardCreateDto;
 import com.pers.dto.CardReadDto;
 import com.pers.dto.filter.CardFilterDto;
-import static com.pers.entity.QCard.card;
+
 import com.pers.mapper.CardCreateMapper;
 import com.pers.mapper.CardReadMapper;
 import com.pers.repository.CardRepository;
-import com.pers.repository.filter.QPredicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,16 +65,8 @@ public class CardService {
                 .toList();
     }
 
-    public Page<CardReadDto> findAll(CardFilterDto filter, Pageable pageable) { //findAllByFilter
-        var predicate = QPredicate.builder()
-                .add(filter.id(), card.id::eq)
-                .add(filter.clientId(), card.client.id::eq)
-                .add(filter.balance(), card.balance::eq)
-                .add(filter.expireDate(), card.expireDate::before)
-                .add(filter.status(), card.status::eq)
-                .buildAnd();
-
-        return cardRepository.findAll(predicate, pageable)
+    public Page<CardReadDto> findAllByFilter(CardFilterDto filter, Pageable pageable) {
+        return cardRepository.findAllByFilter(filter, pageable)
                 .map(cardReadMapper::mapFrom);
     }
 }

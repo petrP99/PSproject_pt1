@@ -4,7 +4,6 @@ import com.pers.entity.Status;
 import com.pers.repository.ClientRepository;
 import com.pers.dto.CardCreateDto;
 import com.pers.entity.Card;
-import com.pers.util.GenerateNumberCardUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

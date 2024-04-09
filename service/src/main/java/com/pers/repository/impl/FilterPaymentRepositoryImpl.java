@@ -1,18 +1,16 @@
 package com.pers.repository.impl;
 
-import com.pers.dto.filter.CardFilterDto;
 import com.pers.dto.filter.PaymentFilterDto;
-import com.pers.entity.Card;
-import com.pers.entity.Client;
 import com.pers.entity.Payment;
-import static com.pers.entity.QCard.card;
-import com.pers.entity.QPayment;
 import static com.pers.entity.QPayment.payment;
-import com.pers.repository.filter.FilterPaymentRepository;
-import com.pers.repository.filter.QPredicate;
+import com.pers.repository.FilterPaymentRepository;
+import com.pers.repository.predicate.QPredicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Payment> findAllByFilter(PaymentFilterDto filter) {
+    public Page<Payment> findAllByFilter(PaymentFilterDto filter, Pageable pageable) {
         var predicate = QPredicate.builder()
                 .add(filter.clientId(), payment.client.id::eq)
                 .add(filter.shopName(), payment.shopName::containsIgnoreCase)
@@ -33,10 +31,17 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
                 .add(filter.status(), payment.status::eq)
                 .buildAnd();
 
-        return new JPAQuery<Payment>(entityManager)
+        var query = new JPAQuery<Payment>(entityManager)
                 .select(payment)
                 .from(payment)
-                .where(predicate)
+                .where(predicate);
+
+        List<Payment> content = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        long totalCount = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, totalCount);
     }
 }

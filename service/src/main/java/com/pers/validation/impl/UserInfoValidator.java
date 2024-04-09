@@ -11,6 +11,6 @@ public class UserInfoValidator implements ConstraintValidator<UserInfo, UserCrea
 
     @Override
     public boolean isValid(UserCreateDto value, ConstraintValidatorContext context) {
-        return hasText(value.getLogin()) && hasText(value.getPassword());
+        return hasText(value.getLogin()) && hasText(value.getRawPassword());
     }
 }

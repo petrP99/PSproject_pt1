@@ -1,7 +1,6 @@
 package com.pers.dto;
 
 import com.pers.entity.Status;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;

@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.pers.dto.UserCreateDto.Fields.login;
-import static com.pers.dto.UserCreateDto.Fields.password;
 import static com.pers.dto.UserCreateDto.Fields.role;
 import static com.pers.entity.Client_.firstName;
 import static com.pers.entity.Client_.lastName;

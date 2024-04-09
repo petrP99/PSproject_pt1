@@ -4,11 +4,9 @@ package com.pers.service;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.dto.PaymentReadDto;
 import com.pers.dto.filter.PaymentFilterDto;
-import static com.pers.entity.QPayment.payment;
 import com.pers.mapper.PaymentCreateMapper;
 import com.pers.mapper.PaymentReadMapper;
 import com.pers.repository.PaymentRepository;
-import com.pers.repository.filter.QPredicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class PaymentService {
-    
+
     private final PaymentRepository paymentRepository;
     private final PaymentReadMapper paymentReadMapper;
     private final PaymentCreateMapper paymentCreateMapper;
@@ -54,17 +52,7 @@ public class PaymentService {
     }
 
     public Page<PaymentReadDto> findAllByFilter(PaymentFilterDto filter, Pageable pageable) {
-        var predicate = QPredicate.builder()
-                .add(filter.clientId(), payment.client.id::eq)
-                .add(filter.shopName(), payment.shopName::containsIgnoreCase)
-                .add(filter.timeOfPay(), payment.timeOfPay::after)
-                .add(filter.timeOfPay(), payment.timeOfPay::before)
-                .add(filter.timeOfPay(), payment.timeOfPay::eq)
-                .add(filter.amount(), payment.amount::eq)
-                .add(filter.status(), payment.status::eq)
-                .buildAnd();
-
-        return paymentRepository.findAll(predicate, pageable)
+        return paymentRepository.findAllByFilter(filter, pageable)
                 .map(paymentReadMapper::mapFrom);
     }
 

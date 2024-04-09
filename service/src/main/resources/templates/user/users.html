@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <title>Users</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <style>
+        .btn-filter {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt6-m">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <form action="/users">
-                <div class="form-row align-items-center">
+                <div class="form-row align-items-xl-center">
                     <div class="col-auto">
-                        <label for="login">Login:
-                            <input id="login" type="text" name="login" th:value="${filter.login()}">
-                        </label>
+                        <label for="login">Login:</label>
+                        <input id="login" type="text" name="login" th:value="${filter.login()}" class="form-control">
                     </div>
                     <div class="col-auto">
-                        <label for="page">Page:
-                            <input id="page" type="number" name="page" th:value="${users.metadata.page}">
-                        </label>
+                        <label for="page">Page:</label>
+                        <input id="page" type="number" name="page" th:value="${users.metadata.page}"
+                               class="form-control">
                     </div>
                     <div class="col-auto">
-                        <label for="size">Size:
-                            <input id="size" type="number" name="size" th:value="${users.metadata.size}">
-                        </label>
+                        <label for="size">Size:</label>
+                        <select id="size" name="size" th:value="${users.metadata.size}" class="form-control">
+                            <option value="5">5</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-filter">Filter</button>
                     </div>
                 </div>
-                <button type="submit">Filter</button>
             </form>
         </div>
     </div>
 </div>
+
 
 <div class="container">
     <h1>Users list</h1>

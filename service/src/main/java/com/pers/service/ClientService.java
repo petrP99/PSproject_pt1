@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 
 @Service
@@ -24,8 +27,14 @@ public class ClientService {
     private final ClientReadMapper clientReadMapper;
     private final ClientCreateMapper clientCreateMapper;
 
-    public List<ClientReadDto> findAll(ClientFilterDto filter) {
-        return clientRepository.findAllByFilter(filter).stream()
+
+    public Page<ClientReadDto> findAll(ClientFilterDto filter, Pageable pageable) {
+        return clientRepository.findAllByFilter(filter, pageable)
+                .map(clientReadMapper::mapFrom);
+    }
+
+    public List<ClientReadDto> findAll() {
+        return clientRepository.findAll().stream()
                 .map(clientReadMapper::mapFrom)
                 .toList();
     }
@@ -67,4 +76,11 @@ public class ClientService {
         return clientRepository.findByUserId(userId)
                 .map(clientReadMapper::mapFrom);
     }
+
+    public Optional<ClientReadDto> findByUserName(String username) {
+        return clientRepository.findByUserLogin(username)
+                .map(clientReadMapper::mapFrom);
+    }
+
+
 }

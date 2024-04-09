@@ -8,16 +8,16 @@
 </head>
 <header>
     <div class="container border-top">
-        <a style="color: black" href="/client/home">Home</a>
+        <a style="color: black" href="/clients/home">Home</a>
     </div>
 </header>
-<body style="background-color: darkgrey">
+<body>
 </div>
 <h1 class="text-center">Registration</h1>
 <br>
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
 
-    <form th:action="@{/client}" method="post" th:object="${client}">
+    <form th:action="@{/clients}" method="post" th:object="${client}">
         <input type="hidden" id="userId" name="userId" th:value="${id}">
         <input type="hidden" name="balance" value="0">
         <div class="mb-3">

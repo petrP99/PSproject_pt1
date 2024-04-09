@@ -1,4 +1,4 @@
-package com.pers.repository.filter;
+package com.pers.repository.predicate;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;

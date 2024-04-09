@@ -11,8 +11,10 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.ClientService;
 import jakarta.persistence.EntityManager;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +79,7 @@ class ClientServiceIT extends BaseIntegrationIT {
 
     @Test
     void findAll() {
-        var result = clientService.findAll(null);
+        var result = clientService.findAll();
 
         assertThat(result).hasSize(1);
     }
@@ -93,7 +95,7 @@ class ClientServiceIT extends BaseIntegrationIT {
     void create() {
         var result = clientService.create(clientCreateDto);
 
-        assertThat(result.firstName()).isEqualTo("Petr");
+        assertThat(result.getFirstName()).isEqualTo("Petr");
     }
 
     @Test
@@ -103,16 +105,16 @@ class ClientServiceIT extends BaseIntegrationIT {
         assertThat(result).isPresent();
         result.ifPresent(client ->
                 assertAll(() -> {
-                    assertThat(client.lastName()).isEqualTo("Ivanov");
+                    assertThat(client.getLastName()).isEqualTo("Ivanov");
                 }));
     }
 
     @Test
     void findAllByFilter() {
-        ClientFilterDto filterDto = new ClientFilterDto(client2.getStatus(), null,
-                null, null, null, null);
+        ClientFilterDto filterDto = new ClientFilterDto(null, null,
+                null, null, null, null, client2.getStatus());
 
-        var result = clientService.findAll(filterDto);
+        var result = clientService.findAll(filterDto, null);
 
         assertThat(result).hasSize(1);
     }

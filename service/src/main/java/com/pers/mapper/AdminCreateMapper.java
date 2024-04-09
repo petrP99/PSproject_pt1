@@ -3,7 +3,6 @@ package com.pers.mapper;
 import com.pers.dto.UserCreateDto;
 import com.pers.entity.Role;
 import com.pers.entity.User;
-import liquibase.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserCreateMapper implements Mapper<UserCreateDto, User> {
+public class AdminCreateMapper implements Mapper<UserCreateDto, User> {
 
     @Override
     public User mapFrom(UserCreateDto object) {
@@ -39,7 +38,7 @@ public class UserCreateMapper implements Mapper<UserCreateDto, User> {
                 .filter(StringUtils::hasText)
                 .map(passwordEncoder::encode)
                 .ifPresent(user::setPassword);
-        user.setRole(Role.USER);
+        user.setRole(Role.ADMIN);
         return user;
     }
 }

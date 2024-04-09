@@ -2,14 +2,18 @@ package com.pers.repository.impl;
 
 import com.pers.dto.filter.ClientFilterDto;
 import com.pers.entity.Client;
-import static com.pers.entity.QClient.client;
-import com.pers.repository.filter.FilterClientRepository;
-import com.pers.repository.filter.QPredicate;
+import com.pers.repository.FilterClientRepository;
+import com.pers.repository.predicate.QPredicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+
+import static com.pers.entity.QClient.client;
 
 
 @RequiredArgsConstructor
@@ -18,18 +22,30 @@ public class FilterClientRepositoryImpl implements FilterClientRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Client> findAllByFilter(ClientFilterDto filter) {
+    public Page<Client> findAllByFilter(ClientFilterDto filter, Pageable pageable) {
         var predicate = QPredicate.builder()
+                .add(filter.userId(), client.user.id::eq)
+                .add(filter.id(), client.id::eq)
+                .add(filter.status(), client.status::eq)
                 .add(filter.firstName(), client.firstName::containsIgnoreCase)
                 .add(filter.lastName(), client.lastName::containsIgnoreCase)
                 .add(filter.phone(), client.phone::containsIgnoreCase)
-                .add(filter.status(), client.status::eq)
+                .add(filter.balance(), client.balance::eq)
                 .buildAnd();
 
-        return new JPAQuery<Client>(entityManager)
+        var query = new JPAQuery<Client>(entityManager)
                 .select(client)
                 .from(client)
-                .where(predicate)
+                .where(predicate);
+
+        List<Client> content = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        long totalCount = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, totalCount);
+
     }
+
 }

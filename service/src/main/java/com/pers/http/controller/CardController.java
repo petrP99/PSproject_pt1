@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +47,7 @@ public class CardController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/cards/registration";
         }
-        return "client/home";
+        return "card/message";
     }
 
     @PostMapping("/{id}/update")
@@ -54,6 +57,7 @@ public class CardController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
         if (!cardService.delete(id)) {
@@ -71,8 +75,9 @@ public class CardController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, CardFilterDto filter, Pageable pageable) {
-        Page<CardReadDto> page = cardService.findAll(filter, pageable);
+        Page<CardReadDto> page = cardService.findAllByFilter(filter, pageable);
         model.addAttribute("cards", PageResponse.of(page));
         model.addAttribute("filter", filter);
         return "card/cards";

@@ -3,9 +3,7 @@ package com.pers.dto;
 import com.pers.entity.Status;
 import com.pers.validation.ClientInfo;
 import jakarta.validation.constraints.*;
-import lombok.Value;
 import lombok.experimental.FieldNameConstants;
-import org.springframework.format.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

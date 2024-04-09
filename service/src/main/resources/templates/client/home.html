@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: darkgrey;
+            background-color: white;
             background-size: cover;
         }
 
@@ -18,7 +18,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: cornflowerblue; /*rgba(255, 255, 255, 0.8);*/
             padding: 10px;
             text-align: center;
         }
@@ -35,6 +35,7 @@
     </style>
 </head>
 <body>
+<div th:insert="~{fragment :: header}"></div>
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <form th:action="@{/cards}" method="post" th:object="${card}">
         <input type="hidden" id="clientId" name="clientId" th:value="${id}">
@@ -51,6 +52,7 @@
                 <a href="">
                     <img src="https://azbukainterneta.ru/schoolbook/textbook/module_4/2.11.png" alt="Image 2"
                          class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                    <h2 style="color: black" class="text-center">payments</h2>
                 </a>
             </div>
 
@@ -58,9 +60,21 @@
         <section>
             <div class="col-md-3">
                 <a th:href="@{/cards/cards}">
-                    <img src="https://azbukainterneta.ru/schoolbook/textbook/module_4/2.1.png" alt="Image 1"
+                    <img src="https://img.freepik.com/premium-vector/bank-card-realistic-mockup-set-white-black-gray-and-red-credit-or-debit-cards-with-blank-copy-space-isolated-on-white-background-vector-illustration_574175-511.jpg?size=626&ext=jpg&ga=GA1.1.632798143.1712793600&semt=ais"
+                         alt="Image 1"
                          class="img-fluid" style="max-width: 300px; max-height: 200px;">
-                    <h1 style="color: black" class="text-center">Cards</h1>
+                    <h2 style="color: black" class="text-center">cards</h2>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <div class="col-md-3">
+                <a th:href="@{/cards/cards}">
+                    <img src="https://texas-employer-handbook.lexblogplatform.com/wp-content/uploads/sites/322/2014/01/Money.jpg"
+                         alt="Image 1"
+                         class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                    <h2 style="color: black" class="text-center">replenishments</h2>
                 </a>
             </div>
         </section>
