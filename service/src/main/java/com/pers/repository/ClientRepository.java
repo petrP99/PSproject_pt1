@@ -17,8 +17,9 @@ public interface ClientRepository extends JpaRepository<Client, Long>,
         FilterClientRepository,
         QuerydslPredicateExecutor<Client> {
 
+    Optional<Client> findByUserId(Long id);
+
     Optional<Client> findById(Long id);
 
-    Optional<Client> findByUserId(Long id);
 
 }

@@ -9,12 +9,17 @@ import com.pers.mapper.UserReadMapper;
 import com.pers.repository.filter.QPredicate;
 import com.pers.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
@@ -75,6 +80,24 @@ public class UserService {
         return userRepository.findAll(predicate, pageable)
                 .map(userReadMapper::mapFrom);
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByLogin(username)
+                .map(user1 -> new User(
+                        user1.getLogin(),
+                        user1.getPassword(),
+                        Collections.singleton(user1.getRole())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+    }
+
+    public List<UserReadDto> findAllF(UserFilterDto filterDto) {
+        return userRepository.findAllByFilter(filterDto).stream()
+                .map(userReadMapper::mapFrom)
+                .toList();
+    }
+
 }
 
 

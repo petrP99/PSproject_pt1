@@ -7,6 +7,4 @@ import java.util.*;
 
 public interface FilterClientRepository {
 
-    List<Client> findAllByFilter(ClientFilterDto filter);
-
 }

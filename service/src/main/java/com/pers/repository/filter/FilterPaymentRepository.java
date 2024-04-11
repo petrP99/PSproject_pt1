@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface FilterPaymentRepository {
 
-    public List<Payment> findAllByFilter(PaymentFilterDto filter);
 
 }

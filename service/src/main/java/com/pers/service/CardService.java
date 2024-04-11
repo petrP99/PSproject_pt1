@@ -66,7 +66,7 @@ public class CardService {
                 .toList();
     }
 
-    public Page<CardReadDto> findAll(CardFilterDto filter, Pageable pageable) { //findAllByFilter
+    public Page<CardReadDto> findAll(CardFilterDto filter, Pageable pageable) {
         var predicate = QPredicate.builder()
                 .add(filter.id(), card.id::eq)
                 .add(filter.clientId(), card.client.id::eq)

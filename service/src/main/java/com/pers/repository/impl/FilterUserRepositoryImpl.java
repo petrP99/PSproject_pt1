@@ -3,7 +3,7 @@ package com.pers.repository.impl;
 import com.pers.dto.filter.UserFilterDto;
 import com.pers.entity.*;
 import com.pers.repository.filter.QPredicate;
-import com.pers.repository.filter.FilterUserRepository;
+import com.pers.repository.FilterUserRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 
@@ -19,9 +19,9 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<User> findAllByFilter(UserFilterDto filter) {
+    public List<User> findAllByFilter(UserFilterDto userFilterDto) {
         var predicate = QPredicate.builder()
-                .add(filter.login(), user.login::containsIgnoreCase)
+                .add(userFilterDto.login(), user.login::containsIgnoreCase)
                 .buildOr();
 
         return new JPAQuery<User>(entityManager)
@@ -31,3 +31,4 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
                 .fetch();
     }
 }
+

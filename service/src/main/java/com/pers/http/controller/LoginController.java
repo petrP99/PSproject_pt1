@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "user/login";
-    }
+//    @GetMapping("/login")
+//    public String loginPage() {
+//        return "user/login";
+//    }
 
     @PostMapping("/login")
     public String login(Model model, @ModelAttribute("login") LoginDto loginDto) {

@@ -53,13 +53,13 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping()
-    public String findAll(Model model, UserFilterDto filter, Pageable pageable) {
-        Page<UserReadDto> page = userService.findAll(filter, pageable);
-        model.addAttribute("users", PageResponse.of(page));
-        model.addAttribute("filter", filter);
-        return "user/users";
-    }
+//    @GetMapping()
+//    public String findAll(Model model, UserFilterDto filter, Pageable pageable) {
+//        Page<UserReadDto> page = userService.findAll(filter, pageable);
+//        model.addAttribute("users", PageResponse.of(page));
+//        model.addAttribute("filter", filter);
+//        return "user/users";
+//    }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model) {

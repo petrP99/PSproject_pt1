@@ -22,7 +22,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "cardNo")
+@EqualsAndHashCode
 @ToString(exclude = "client")
 @Builder
 @Entity

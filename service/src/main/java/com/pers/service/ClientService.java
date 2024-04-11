@@ -3,6 +3,8 @@ package com.pers.service;
 import com.pers.dto.ClientReadDto;
 import com.pers.dto.ClientCreateDto;
 import com.pers.dto.filter.ClientFilterDto;
+import com.pers.entity.QClient;
+import static com.pers.entity.QClient.*;
 import com.pers.mapper.ClientCreateMapper;
 import com.pers.mapper.ClientReadMapper;
 import com.pers.repository.ClientRepository;
@@ -10,7 +12,10 @@ import com.pers.repository.ClientRepository;
 import java.util.List;
 import java.util.Optional;
 
+import com.pers.repository.filter.QPredicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +29,19 @@ public class ClientService {
     private final ClientReadMapper clientReadMapper;
     private final ClientCreateMapper clientCreateMapper;
 
-    public List<ClientReadDto> findAll(ClientFilterDto filter) {
-        return clientRepository.findAllByFilter(filter).stream()
-                .map(clientReadMapper::mapFrom)
-                .toList();
+
+    public Page<ClientReadDto> findAll(ClientFilterDto filter, Pageable pageable) {
+        var predicate = QPredicate.builder()
+                .add(filter.firstName(), client.firstName::containsIgnoreCase)
+                .add(filter.lastName(), client.lastName::containsIgnoreCase)
+                .add(filter.phone(), client.phone::containsIgnoreCase)
+                .add(filter.status(), client.status::eq)
+                .add(filter.balance(), client.balance::eq)
+                .buildAnd();
+
+
+        return clientRepository.findAll(predicate, pageable)
+                .map(clientReadMapper::mapFrom);
     }
 
     public Optional<ClientReadDto> findById(Long id) {

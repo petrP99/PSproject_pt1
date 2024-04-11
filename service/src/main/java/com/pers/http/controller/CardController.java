@@ -34,7 +34,7 @@ public class CardController {
 
     private final CardService cardService;
 
-    @PostMapping("/create")
+       @PostMapping("/create")
     public String create(@Validated CardCreateDto card, BindingResult bindingResult,
                          RedirectAttributes redirectAttributes, HttpServletRequest request) {
         cardService.create(card);

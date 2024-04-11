@@ -21,22 +21,22 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
 
     private final EntityManager entityManager;
 
-    @Override
-    public List<Payment> findAllByFilter(PaymentFilterDto filter) {
-        var predicate = QPredicate.builder()
-                .add(filter.clientId(), payment.client.id::eq)
-                .add(filter.shopName(), payment.shopName::containsIgnoreCase)
-                .add(filter.timeOfPay(), payment.timeOfPay::after)
-                .add(filter.timeOfPay(), payment.timeOfPay::before)
-                .add(filter.timeOfPay(), payment.timeOfPay::eq)
-                .add(filter.amount(), payment.amount::eq)
-                .add(filter.status(), payment.status::eq)
-                .buildAnd();
-
-        return new JPAQuery<Payment>(entityManager)
-                .select(payment)
-                .from(payment)
-                .where(predicate)
-                .fetch();
-    }
+//    @Override
+//    public List<Payment> findAllByFilter(PaymentFilterDto filter) {
+//        var predicate = QPredicate.builder()
+//                .add(filter.clientId(), payment.client.id::eq)
+//                .add(filter.shopName(), payment.shopName::containsIgnoreCase)
+//                .add(filter.timeOfPay(), payment.timeOfPay::after)
+//                .add(filter.timeOfPay(), payment.timeOfPay::before)
+//                .add(filter.timeOfPay(), payment.timeOfPay::eq)
+//                .add(filter.amount(), payment.amount::eq)
+//                .add(filter.status(), payment.status::eq)
+//                .buildAnd();
+//
+//        return new JPAQuery<Payment>(entityManager)
+//                .select(payment)
+//                .from(payment)
+//                .where(predicate)
+//                .fetch();
+//    }
 }

@@ -7,6 +7,7 @@ import com.pers.service.ClientService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,8 +77,8 @@ public class ClientController {
     }
 
     @GetMapping()
-    public String findAll(Model model, ClientFilterDto filter) {
-        model.addAttribute("client", clientService.findAll(filter));
+    public String findAll(Model model, ClientFilterDto filter, Pageable pageable) {
+        model.addAttribute("client", clientService.findAll(filter, pageable));
         return "client/client";
     }
 
