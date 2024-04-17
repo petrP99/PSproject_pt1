@@ -1,31 +1,35 @@
 package com.pers.service;
 
+import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.dto.ClientReadDto;
 import com.pers.dto.ClientCreateDto;
 import com.pers.dto.filter.ClientFilterDto;
 import com.pers.mapper.ClientCreateMapper;
 import com.pers.mapper.ClientReadMapper;
+import com.pers.mapper.ClientUpdateBalanceMapper;
 import com.pers.repository.ClientRepository;
 
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientReadMapper clientReadMapper;
     private final ClientCreateMapper clientCreateMapper;
+    private final ClientUpdateBalanceMapper clientUpdateBalanceMapper;
 
 
     public Page<ClientReadDto> findAll(ClientFilterDto filter, Pageable pageable) {
@@ -37,6 +41,10 @@ public class ClientService {
         return clientRepository.findAll().stream()
                 .map(clientReadMapper::mapFrom)
                 .toList();
+    }
+
+    public String findFirstAndLastNameByClientId(Long id) {
+        return clientRepository.findFirstAndLastNameByClientId(id);
     }
 
     public Optional<ClientReadDto> findById(Long id) {
@@ -62,6 +70,16 @@ public class ClientService {
     }
 
     @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ClientReadDto updateBalance(ClientUpdateBalanceDto clientDto) {
+        return Optional.of(clientDto)
+                .map(clientUpdateBalanceMapper::mapFrom)
+                .map(clientRepository::saveAndFlush)
+                .map(clientReadMapper::mapFrom)
+                .orElseThrow();
+    }
+
+    @Transactional
     public boolean delete(Long id) {
         return clientRepository.findById(id)
                 .map(entity -> {
@@ -81,6 +99,4 @@ public class ClientService {
         return clientRepository.findByUserLogin(username)
                 .map(clientReadMapper::mapFrom);
     }
-
-
 }

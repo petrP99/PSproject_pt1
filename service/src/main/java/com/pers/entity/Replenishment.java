@@ -23,8 +23,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id", "clientTo", "cardNoTo"})
-@ToString(exclude = {"clientTo", "cardNoTo"})
+@EqualsAndHashCode(of = {"id", "clientTo", "cardIdTo"})
+@ToString(exclude = {"clientTo", "cardIdTo"})
 @Builder
 @Entity
 public class Replenishment implements BaseEntity<Long> {

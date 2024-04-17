@@ -2,22 +2,71 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+        }
+
+        .form-container {
+            text-align: center;
+        }
+
+        .form-container button {
+            margin: 12px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+
+        label {
+            text-align: center;
+            display: block;
+        }
+
+        h3 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/users}" enctype="multipart/form-data" method="post" th:object="${user}">
-    <label for="login">Login:
-        <input id="login" type="text" name="login" th:value="*{login}">
-    </label><br>
-    <label for="rawPassword">Password:
-        <input id="rawPassword" type="password" name="rawPassword">
-    </label><br>
-    <button type="submit">Registration</button>
-</form>
-<div th:if="${errors}">
-    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error Message</p>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="h3">Registration: </h3>
+            <form th:action="@{/users}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label for="login" class="text-center">login:
+                        <input id="login" class="form-control" type="text" name="login" th:value="*{login}"
+                               placeholder="example@bk.ru">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="rawPassword" class="text-center">password:
+                        <input id="rawPassword" class="form-control" type="password" name="rawPassword"
+                               placeholder="must not be empty">
+                    </label>
+                </div>
+                <div class="form-container text-center">
+                    <button type="submit" class="btn btn-outline-success">Registration</button>
+                </div>
+                <div style="color:red" th:if="${param.error}">Bad credentials</div>
+            </form>
+        </div>
+    </div>
 </div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

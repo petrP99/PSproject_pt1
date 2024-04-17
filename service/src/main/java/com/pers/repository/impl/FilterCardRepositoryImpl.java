@@ -17,6 +17,7 @@ import static com.pers.entity.QCard.card;
 
 @RequiredArgsConstructor
 public class FilterCardRepositoryImpl implements FilterCardRepository {
+
     private final EntityManager entityManager;
 
     @Override

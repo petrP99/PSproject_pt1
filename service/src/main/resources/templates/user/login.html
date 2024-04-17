@@ -4,91 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <!-- Подключаем Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Центрирование формы */
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-        }
-
-        /* Стили для кнопок */
-        .btn-login {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .btn-link {
-            background-color: #444444;
-            color: #ffffff;
+            height: 70vh;
         }
 
         .form-container {
-            text-align: center; /* Выравнивание содержимого по центру */
+            text-align: center;
         }
 
         .form-container button {
-            margin: 10px; /* Расстояние между кнопками */
+            margin: 12px;
         }
 
         input[type="email"],
         input[type="password"] {
-            width: 100%; /* Ширина поля ввода на всю ширину родительского элемента */
-            padding: 8px; /* Внутренний отступ */
-            margin: 5px 0; /* Внешний отступ сверху и снизу */
-            box-sizing: border-box; /* Учитывать padding и border в общей ширине элемента */
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
         }
 
         label {
-            text-align: center; /* Центрирование текста внутри label */
-            display: block; /* Отображать каждый label на новой строке */
+            text-align: center;
+            display: block;
         }
 
         h3 {
-            text-align: center; /* Центрирование текста внутри label */
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<h3 class="center">Login</h3>
-
 <div class="container">
+    <div th:insert="~{fragment :: locale}"></div>
     <div class="card">
         <div class="card-body">
+            <h3 class="h3" th:name="header"><span th:text="#{login.header}">log in</span></h3>
             <form th:action="@{/login}" method="post">
-                <div class="form-group">
-                    <label for="username">Login:
-                        <input id="username" type="email" name="username">
+                <div class="form-group row-cols-10">
+                    <label for="username"><span th:text="#{login.username}">login:</span>
+                        <input id="username" type="email" name="username" placeholder="example@bk.ru">
                     </label>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password:
-                        <input id="password" type="password" name="password">
+                <div class="form-group row-cols-10">
+                    <label for="password"><span th:text="#{login.password}">password:</span>
+                        <input id="password" type="password" name="password" placeholder="must not be empty">
                     </label>
                 </div>
                 <div class="form-container">
-                    <button type="submit" class="btn btn-login">Login</button>
+                    <button type="submit" class="btn btn-outline-primary">Login</button>
                 </div>
-
-                <div class="form-container">
-                    <form action="/users/registration">
-                        <button type="submit" class="btn btn-link">Registration</button>
-                    </form>
+                <div style="color:red" th:if="${param.error}"><span th:text="#{login.error}">Bad credentials</span>
                 </div>
             </form>
+            <div class="form-container">
+                <a href="/users/registration">
+                    <button type="submit" class="btn btn-dark">Registration</button>
+                </a>
+            </div>
         </div>
     </div>
 </div>
-<div style="color:red" th:if="${param.error}">Bad credentials</div>
-
-<div th:if="${errors}">
-    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error Message</p>
-</div>
-</div>
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

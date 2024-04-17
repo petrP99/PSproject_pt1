@@ -1,10 +1,9 @@
 package com.pers.dto.filter;
 
 
-import com.pers.entity.*;
+import com.pers.entity.Status;
 
-import java.math.*;
-import java.time.*;
+import java.math.BigDecimal;
 
 public record ClientFilterDto(
         Long id,

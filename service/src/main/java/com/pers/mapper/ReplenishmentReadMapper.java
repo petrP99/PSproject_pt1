@@ -1,10 +1,11 @@
 package com.pers.mapper;
 
-import com.pers.dto.CardReadDto;
 import com.pers.dto.ReplenishmentReadDto;
 import com.pers.entity.Replenishment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class ReplenishmentReadMapper implements Mapper<Replenishment, ReplenishmentReadDto> {
 

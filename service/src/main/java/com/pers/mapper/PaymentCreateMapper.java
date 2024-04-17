@@ -1,9 +1,11 @@
 package com.pers.mapper;
 
-import com.pers.repository.CardRepository;
-import com.pers.repository.ClientRepository;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.entity.Payment;
+import static com.pers.entity.Status.FAILED;
+import static com.pers.entity.Status.SUCCESS;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ public class PaymentCreateMapper implements Mapper<PaymentCreateDto, Payment> {
                 .client(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
                 .card(cardRepository.findById(object.cardId()).orElseThrow(IllegalArgumentException::new))
                 .timeOfPay(LocalDateTime.now())
-                .status(object.status())
+                .status(object.status() == null ? SUCCESS : FAILED)
                 .build();
     }
 }

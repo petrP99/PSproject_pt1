@@ -1,17 +1,12 @@
 package com.pers.service;
 
 import com.pers.dto.UserCreateDto;
-import com.pers.dto.filter.UserFilterDto;
 import com.pers.dto.UserReadDto;
+import com.pers.dto.filter.UserFilterDto;
 import com.pers.mapper.AdminCreateMapper;
 import com.pers.mapper.UserCreateMapper;
 import com.pers.mapper.UserReadMapper;
 import com.pers.repository.UserRepository;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +16,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -33,7 +32,6 @@ public class UserService implements UserDetailsService {
     private final UserCreateMapper userCreateMapper;
     private final AdminCreateMapper adminCreateMapper;
 
-
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return userRepository.findByLogin(login)
@@ -44,7 +42,6 @@ public class UserService implements UserDetailsService {
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + login));
     }
-
 
     public List<UserReadDto> findAll() {
         return userRepository.findAll().stream()
@@ -94,24 +91,14 @@ public class UserService implements UserDetailsService {
                 .orElse(false);
     }
 
-    public Long findIdByLogin(String login) {
-        return userRepository.findIdByLogin(login);
+    public Optional<UserReadDto> findIdByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .map(userReadMapper::mapFrom);
     }
-
 
     public Page<UserReadDto> findAll(UserFilterDto filterDto, Pageable pageable) {
         return userRepository.findAllByFilter(filterDto, pageable)
                 .map(userReadMapper::mapFrom);
     }
 
-
 }
-
-
-
-
-
-
-
-
-

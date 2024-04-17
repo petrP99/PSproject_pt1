@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id", "cardNoFrom", "cardNoTo"})
-@ToString(exclude = {"cardNoFrom", "cardNoTo"})
+@EqualsAndHashCode(of = {"id", "cardIdFrom", "cardIdTo"})
+@ToString(exclude = {"cardIdFrom", "cardIdTo"})
 @Builder
 @Entity
 public class Transfer implements BaseEntity<Long> {

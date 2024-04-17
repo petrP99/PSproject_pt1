@@ -34,14 +34,11 @@
             <label for="phone" class="form-label">Phone number:
                 <input id="phone" type="tel" class="form-control" name="phone"
                        pattern="[8]{1}[9]{1}[0-9]{2}[0-9]{3}[0-9]{2}[0-9]{2}"
-                       placeholder="8-(___)-___-__-__"
-                       th:value="*{phone()}">
+                       th:value="*{phone()}" placeholder="8-9ХХ-ХХХ-ХХ-ХХ">
             </label><br>
-            <small>Format: 8-9xx-xxx-xx-xx</small>
         </div>
-        <button type="submit" class="btn btn-primary">Registration</button>
+        <button type="submit" class="btn btn-outline-success">Registration</button>
     </form>
-
     <div th:if="${errors}">
         <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error Message</p>
     </div>

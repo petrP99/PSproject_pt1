@@ -33,7 +33,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public String create(@Validated UserCreateDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String create(@Validated @ModelAttribute UserCreateDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
@@ -42,7 +42,6 @@ public class UserController {
         userService.create(user);
         return "redirect:/login";
     }
-
 
     @PostMapping("/admin/create")
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
@@ -53,9 +52,8 @@ public class UserController {
             return "redirect:/users/registration";
         }
         userService.createAdmin(user);
-        return "redirect:/login";
+        return "redirect:/users";
     }
-
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id, @ModelAttribute @Validated UserCreateDto user) {
@@ -64,9 +62,8 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!userService.delete(id)) {
             throw new ResponseStatusException(NOT_FOUND);
@@ -75,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
+//    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, UserFilterDto filter, Pageable pageable) {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         model.addAttribute("users", PageResponse.of(page));
@@ -98,6 +95,4 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/registration";
     }
-
-
 }

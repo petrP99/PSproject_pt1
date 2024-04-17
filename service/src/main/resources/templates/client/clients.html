@@ -77,7 +77,6 @@
     </div>
 </div>
 
-
 <div class="container">
     <h1>Clients list</h1>
     <table class="table">
@@ -90,7 +89,6 @@
             <th>Phone</th>
             <th>Balance</th>
             <th>Status</th>
-
         </tr>
         </thead>
         <tbody>
@@ -103,11 +101,9 @@
             <td th:text="${client.getBalance()}"></td>
             <td th:text="${client.getStatus()}"></td>
             <td>
-
                 <a th:href="@{/clients/{clientId}/update(clientId=${client.id})}"
                    class="btn btn-primary btn-update-status">Update
                     status</a>
-
             </td>
         </tr>
         </tbody>

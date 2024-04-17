@@ -2,7 +2,9 @@ package com.pers.dto;
 
 import com.pers.entity.Status;
 import com.pers.validation.ClientInfo;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
@@ -18,9 +20,8 @@ public record ClientCreateDto(Long userId,
                               @NotBlank
                               String lastName,
                               @NotBlank
-                                      @Size(min = 11, max = 11)
+                              @Size(min = 11, max = 11)
                               String phone,
                               Status status,
-//                              @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
                               LocalDateTime createdTime) {
 }

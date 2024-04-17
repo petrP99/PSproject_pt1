@@ -3,7 +3,6 @@ package com.pers.mapper;
 import com.pers.dto.UserCreateDto;
 import com.pers.entity.Role;
 import com.pers.entity.User;
-import liquibase.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,15 +14,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserCreateMapper implements Mapper<UserCreateDto, User> {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public User mapFrom(UserCreateDto object) {
         return copy(object);
     }
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User map(UserCreateDto fromObject, User toObject) {
-           var user = copy(fromObject);
+        var user = copy(fromObject);
         toObject.setLogin(user.getLogin());
         toObject.setPassword(user.getPassword());
         toObject.setRole(user.getRole());
@@ -31,8 +31,6 @@ public class UserCreateMapper implements Mapper<UserCreateDto, User> {
     }
 
     public User copy(UserCreateDto object) {
-
-
         User user = new User();
         user.setLogin(object.getLogin());
         Optional.ofNullable(object.getRawPassword())

@@ -13,6 +13,12 @@
             background-size: cover;
         }
 
+        .user-balance {
+            position: fixed;
+            top: 10px;
+            color: #029a20;
+        }
+
         header {
             position: fixed;
             top: 0;
@@ -35,24 +41,34 @@
     </style>
 </head>
 <body>
+<div class="user-balance">
+    <p>Balance: <span th:text="${session.balance}"></span></p>
+</div>
+
 <div th:insert="~{fragment :: header}"></div>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="nav-link" href="/payments/payments">All payments</a>
+    <a class="nav-link" href="/payments/mypayments">My payments</a>
+    <a class="nav-link" href="/replenishments/replenishments">My replenishments</a>
+    <a class="nav-link" href="/replenishments/replenishment">Replenishment</a>
+    <a class="nav-link" href="/transfers/transfers">My transfers</a>
+    <a class="nav-link" href="/transfers/transfer">Transfer</a>
+</nav>
+
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <form th:action="@{/cards}" method="post" th:object="${card}">
         <input type="hidden" id="clientId" name="clientId" th:value="${id}">
     </form>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="nav-link" href="/cards">Cards</a>
-        <a class="nav-link" href="/payment">Раздел 2</a>
-    </nav>
-
     <div class="row">
         <section>
             <div class="col-md-3">
-                <a href="">
+                <a th:href="@{/payments/services}">
                     <img src="https://azbukainterneta.ru/schoolbook/textbook/module_4/2.11.png" alt="Image 2"
                          class="img-fluid" style="max-width: 300px; max-height: 200px;">
                     <h2 style="color: black" class="text-center">payments</h2>
+
                 </a>
             </div>
 
@@ -70,7 +86,7 @@
 
         <section>
             <div class="col-md-3">
-                <a th:href="@{/cards/cards}">
+                <a th:href="@{/replenishments/replenishment}">
                     <img src="https://texas-employer-handbook.lexblogplatform.com/wp-content/uploads/sites/322/2014/01/Money.jpg"
                          alt="Image 1"
                          class="img-fluid" style="max-width: 300px; max-height: 200px;">

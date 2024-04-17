@@ -6,12 +6,12 @@ import com.pers.dto.filter.ClientFilterDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.service.ClientService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +22,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/clients")
-@SessionAttributes({"clientId"})
 public class ClientController {
 
     private final ClientService clientService;
@@ -56,11 +55,13 @@ public class ClientController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/clients/registration/" + client.userId();
         }
-        return "redirect:/clients/home";
+        return "redirect:/clients/home/" + newClient.getId();
     }
 
-    @GetMapping("/home")
-    public String homePage() {
+    @GetMapping("/home/{id}")
+    public String homePage(@PathVariable("id") Long id, HttpSession session) {
+        session.setAttribute("clientId", id);
+        session.setAttribute("balance", clientService.findById(id).orElseThrow().getBalance());
         return "client/home";
     }
 

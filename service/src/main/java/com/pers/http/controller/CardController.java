@@ -5,25 +5,21 @@ import com.pers.dto.CardReadDto;
 import com.pers.dto.filter.CardFilterDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.service.CardService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,7 +27,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes({"clientId"})
 @RequestMapping("/cards")
 public class CardController {
 
@@ -39,26 +34,27 @@ public class CardController {
 
     @PostMapping("/create")
     public String create(@Validated CardCreateDto card, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpServletRequest request) {
+                         RedirectAttributes redirectAttributes, HttpSession session) {
+        session.getAttribute("clientId");
         cardService.create(card);
-        request.getSession().getAttribute("clientId");
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("card", card);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/cards/registration";
+            return "redirect:/cards";
         }
         return "card/message";
     }
 
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated CardCreateDto card) {
-        return cardService.update(id, card)
-                .map(it -> "redirect:/cards/{id}")
+    public String update(@PathVariable("id") Long id) {
+        var card = cardService.findById(id).orElseThrow();
+        return cardService.updateStatus(card)
+                .map(it -> "redirect:/cards/cards")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!cardService.delete(id)) {
             throw new ResponseStatusException(NOT_FOUND);
@@ -67,8 +63,9 @@ public class CardController {
     }
 
     @GetMapping("/cards")
-    public String findByClientId(@Validated Model model, HttpServletRequest request) {
-        var clientId = (Long) request.getSession().getAttribute("clientId");
+    public String findByClientId(@Validated Model model, HttpSession session) {
+        session.getAttribute("clientId");
+        var clientId = (Long) session.getAttribute("clientId");
         var myCards = cardService.findByClientId(clientId);
         model.addAttribute("cards", myCards);
         return "card/cards";
@@ -92,5 +89,4 @@ public class CardController {
                 })
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
-
 }

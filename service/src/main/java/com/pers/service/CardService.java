@@ -1,15 +1,20 @@
 package com.pers.service;
 
+import com.pers.dto.CardUpdateBalanceDto;
 import com.pers.dto.CardCreateDto;
 import com.pers.dto.CardReadDto;
 import com.pers.dto.filter.CardFilterDto;
 
+import com.pers.dto.filter.CardStatusDto;
 import com.pers.mapper.CardCreateMapper;
 import com.pers.mapper.CardReadMapper;
+import com.pers.mapper.CardUpdateBalanceMapper;
 import com.pers.repository.CardRepository;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,7 @@ public class CardService {
     private final CardRepository cardRepository;
     private final CardReadMapper cardReadMapper;
     private final CardCreateMapper cardCreateMapper;
+    private final CardUpdateBalanceMapper cardUpdateBalanceMapper;
 
     public Optional<CardReadDto> findById(Long id) {
         return cardRepository.findById(id)
@@ -41,11 +47,22 @@ public class CardService {
     }
 
     @Transactional
-    public Optional<CardReadDto> update(Long id, CardCreateDto cardDto) {
-        return cardRepository.findById(id)
-                .map(entity -> cardCreateMapper.map(cardDto, entity))
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public Optional<CardReadDto> updateStatus(CardReadDto cardDto) {
+        return Optional.of(cardDto)
+                .map(cardCreateMapper::mapStatus)
                 .map(cardRepository::saveAndFlush)
                 .map(cardReadMapper::mapFrom);
+    }
+
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public CardReadDto updateBalance(CardUpdateBalanceDto cardDto) {
+        return Optional.of(cardDto)
+                .map(cardUpdateBalanceMapper::mapFrom)
+                .map(cardRepository::saveAndFlush)
+                .map(cardReadMapper::mapFrom)
+                .orElseThrow();
     }
 
     @Transactional

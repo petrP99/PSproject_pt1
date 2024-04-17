@@ -22,12 +22,11 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
     @Override
     public Page<Payment> findAllByFilter(PaymentFilterDto filter, Pageable pageable) {
         var predicate = QPredicate.builder()
-                .add(filter.clientId(), payment.client.id::eq)
+                .add(filter.id(), payment.id::eq)
                 .add(filter.shopName(), payment.shopName::containsIgnoreCase)
-                .add(filter.timeOfPay(), payment.timeOfPay::after)
-                .add(filter.timeOfPay(), payment.timeOfPay::before)
-                .add(filter.timeOfPay(), payment.timeOfPay::eq)
                 .add(filter.amount(), payment.amount::eq)
+                .add(filter.cardId(), payment.card.id::eq)
+                .add(filter.timeOfPay(), payment.timeOfPay::before)
                 .add(filter.status(), payment.status::eq)
                 .buildAnd();
 

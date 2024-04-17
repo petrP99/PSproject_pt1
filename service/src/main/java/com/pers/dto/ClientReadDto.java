@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Value
 public class ClientReadDto {
+
     Long id;
     UserReadDto userId;
     BigDecimal balance;

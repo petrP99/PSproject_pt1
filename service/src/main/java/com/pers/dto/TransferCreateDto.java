@@ -1,14 +1,15 @@
 package com.pers.dto;
 
 import com.pers.entity.Status;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransferCreateDto(
-        Long cardNoFrom,
-        Long cardNoTo,
+        Long cardIdFrom,
+        Long cardIdTo,
+        @Positive
         BigDecimal amount,
         LocalDateTime timeOfTransfer,
         String recipient,

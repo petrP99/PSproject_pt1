@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PaymentReadMapper implements Mapper<Payment, PaymentReadDto> {
+
     @Override
     public PaymentReadDto mapFrom(Payment object) {
         return new PaymentReadDto(

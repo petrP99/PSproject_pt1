@@ -2,14 +2,13 @@ package com.pers.repository.impl;
 
 
 import com.pers.dto.filter.UserFilterDto;
+import static com.pers.entity.QUser.user;
 import com.pers.entity.User;
 import com.pers.repository.FilterUserRepository;
 import com.pers.repository.predicate.QPredicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-
-import static com.pers.entity.QUser.user;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

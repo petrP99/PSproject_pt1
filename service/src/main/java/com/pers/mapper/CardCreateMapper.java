@@ -1,5 +1,7 @@
 package com.pers.mapper;
 
+import com.pers.dto.CardReadDto;
+import com.pers.dto.filter.CardStatusDto;
 import com.pers.entity.Status;
 import com.pers.repository.ClientRepository;
 import com.pers.dto.CardCreateDto;
@@ -12,7 +14,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
-public class CardCreateMapper implements Mapper<CardCreateDto, Card> {
+public class CardCreateMapper implements Mapper<CardCreateDto, Card>, MapperStatus<CardReadDto, Card> {
 
     private final ClientRepository clientRepository;
 
@@ -24,6 +26,18 @@ public class CardCreateMapper implements Mapper<CardCreateDto, Card> {
                 .createdDate(LocalDate.now())
                 .expireDate(LocalDate.now().plusYears(5L))
                 .status(Status.ACTIVE)
+                .build();
+    }
+
+    @Override
+    public Card mapStatus(CardReadDto object) {
+        return Card.builder()
+                .id(object.id())
+                .client(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
+                .balance(object.balance())
+                .createdDate(object.createdDate())
+                .expireDate(object.expireDate())
+                .status(Status.BLOCKED)
                 .build();
     }
 }

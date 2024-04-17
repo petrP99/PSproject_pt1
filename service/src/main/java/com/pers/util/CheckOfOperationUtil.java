@@ -1,8 +1,10 @@
 package com.pers.util;
 
+import com.pers.dto.CardReadDto;
+import com.pers.dto.CardUpdateBalanceDto;
+import com.pers.dto.ClientReadDto;
+import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.entity.Card;
-import com.pers.entity.Client;
-import com.pers.entity.Status;
 import com.pers.repository.CardRepository;
 import lombok.experimental.UtilityClass;
 
@@ -11,42 +13,41 @@ import java.math.BigDecimal;
 @UtilityClass
 public class CheckOfOperationUtil {
 
-    public static Status checkTransfer(Card cardFrom, Card cardTo, BigDecimal amount) {
-        if (amount.compareTo(cardFrom.getBalance()) <= 0
-                && cardFrom.getStatus() == Status.ACTIVE
-                && cardTo.getStatus() == Status.ACTIVE) {
-            cardTo.setBalance(cardTo.getBalance().add(amount));
-            cardFrom.setBalance(cardFrom.getBalance().subtract(amount));
-            return Status.SUCCESS;
-        } else {
-            return Status.FAILED;
-        }
-    }
-
-    public static Status checkPayment(Client client, Card card, BigDecimal amount) {
-        if (client.getStatus() == Status.ACTIVE
-                && card.getStatus() == Status.ACTIVE
-                && amount.compareTo(card.getBalance()) <= 0) {
-            card.setBalance(card.getBalance().subtract(amount));
-            return Status.SUCCESS;
-        } else {
-            return Status.FAILED;
-        }
-    }
-
-    public static Status checkReplenishment(Client client, Card card, BigDecimal amount) {
-        if (client.getStatus() == Status.ACTIVE
-                && card.getStatus() == Status.ACTIVE) {
-            card.setBalance(card.getBalance().add(amount));
-            return Status.SUCCESS;
-        } else {
-            return Status.FAILED;
-        }
-    }
-
-    public BigDecimal updateClientBalance(Client client, CardRepository cardRepository) {
-        return cardRepository.findById(client.getId()).stream()
+    public BigDecimal updateClientBalance(Long clientId, CardRepository cardRepository) {
+        return cardRepository.findByClientId(clientId).stream()
                 .map(Card::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public ClientUpdateBalanceDto createClientUpdateBalanceDto(ClientReadDto clientReadDto, BigDecimal newBalance) {
+        return new ClientUpdateBalanceDto(
+                clientReadDto.getId(),
+                clientReadDto.getUserId().getId(),
+                newBalance,
+                clientReadDto.getFirstName(),
+                clientReadDto.getLastName(),
+                clientReadDto.getPhone(),
+                clientReadDto.getStatus(),
+                clientReadDto.getCreatedTime());
+    }
+
+    public CardUpdateBalanceDto cardUpdateBalanceSubtract(CardReadDto cardReadDto, BigDecimal amount) {
+        return new CardUpdateBalanceDto(
+                cardReadDto.id(),
+                cardReadDto.clientId(),
+                cardReadDto.balance().subtract(amount),
+                cardReadDto.createdDate(),
+                cardReadDto.expireDate(),
+                cardReadDto.status());
+    }
+
+    public CardUpdateBalanceDto cardUpdateBalanceAdd(CardReadDto cardReadDto, BigDecimal amount) {
+        return new CardUpdateBalanceDto(
+                cardReadDto.id(),
+                cardReadDto.clientId(),
+                cardReadDto.balance().add(amount),
+                cardReadDto.createdDate(),
+                cardReadDto.expireDate(),
+                cardReadDto.status());
     }
 }

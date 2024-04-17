@@ -1,14 +1,16 @@
 package com.pers.repository;
 
-import com.pers.entity.Card;
 import com.pers.entity.Replenishment;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-import java.util.Optional;
+import java.util.List;
 
 
-public interface ReplenishmentRepository extends Repository<Replenishment, Long> {
+public interface ReplenishmentRepository extends JpaRepository<Replenishment, Long>,
+        FilterReplenishmentRepository,
+        QuerydslPredicateExecutor<Replenishment> {
 
-    Optional<Replenishment> findById(Long id);
+    List<Replenishment> findAllByClientToId(Long id);
 
 }
