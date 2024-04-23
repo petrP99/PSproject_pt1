@@ -36,18 +36,43 @@ public class PaymentController {
     private final CardService cardService;
 
     @GetMapping("/services")
-    public String services(@Validated Model model,
-                           @ModelAttribute("payment") PaymentCreateDto payment, HttpSession session) {
-        var clientId = (Long) session.getAttribute("clientId");
+    public String services(@Validated Model model, @ModelAttribute("payment") PaymentCreateDto payment, HttpSession session) {
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
         model.addAttribute("payment", payment);
-        var cards = cardService.findByClientId(clientId).stream().toList();
         model.addAttribute("cards", cards);
         return "payment/services";
     }
 
+    @GetMapping("/mobile")
+    public String payMobile(@Validated Model model, @ModelAttribute("payment") PaymentCreateDto payment, HttpSession session) {
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        model.addAttribute("payment", payment);
+        model.addAttribute("cards", cards);
+        return "payment/mobile";
+    }
+
+    @GetMapping("/courses")
+    public String payCourses(@Validated Model model, @ModelAttribute("payment") PaymentCreateDto payment, HttpSession session) {
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        model.addAttribute("payment", payment);
+        model.addAttribute("cards", cards);
+        return "payment/courses";
+    }
+
+    @GetMapping("/ozon")
+    public String payCommunal(@Validated Model model, @ModelAttribute("payment") PaymentCreateDto payment, HttpSession session) {
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        model.addAttribute("payment", payment);
+        model.addAttribute("cards", cards);
+        return "payment/ozon";
+    }
+
     @PostMapping("/create")
-    public String create(@Validated @ModelAttribute("payment") PaymentCreateDto payment, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpSession session, Model model) {
+    public String create(@Validated @ModelAttribute("payment") PaymentCreateDto payment,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         HttpSession session,
+                         Model model) {
         session.getAttribute("clientId");
         model.addAttribute("payment", payment);
 
@@ -56,15 +81,7 @@ public class PaymentController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/payments";
         }
-        return paymentService.checkPayment(payment);
-    }
-
-    @PostMapping("/{id}/update")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated PaymentCreateDto payment) {
-        return paymentService.update(id, payment)
-                .map(it -> "redirect:/payments/{id}")
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        return paymentService.checkAndCreatePayment(payment) ? "payment/success" : "payment/fail";
     }
 
     @PostMapping("/{id}/delete")
@@ -76,31 +93,20 @@ public class PaymentController {
         return "redirect:/payments";
     }
 
-    @GetMapping("/mypayments")
-    public String findByClientId(@Validated Model model, HttpSession session) {
-        session.getAttribute("clientId");
-        var clientId = (Long) session.getAttribute("clientId");
-        var myPayments = paymentService.findByClientId(clientId);
-        model.addAttribute("payments", myPayments);
-        return "payment/mypayments";
+    @GetMapping("/clientPayments")
+    public String findAllByClientByFilter(Model model, PaymentFilterDto filter, Pageable pageable, HttpSession session) {
+        Page<PaymentReadDto> page = paymentService.findAllByClientByFilter(filter, pageable, (Long) session.getAttribute("clientId"));
+        model.addAttribute("payments", PageResponse.of(page));
+        model.addAttribute("filter", filter);
+        return "payment/clientPayments";
     }
 
     @GetMapping("/payments")
-//    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, PaymentFilterDto filter, Pageable pageable) {
         Page<PaymentReadDto> page = paymentService.findAllByFilter(filter, pageable);
         model.addAttribute("payments", PageResponse.of(page));
         model.addAttribute("filter", filter);
         return "payment/payments";
-    }
-
-    @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        return paymentService.findById(id)
-                .map(payment -> {
-                    model.addAttribute("payment", payment);
-                    return "payment/payment";
-                })
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }

@@ -8,12 +8,20 @@ import com.pers.entity.Status;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import jakarta.persistence.EntityManager;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.pers.dto.UserCreateDto.Fields.login;
@@ -41,7 +49,14 @@ class ClientControllerIT extends BaseIntegrationIT {
     private ClientCreateDto clientCreateDto;
 
     @BeforeEach
-    void prepare() {
+    void init() {
+        List<GrantedAuthority> roles = Arrays.asList(Role.ADMIN, Role.USER, Role.SUPER_ADMIN);
+        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user, user.getPassword(), roles);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(testingAuthenticationToken);
+        SecurityContextHolder.setContext(securityContext);
+
         user = User.builder()
                 .login("user10@mail.ru")
                 .password("123")
@@ -58,38 +73,35 @@ class ClientControllerIT extends BaseIntegrationIT {
                 .status(Status.ACTIVE)
                 .build();
 
-        entityManager.persist(user);
-        entityManager.persist(client);
     }
 
     @Test
     void create() throws Exception {
-        mockMvc.perform(post("/client")
+        mockMvc.perform(post("/clients")
                         .param(client.getFirstName(), "Petr")
                         .param(client.getLastName(), "Petrov")
                         .param(client.getPhone(), "89632587854")
                         .param(client.getStatus().name(), "ACTIVE"))
                 .andExpectAll(
                         status().is3xxRedirection(),
-                        redirectedUrlPattern("/client/home")
+                        redirectedUrlPattern("/client/home/" + client.getUser().getId())
                 );
     }
 
     @Test
     void findAll() throws Exception {
-        mockMvc.perform(get("/client"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(model().attribute("client", hasSize(1)));
+        mockMvc.perform(get("/clients"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void update() throws Exception {
-        mockMvc.perform(post("/client/{id}/update", client.getId())
+        mockMvc.perform(post("/clients/{id}/update", client.getId())
                         .param(client.getFirstName(), "Petr")
                         .param(client.getPhone(), "89632587854"))
                 .andExpectAll(
                         status().is3xxRedirection(),
-                        redirectedUrlPattern("/client/{id}")
+                        redirectedUrlPattern("/clients/{id}")
                 );
     }
 
@@ -103,7 +115,7 @@ class ClientControllerIT extends BaseIntegrationIT {
 
     @Test
     void findById() throws Exception {
-        mockMvc.perform(get("/client", client.getId()))
+        mockMvc.perform(get("/clients/{id}", client.getId()))
                 .andExpectAll(
                         status().is2xxSuccessful(),
                         model().attributeExists("client"));

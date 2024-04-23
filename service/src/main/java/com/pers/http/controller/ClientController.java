@@ -35,7 +35,8 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/registration/{id}")
-    public String registration(@Validated @PathVariable(value = "id") Long userId, Model model,
+    public String registration(@Validated @PathVariable(value = "id") Long userId,
+                               Model model,
                                @ModelAttribute("client") ClientCreateDto client) {
         model.addAttribute("userId", client.userId());
         model.addAttribute("client", client);
@@ -43,8 +44,10 @@ public class ClientController {
     }
 
     @PostMapping
-    public String create(@Validated @ModelAttribute("client") ClientCreateDto client, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String create(@Validated @ModelAttribute("client") ClientCreateDto client,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         HttpServletRequest request) {
         if (clientService.findByUserId(client.userId()).isPresent()) {
             return "redirect:/users/registration";
         }
@@ -67,6 +70,7 @@ public class ClientController {
 
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String update(@PathVariable("id") Long id, @ModelAttribute @Validated ClientCreateDto client) {
         return clientService.update(id, client)
                 .map(it -> "redirect:/clients/{id}")
@@ -90,7 +94,6 @@ public class ClientController {
         model.addAttribute("filter", filter);
         return "client/clients";
     }
-
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model) {

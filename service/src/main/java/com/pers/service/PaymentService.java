@@ -12,15 +12,12 @@ import com.pers.mapper.PaymentReadMapper;
 import com.pers.repository.CardRepository;
 import com.pers.repository.PaymentRepository;
 import com.pers.util.CheckOfOperationUtil;
-import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,10 +33,8 @@ public class PaymentService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public String checkPayment(PaymentCreateDto payment) {
-
-        var clientId = payment.clientId();
-        var clientReadDto = clientService.findById(clientId).orElseThrow();
+    public boolean checkAndCreatePayment(PaymentCreateDto payment) {
+        var clientReadDto = clientService.findById(payment.clientId()).orElseThrow();
         var cardReadDto = cardService.findById(payment.cardId()).orElseThrow();
         var amount = payment.amount();
 
@@ -56,9 +51,9 @@ public class PaymentService {
                     cardReadDto.expireDate(),
                     cardReadDto.status());
 
-            cardService.updateBalance(cardCreateDto);
+            cardService.updateCardBalance(cardCreateDto);
 
-            var newBalance = CheckOfOperationUtil.updateClientBalance(payment.clientId(), cardRepository);
+            var newBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(payment.clientId()));
             var clientUpdateBalanceDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientReadDto, newBalance);
 
             clientService.updateBalance(clientUpdateBalanceDto);
@@ -70,16 +65,13 @@ public class PaymentService {
                     payment.cardId(),
                     payment.timeOfPay(),
                     FAILED);
-
             create(paymentFail);
-
-            return "payment/fail";
+            return false;
         }
-        return "payment/success";
+        return true;
     }
 
     @Transactional
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public PaymentReadDto create(PaymentCreateDto paymentDto) {
         return Optional.of(paymentDto)
                 .map(paymentCreateMapper::mapFrom)
@@ -99,23 +91,13 @@ public class PaymentService {
                 .orElse(false);
     }
 
-    public List<PaymentReadDto> findByClientId(Long clientId) {
-        return paymentRepository.findByClientId(clientId).stream()
-                .map(paymentReadMapper::mapFrom)
-                .toList();
-    }
-
-
     public Page<PaymentReadDto> findAllByFilter(PaymentFilterDto filter, Pageable pageable) {
         return paymentRepository.findAllByFilter(filter, pageable)
                 .map(paymentReadMapper::mapFrom);
     }
 
-    @Transactional
-    public Optional<PaymentReadDto> update(Long id, PaymentCreateDto paymentDto) {
-        return paymentRepository.findById(id)
-                .map(entity -> paymentCreateMapper.map(paymentDto, entity))
-                .map(paymentRepository::saveAndFlush)
+    public Page<PaymentReadDto> findAllByClientByFilter(PaymentFilterDto filter, Pageable pageable, Long clientId) {
+        return paymentRepository.findAllByClientByFilter(filter, pageable, clientId)
                 .map(paymentReadMapper::mapFrom);
     }
 

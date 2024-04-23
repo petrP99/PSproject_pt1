@@ -5,16 +5,16 @@ import com.pers.dto.CardUpdateBalanceDto;
 import com.pers.dto.ClientReadDto;
 import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.entity.Card;
-import com.pers.repository.CardRepository;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @UtilityClass
 public class CheckOfOperationUtil {
 
-    public BigDecimal updateClientBalance(Long clientId, CardRepository cardRepository) {
-        return cardRepository.findByClientId(clientId).stream()
+    public BigDecimal calculateClientBalance(List<Card> cards) {
+        return cards.stream()
                 .map(Card::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -31,7 +31,7 @@ public class CheckOfOperationUtil {
                 clientReadDto.getCreatedTime());
     }
 
-    public CardUpdateBalanceDto cardUpdateBalanceSubtract(CardReadDto cardReadDto, BigDecimal amount) {
+    public CardUpdateBalanceDto createDtoCardUpdateBalanceSubtract(CardReadDto cardReadDto, BigDecimal amount) {
         return new CardUpdateBalanceDto(
                 cardReadDto.id(),
                 cardReadDto.clientId(),
@@ -41,7 +41,7 @@ public class CheckOfOperationUtil {
                 cardReadDto.status());
     }
 
-    public CardUpdateBalanceDto cardUpdateBalanceAdd(CardReadDto cardReadDto, BigDecimal amount) {
+    public CardUpdateBalanceDto createDtoCardUpdateBalanceAdd(CardReadDto cardReadDto, BigDecimal amount) {
         return new CardUpdateBalanceDto(
                 cardReadDto.id(),
                 cardReadDto.clientId(),

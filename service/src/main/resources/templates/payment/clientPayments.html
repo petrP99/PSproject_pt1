@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список платежей</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<header>
+<!--    <div class="container border-top" style="border-top: darkslategray">-->
+<!--        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>-->
+<!--    </div>-->
+
+    ~{client/home :: navbar}"></div>
+</header>
+
+<body>
+<div class="container">
+    <form th:action="@{/payments/{id}/create(id=${session.clientId})}" method="post">
+        <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
+        <button type="submit" class="btn btn-primary">Make a payment</button>
+    </form>
+</div>
+
+<div class="container mt6-m">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h4>Filter</h4>
+            <form id="myForm" action="/payments/clientPayments">
+                <div class="form-row align-items-xl-center">
+                    <div class="col-auto">
+                        <input id="id" type="number" name="id" th:value="${filter.id()}" class="form-control"
+                               placeholder="id payment">
+                    </div>
+                    <div class="col-auto">
+                        <input id="shopName" type="text" name="shopName" th:value="${filter.shopName()}"
+                               class="form-control" placeholder="shop name">
+                    </div>
+                    <div class="col-auto">
+                        <input id="timeOfPay" type="datetime-local" name="timeOfPay" th:value="${filter.timeOfPay()}"
+                               class="form-control" placeholder="time of pay">
+                    </div>
+                    <div class="col-auto">
+                        <input id="amount" type="number" name="amount" th:value="${filter.amount()}"
+                               class="form-control" placeholder="amount">
+                    </div>
+                    <div class="col-auto">
+                        <input id="card" type="number" name="cardId" th:value="${filter.cardId()}" class="form-control"
+                               placeholder="paid by card">
+                    </div>
+                    <div class="col-auto">
+                        <input type="radio" class="btn-check" name="status" id="status" autocomplete="off"
+                               value="SUCCESS">
+                        <label class="btn btn-outline-success" for="status">Active</label>
+                        <input type="radio" class="btn-check" name="status" id="status1" autocomplete="off"
+                               value="FAILED">
+                        <label class="btn btn-outline-danger" for="status1">Failed</label>
+                    </div>
+                    <div class="col-auto">
+                        <label for="page">Page:</label>
+                        <input id="page" type="number" name="page" th:value="${payments.metadata.page}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="size">Size:</label>
+                        <select id="size" name="size" th:value="${payments.metadata.size}" class="form-control">
+                            <option value="5000">all</option>
+                            <option value="5">5</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-dark">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Мои оплаты</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Payment id</th>
+            <th>Shop name</th>
+            <th>amount</th>
+            <th>Paid by card</th>
+            <th>Payment time</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="payment : ${payments.content}" th:if="${payment.clientId() == session.clientId}">
+            <td th:text="${payment.id()}"></td>
+            <td th:text="${payment.shopName()}"></td>
+            <td th:text="${payment.amount()}"></td>
+            <td th:text="${payment.cardId()}"></td>
+            <td th:text="${payment.timeOfPay()}"></td>
+            <td th:text="${payment.status().name()}"
+                th:class="${payment.status().name()  ==  'SUCCESS' ? 'text-success' : 'text-danger'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

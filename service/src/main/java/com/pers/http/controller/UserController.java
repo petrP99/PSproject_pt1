@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @Controller
@@ -45,13 +44,13 @@ public class UserController {
 
     @PostMapping("/admin/create")
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
-    public String createAdmin(@Validated UserCreateDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createAdmin(@Validated UserCreateDto admin, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("admin", admin);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/users/registration";
         }
-        userService.createAdmin(user);
+        userService.createAdmin(admin);
         return "redirect:/users";
     }
 
@@ -63,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/delete")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!userService.delete(id)) {
             throw new ResponseStatusException(NOT_FOUND);
@@ -72,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping()
-//    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, UserFilterDto filter, Pageable pageable) {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         model.addAttribute("users", PageResponse.of(page));

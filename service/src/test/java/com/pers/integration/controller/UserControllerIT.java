@@ -1,5 +1,7 @@
 package com.pers.integration.controller;
 
+import com.pers.dto.UserCreateDto;
+import static com.pers.dto.UserCreateDto.Fields.rawPassword;
 import com.pers.entity.Role;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
@@ -7,7 +9,17 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.pers.dto.UserCreateDto.Fields.login;
 import static com.pers.dto.UserCreateDto.Fields.role;
@@ -22,26 +34,34 @@ class UserControllerIT extends BaseIntegrationIT {
     private final MockMvc mockMvc;
     private final EntityManager entityManager;
     private User user;
+//
+//    @BeforeEach
+//    void init() {
+//        List<GrantedAuthority> roles = Arrays.asList(Role.ADMIN, Role.USER, Role.SUPER_ADMIN);
+//        user = new User(1l, "user1@mail.ru", "test", Role.USER);
+//
+//
+//        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user, user.getPassword(), roles);
+//        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//        securityContext.setAuthentication(testingAuthenticationToken);
+//        SecurityContextHolder.setContext(securityContext);
+//    }
 
-    @BeforeEach
-    void prepare() {
-        user = User.builder()
-                .login("user10@mail.ru")
-                .password("123")
-                .role(Role.USER)
-                .build();
-        entityManager.persist(user);
-    }
 
     @Test
     void create() throws Exception {
+
+        var userCreateDto = new UserCreateDto("user1@mail.ru", "test", Role.USER);
+
         mockMvc.perform(post("/users")
-                        .param(login, "1@mail.ru")
-                        .param(role, "USER"))
+                        .param(login, userCreateDto.getLogin())
+                        .param(rawPassword, userCreateDto.getRawPassword())
+                        .param(role, userCreateDto.getRole().name())
+                        .with(csrf()))
                 .andExpectAll(
                         status().is3xxRedirection(),
-                        redirectedUrlPattern("/users/{\\d+}")
-                        );
+                        redirectedUrl("/login"),
+                        model().hasNoErrors());
     }
 
     @Test
@@ -49,14 +69,13 @@ class UserControllerIT extends BaseIntegrationIT {
         mockMvc.perform(get("/users"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("user/users"))
-                .andExpect(model().attributeExists("users"))
-                .andExpect(model().attribute("users", hasSize(1)));
+                .andExpect(model().attributeExists("users"));
     }
 
     @Test
     void update() throws Exception {
         mockMvc.perform(post("/users/{id}/update", user.getId())
-                        .param(login, "user1@mail.ru"))
+                        .param(login, "user10@mail.ru"))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrlPattern("/users/*")

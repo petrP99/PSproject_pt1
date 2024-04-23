@@ -56,6 +56,7 @@ create TABLE IF NOT EXISTS payment
 create TABLE IF NOT EXISTS transfer
 (
     id               BIGSERIAL PRIMARY KEY,
+    client_id        BIGINT REFERENCES client (id) NOT NULL,
     card_no_from     BIGINT REFERENCES card (id) NOT NULL,
     card_no_to       BIGINT REFERENCES card (id) NOT NULL,
     amount           NUMERIC(10, 2)              NOT NULL,

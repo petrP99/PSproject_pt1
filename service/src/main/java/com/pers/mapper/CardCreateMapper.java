@@ -30,7 +30,7 @@ public class CardCreateMapper implements Mapper<CardCreateDto, Card>, MapperStat
     }
 
     @Override
-    public Card mapStatus(CardReadDto object) {
+    public Card mapStatusToBlocked(CardReadDto object) {
         return Card.builder()
                 .id(object.id())
                 .client(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
@@ -38,6 +38,17 @@ public class CardCreateMapper implements Mapper<CardCreateDto, Card>, MapperStat
                 .createdDate(object.createdDate())
                 .expireDate(object.expireDate())
                 .status(Status.BLOCKED)
+                .build();
+    }
+
+    public Card mapStatusExpired(CardReadDto object) {
+        return Card.builder()
+                .id(object.id())
+                .client(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
+                .balance(object.balance())
+                .createdDate(object.createdDate())
+                .expireDate(object.expireDate())
+                .status(Status.EXPIRED)
                 .build();
     }
 }

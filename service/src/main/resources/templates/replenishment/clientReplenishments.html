@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Replenishments</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<header>
+    <div class="container border-top" style="border-top: darkslategray">
+        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>
+    </div>
+</header>
+
+<body>
+<div class="container mt6-m">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form action="/replenishments/clientReplenishments">
+                <div class="form-row align-items-xl-center">
+                    <div class="col-auto">
+                        <input type="number" name="id" th:value="${filter.id()}" class="form-control"
+                               placeholder="id">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="cardNo" th:value="${filter.cardNo()}"
+                               class="form-control" placeholder="card Id">
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="amount" th:value="${filter.amount()}"
+                               class="form-control" placeholder="amount">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="timeOfReplenishment" th:value="${filter.timeOfReplenishment()}"
+                               class="form-control" placeholder="time">
+                    </div>
+                    <div class="col-auto">
+                        <input type="radio" class="btn-check" name="status" id="status" autocomplete="off"
+                               value="SUCCESS">
+                        <label class="btn btn-outline-success" for="status">Success</label>
+                        <input type="radio" class="btn-check" name="status" id="status1" autocomplete="off"
+                               value="FAILED">
+                        <label class="btn btn-outline-danger" for="status1">Failed</label>
+                    </div>
+
+                    <div class="col-auto">
+                        <label for="page">Page:</label>
+                        <input id="page" type="number" name="page" th:value="${replenishments.metadata.page}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="size">Size:</label>
+                        <select id="size" name="size" th:value="${replenishments.metadata.size}" class="form-control">
+                            <option value="5000">all</option>
+                            <option value="5">5</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-dark">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>My replenishment</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Replenishment id</th>
+            <th>Card number</th>
+            <th>Amount</th>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="replenishment : ${replenishments.content}">
+            <td th:text="${replenishment.id()}"></td>
+            <td th:text="${replenishment.cardNo()}"></td>
+            <td th:text="${replenishment.amount()}"></td>
+            <td th:text="${replenishment.timeOfReplenishment()}"></td>
+            <td th:text="${replenishment.status().name()}"
+                th:class="${replenishment.status().name()  ==  'SUCCESS' ? 'text-success' : 'text-danger'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

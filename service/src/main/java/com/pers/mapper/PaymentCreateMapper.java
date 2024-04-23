@@ -9,7 +9,7 @@ import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class PaymentCreateMapper implements Mapper<PaymentCreateDto, Payment> {
                 .amount(object.amount())
                 .client(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
                 .card(cardRepository.findById(object.cardId()).orElseThrow(IllegalArgumentException::new))
-                .timeOfPay(LocalDateTime.now())
+                .timeOfPay(Instant.now())
                 .status(object.status() == null ? SUCCESS : FAILED)
                 .build();
     }

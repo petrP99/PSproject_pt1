@@ -8,22 +8,26 @@ import jakarta.validation.constraints.Size;
 import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @ClientInfo
 @FieldNameConstants
 public record ClientUpdateBalanceDto(
         Long id,
         Long userId,
+
         @PositiveOrZero
         BigDecimal balance,
+
         @NotBlank
         String firstName,
+
         @NotBlank
         String lastName,
+
         @NotBlank
         @Size(min = 11, max = 11)
         String phone,
         Status status,
-        LocalDateTime createdTime) {
+        Instant createdTime) {
 }

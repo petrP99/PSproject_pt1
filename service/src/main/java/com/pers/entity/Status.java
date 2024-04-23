@@ -7,5 +7,6 @@ public enum Status {
     BLOCKED,
     SUCCESS,
     FAILED,
-    IN_PROGRESS
+    IN_PROGRESS,
+    EXPIRED
 }

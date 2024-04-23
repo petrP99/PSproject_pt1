@@ -10,6 +10,7 @@ public class TransferReadMapper implements Mapper<Transfer, TransferReadDto> {
     public TransferReadDto mapFrom(Transfer object) {
         return new TransferReadDto(
                 object.getId(),
+                object.getClientId().getId(),
                 object.getCardNoFrom().getId(),
                 object.getCardNoTo().getId(),
                 object.getAmount(),

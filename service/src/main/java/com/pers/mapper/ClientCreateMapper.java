@@ -3,10 +3,12 @@ package com.pers.mapper;
 import com.pers.dto.ClientCreateDto;
 import com.pers.entity.Client;
 import com.pers.entity.Status;
+import static com.pers.entity.Status.*;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Component
@@ -23,8 +25,9 @@ public class ClientCreateMapper implements Mapper<ClientCreateDto, Client> {
                 .firstName(object.firstName())
                 .lastName(object.lastName())
                 .phone(object.phone())
-                .status(Status.ACTIVE)
-                .createdTime(LocalDateTime.now())
+                .status(object.status() != ACTIVE ? ACTIVE : BLOCKED)
+                .createdTime(Instant.now())
                 .build();
     }
+
 }

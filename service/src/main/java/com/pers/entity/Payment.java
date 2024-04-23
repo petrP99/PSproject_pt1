@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -43,7 +43,7 @@ public class Payment implements BaseEntity<Long> {
     @JoinColumn(name = "pay_by_card_no")
     private Card card;
 
-    private LocalDateTime timeOfPay;
+    private Instant timeOfPay;
 
     @Enumerated(EnumType.STRING)
     private Status status;

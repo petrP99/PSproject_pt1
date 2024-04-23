@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -33,28 +32,26 @@ public class TransferService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public String checkTransfer(TransferCreateDto transfer) {
-
+    public boolean checkAndCreateTransfer(TransferCreateDto transfer) {
         var cardFrom = cardService.findById(transfer.cardIdFrom()).orElseThrow();
         var cardTo = cardService.findById(transfer.cardIdTo()).orElseThrow();
         var clientFrom = clientService.findById(cardFrom.clientId()).orElseThrow();
         var clientTo = clientService.findById(cardTo.clientId()).orElseThrow();
-        var amount = transfer.amount();
 
         if (clientTo.getStatus() == Status.ACTIVE
             && cardTo.status() == Status.ACTIVE
             && cardFrom.status() == Status.ACTIVE
-            && amount.compareTo(cardFrom.balance()) <= 0) {
+            && (transfer.amount()).compareTo(cardFrom.balance()) <= 0) {
 
             create(transfer);
 
-            var cardFromUpdateBalance = CheckOfOperationUtil.cardUpdateBalanceSubtract(cardFrom, amount);
-            var cardToUpdateBalance = CheckOfOperationUtil.cardUpdateBalanceAdd(cardTo, amount);
-            cardService.updateBalance(cardFromUpdateBalance);
-            cardService.updateBalance(cardToUpdateBalance);
+            var cardFromUpdateBalance = CheckOfOperationUtil.createDtoCardUpdateBalanceSubtract(cardFrom, transfer.amount());
+            var cardToUpdateBalance = CheckOfOperationUtil.createDtoCardUpdateBalanceAdd(cardTo, transfer.amount());
+            cardService.updateCardBalance(cardFromUpdateBalance);
+            cardService.updateCardBalance(cardToUpdateBalance);
 
-            var clientFromNewBalance = CheckOfOperationUtil.updateClientBalance(clientFrom.getId(), cardRepository);
-            var clientToNewBalance = CheckOfOperationUtil.updateClientBalance(clientTo.getId(), cardRepository);
+            var clientFromNewBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(clientFrom.getId()));
+            var clientToNewBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(clientTo.getId()));
             var clientFromUpdateDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientFrom, clientFromNewBalance);
             var clientToUpdateDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientTo, clientToNewBalance);
 
@@ -62,6 +59,7 @@ public class TransferService {
             clientService.updateBalance(clientToUpdateDto);
         } else {
             var transferFail = new TransferCreateDto(
+                    transfer.clientId(),
                     transfer.cardIdFrom(),
                     transfer.cardIdTo(),
                     transfer.amount(),
@@ -69,12 +67,11 @@ public class TransferService {
                     transfer.recipient(),
                     transfer.message(),
                     FAILED);
-
             create(transferFail);
 
-            return "transfer/fail";
+            return false;
         }
-        return "transfer/success";
+        return true;
     }
 
     @Transactional
@@ -97,10 +94,9 @@ public class TransferService {
                 .orElse(false);
     }
 
-    public List<TransferReadDto> findBySenderClientId(Long clientId) {
-        return transferRepository.findAllByCardNoFromClientId(clientId).stream()
-                .map(transferReadMapper::mapFrom)
-                .toList();
+    public Page<TransferReadDto> findAllByClientByFilter(TransferFilterDto filter, Pageable pageable, Long clientId) {
+        return transferRepository.findAllByClientByFilter(filter, pageable, clientId)
+                .map(transferReadMapper::mapFrom);
     }
 
     public Page<TransferReadDto> findAllByFilter(TransferFilterDto filter, Pageable pageable) {
@@ -108,17 +104,8 @@ public class TransferService {
                 .map(transferReadMapper::mapFrom);
     }
 
-    @Transactional
-    public Optional<TransferReadDto> update(Long id, TransferCreateDto transferDto) {
-        return transferRepository.findById(id)
-                .map(entity -> transferCreateMapper.map(transferDto, entity))
-                .map(transferRepository::saveAndFlush)
-                .map(transferReadMapper::mapFrom);
-    }
-
     public Optional<TransferReadDto> findById(Long id) {
         return transferRepository.findById(id)
                 .map(transferReadMapper::mapFrom);
     }
-
 }

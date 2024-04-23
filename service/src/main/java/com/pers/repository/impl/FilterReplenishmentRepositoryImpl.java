@@ -22,13 +22,12 @@ public class FilterReplenishmentRepositoryImpl implements FilterReplenishmentRep
 
     @Override
     public Page<Replenishment> findAllByFilter(ReplenishmentFilterDto filter, Pageable pageable) {
-
         var predicate = QPredicate.builder()
                 .add(filter.id(), replenishment.id::eq)
                 .add(filter.clientId(), replenishment.clientTo.id::eq)
                 .add(filter.cardNo(), replenishment.cardNoTo.id::eq)
                 .add(filter.amount(), replenishment.amount::eq)
-                .add(filter.timeOfReplenishment(), replenishment.timeOfReplenishment::before)
+//                .add(filter.timeOfReplenishment(), replenishment.timeOfReplenishment::between)
                 .add(filter.status(), replenishment.status::eq)
                 .buildAnd();
 
@@ -45,4 +44,31 @@ public class FilterReplenishmentRepositoryImpl implements FilterReplenishmentRep
 
         return new PageImpl<>(content, pageable, totalCount);
     }
+
+    @Override
+    public Page<Replenishment> findAllByClientByFilter(ReplenishmentFilterDto filter, Pageable pageable, Long clientId) {
+        var predicate = QPredicate.builder()
+                .add(filter.id(), replenishment.id::eq)
+                .add(clientId, replenishment.clientTo.id::eq)
+                .add(filter.cardNo(), replenishment.cardNoTo.id::eq)
+                .add(filter.amount(), replenishment.amount::eq)
+//                .add(filter.timeOfReplenishment(), replenishment.timeOfReplenishment::before)
+                .add(filter.status(), replenishment.status::eq)
+                .buildAnd();
+
+        var query = new JPAQuery<Replenishment>(entityManager)
+                .select(replenishment)
+                .from(replenishment)
+                .where(predicate);
+
+        List<Replenishment> content = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long totalCount = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, totalCount);
+    }
+
+
 }

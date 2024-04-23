@@ -1,17 +1,13 @@
 package com.pers.service;
 
-import com.pers.dto.ClientUpdateBalanceDto;
-import com.pers.dto.ClientReadDto;
 import com.pers.dto.ClientCreateDto;
+import com.pers.dto.ClientReadDto;
+import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.dto.filter.ClientFilterDto;
 import com.pers.mapper.ClientCreateMapper;
 import com.pers.mapper.ClientReadMapper;
 import com.pers.mapper.ClientUpdateBalanceMapper;
 import com.pers.repository.ClientRepository;
-
-import java.util.List;
-import java.util.Optional;
-
 import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service
@@ -35,12 +33,6 @@ public class ClientService {
     public Page<ClientReadDto> findAll(ClientFilterDto filter, Pageable pageable) {
         return clientRepository.findAllByFilter(filter, pageable)
                 .map(clientReadMapper::mapFrom);
-    }
-
-    public List<ClientReadDto> findAll() {
-        return clientRepository.findAll().stream()
-                .map(clientReadMapper::mapFrom)
-                .toList();
     }
 
     public String findFirstAndLastNameByClientId(Long id) {

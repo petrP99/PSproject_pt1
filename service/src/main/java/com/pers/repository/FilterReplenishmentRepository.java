@@ -9,4 +9,6 @@ public interface FilterReplenishmentRepository {
 
     Page<Replenishment> findAllByFilter(ReplenishmentFilterDto filterDto, Pageable pageable);
 
+    Page<Replenishment> findAllByClientByFilter(ReplenishmentFilterDto filterDto, Pageable pageable, Long clientId);
+
 }

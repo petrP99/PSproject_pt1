@@ -23,10 +23,37 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
     public Page<Payment> findAllByFilter(PaymentFilterDto filter, Pageable pageable) {
         var predicate = QPredicate.builder()
                 .add(filter.id(), payment.id::eq)
+                .add(filter.clientId(), payment.client.id::eq)
                 .add(filter.shopName(), payment.shopName::containsIgnoreCase)
                 .add(filter.amount(), payment.amount::eq)
                 .add(filter.cardId(), payment.card.id::eq)
-                .add(filter.timeOfPay(), payment.timeOfPay::before)
+//                .add(filter.timeOfPay(), payment.timeOfPay::eq)
+                .add(filter.status(), payment.status::eq)
+                .buildAnd();
+
+        var query = new JPAQuery<Payment>(entityManager)
+                .select(payment)
+                .from(payment)
+                .where(predicate);
+
+        List<Payment> content = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long totalCount = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, totalCount);
+    }
+
+    @Override
+    public Page<Payment> findAllByClientByFilter(PaymentFilterDto filter, Pageable pageable, Long clientId) {
+        var predicate = QPredicate.builder()
+                .add(filter.id(), payment.id::eq)
+                .add(clientId, payment.client.id::eq)
+                .add(filter.shopName(), payment.shopName::containsIgnoreCase)
+                .add(filter.amount(), payment.amount::eq)
+                .add(filter.cardId(), payment.card.id::eq)
+//                .add(filter.timeOfPay(), payment.timeOfPay::eq)
                 .add(filter.status(), payment.status::eq)
                 .buildAnd();
 

@@ -1,25 +1,23 @@
 package com.pers.integration.service;
 
-import com.pers.dto.*;
-import com.pers.dto.filter.*;
-import com.pers.entity.*;
+import com.pers.dto.UserCreateDto;
+import com.pers.dto.filter.UserFilterDto;
+import com.pers.entity.Role;
+import static com.pers.entity.Role.USER;
+import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.UserService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.*;
-
-import static com.pers.entity.Role.USER;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 class UserServiceIT extends BaseIntegrationIT {
 
     private final UserService userService;
-    private final EntityManager entityManager;
 
     private User user;
     private UserCreateDto userCreateDto;
@@ -76,18 +74,17 @@ class UserServiceIT extends BaseIntegrationIT {
         assertThat(result).isPresent();
         result.ifPresent(user ->
                 assertAll(() -> {
-                    assertThat(user.getPassword()).isEqualTo("456");
+                    assertThat(user.getLogin()).isEqualTo("user99@mail.ru");
                 }));
     }
 
     @Test
     void findAllByFilter() {
-        UserFilterDto userFilterDto = new UserFilterDto("@", null);
+        var userFilterDto = new UserFilterDto("@", USER);
 
-        var result = userService.findAll(userFilterDto, null);
+        var result = userService.findAll(userFilterDto, Pageable.ofSize(1));
 
-        assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
     }
 }
 

@@ -1,10 +1,9 @@
 package com.pers.validation.impl;
 
-import com.pers.dto.*;
-import com.pers.validation.*;
-import jakarta.validation.*;
-import liquibase.util.*;
-import org.springframework.util.*;
+import com.pers.dto.UserCreateDto;
+import com.pers.validation.UserInfo;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import static org.springframework.util.StringUtils.hasText;
 
 public class UserInfoValidator implements ConstraintValidator<UserInfo, UserCreateDto> {

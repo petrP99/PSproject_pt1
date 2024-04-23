@@ -37,33 +37,26 @@ public class ReplenishmentController {
 
     @GetMapping("/replenishment")
     public String services(@Validated @ModelAttribute("replenishment") ReplenishmentCreateDto replenishment, HttpSession session, Model model) {
-        var clientId = (Long) session.getAttribute("clientId");
-        var cards = cardService.findByClientId(clientId).stream().toList();
+        var cards = cardService.findActiveCardsByClientId((Long) session.getAttribute("clientId"));
         model.addAttribute("replenishment", replenishment);
         model.addAttribute("cards", cards);
         return "replenishment/replenishment";
     }
 
     @PostMapping("/create")
-    public String create(@Validated @ModelAttribute("replenishment") ReplenishmentCreateDto replenishment, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpSession session, Model model) {
+    public String create(@Validated @ModelAttribute("replenishment") ReplenishmentCreateDto replenishment,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         HttpSession session,
+                         Model model) {
         session.getAttribute("clientId");
         model.addAttribute("replenishment", replenishment);
-
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("replenishment", replenishment);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/replenishments";
         }
-        return replenishmentService.checkReplenishment(replenishment);
-    }
-
-    @PostMapping("/update")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated ReplenishmentCreateDto replenishment) {
-        return replenishmentService.update(id, replenishment)
-                .map(it -> "redirect:/replenishments/{id}")
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        return (replenishmentService.checkAndCreateReplenishment(replenishment)) ? "replenishment/success" : "replenishment/fail";
     }
 
     @PostMapping("/delete")
@@ -76,29 +69,19 @@ public class ReplenishmentController {
     }
 
     @GetMapping("/replenishments")
-    public String findByClientId(@Validated Model model, HttpSession session) {
-        var clientId = (Long) session.getAttribute("clientId");
-        var replenishments = replenishmentService.findByClientId(clientId);
-        model.addAttribute("replenishments", replenishments);
-        return "replenishment/replenishments";
-    }
-
-    @GetMapping()
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public String findAll(Model model, ReplenishmentFilterDto filter, Pageable pageable) {
+    public String findAllByFilter(Model model, ReplenishmentFilterDto filter, Pageable pageable) {
         Page<ReplenishmentReadDto> page = replenishmentService.findAllByFilter(filter, pageable);
         model.addAttribute("replenishments", PageResponse.of(page));
         model.addAttribute("filter", filter);
         return "replenishment/replenishments";
     }
 
-    @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        return replenishmentService.findById(id)
-                .map(replenishment -> {
-                    model.addAttribute("replenishment", replenishment);
-                    return "replenishment/replenishment";
-                })
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    @GetMapping("/clientReplenishments")
+    public String findAllByClientByFilter(Model model, ReplenishmentFilterDto filter, Pageable pageable, HttpSession session) {
+        Page<ReplenishmentReadDto> page = replenishmentService.findByClientByFilter(filter, pageable, (Long) session.getAttribute("clientId"));
+        model.addAttribute("replenishments", PageResponse.of(page));
+        model.addAttribute("filter", filter);
+        return "replenishment/clientReplenishments";
     }
 }

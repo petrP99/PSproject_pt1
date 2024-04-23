@@ -33,18 +33,15 @@ public class ReplenishmentService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public String checkReplenishment(ReplenishmentCreateDto replenishment) {
-
-        var clientId = replenishment.clientId();
-        var clientReadDto = clientService.findById(clientId).orElseThrow();
+    public boolean checkAndCreateReplenishment(ReplenishmentCreateDto replenishment) {
+        var clientReadDto = clientService.findById(replenishment.clientId()).orElseThrow();
         var cardReadDto = cardService.findById(replenishment.cardId()).orElseThrow();
-        var amount = replenishment.amount();
 
         if (clientReadDto.getStatus() == Status.ACTIVE && cardReadDto.status() == Status.ACTIVE) {
             create(replenishment);
-            var cardCreateDto = CheckOfOperationUtil.cardUpdateBalanceAdd(cardReadDto, amount);
-            cardService.updateBalance(cardCreateDto);
-            var newBalance = CheckOfOperationUtil.updateClientBalance(replenishment.clientId(), cardRepository);
+            var cardCreateDto = CheckOfOperationUtil.createDtoCardUpdateBalanceAdd(cardReadDto, replenishment.amount());
+            cardService.updateCardBalance(cardCreateDto);
+            var newBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(replenishment.clientId()));
             var clientUpdateBalanceDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientReadDto, newBalance);
             clientService.updateBalance(clientUpdateBalanceDto);
         } else {
@@ -55,10 +52,9 @@ public class ReplenishmentService {
                     replenishment.timeOfReplenishment(),
                     FAILED);
             create(replenishmentFail);
-
-            return "replenishment/fail";
+            return false;
         }
-        return "replenishment/success";
+        return true;
     }
 
     @Transactional
@@ -86,13 +82,11 @@ public class ReplenishmentService {
                 .map(replenishmentReadMapper::mapFrom);
     }
 
-    @Transactional
-    public Optional<ReplenishmentReadDto> update(Long id, ReplenishmentCreateDto replenishmentDto) {
-        return replenishmentRepository.findById(id)
-                .map(entity -> replenishmentCreateMapper.map(replenishmentDto, entity))
-                .map(replenishmentRepository::saveAndFlush)
+    public Page<ReplenishmentReadDto> findByClientByFilter(ReplenishmentFilterDto filter, Pageable pageable, Long clientId) {
+        return replenishmentRepository.findAllByClientByFilter(filter, pageable, clientId)
                 .map(replenishmentReadMapper::mapFrom);
     }
+
 
     public Optional<ReplenishmentReadDto> findById(Long id) {
         return replenishmentRepository.findById(id)

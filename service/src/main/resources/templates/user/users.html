@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <title>Users</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .btn-filter {
-            background-color: #007bff;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
 <div class="container mt6-m">
@@ -29,6 +23,7 @@
                     <div class="col-auto">
                         <label for="size">Size:</label>
                         <select id="size" name="size" th:value="${users.metadata.size}" class="form-control">
+                            <option value="5000">all</option>
                             <option value="5">5</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
@@ -36,7 +31,7 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-filter">Filter</button>
+                        <button type="submit" class="btn btn-outline-dark">Filter</button>
                     </div>
                 </div>
             </form>
@@ -46,14 +41,13 @@
 
 <div class="container">
     <h1>Users list</h1>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
             <th>Login</th>
             <th>Role</th>
             <th>Action</th>
-
         </tr>
         </thead>
         <tbody>
@@ -63,9 +57,9 @@
             <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getRole().name()}"
                    th:class="${user.getRole().name()  ==  'USER' ? 'text-success' : 'text-danger'}"></a></td>
             <td>
-                <form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'USER'}"
+                <form th:action="@{/users/{userId}/delete(userId=${user.id})}"
                       method="post">
-                    <button type="submit" onclick="return confirmDelete()">Remove User</button>
+                    <button type="submit" class="btn btn-outline-danger" onclick="return confirmDelete()">Remove User</button>
                 </form>
             </td>
         </tr>

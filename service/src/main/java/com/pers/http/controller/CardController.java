@@ -33,8 +33,10 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/create")
-    public String create(@Validated CardCreateDto card, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpSession session) {
+    public String create(@Validated CardCreateDto card,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         HttpSession session) {
         session.getAttribute("clientId");
         cardService.create(card);
         if (bindingResult.hasErrors()) {
@@ -48,7 +50,7 @@ public class CardController {
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id) {
         var card = cardService.findById(id).orElseThrow();
-        return cardService.updateStatus(card)
+        return cardService.updateStatusToBlocked(card)
                 .map(it -> "redirect:/cards/cards")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
@@ -64,6 +66,7 @@ public class CardController {
 
     @GetMapping("/cards")
     public String findByClientId(@Validated Model model, HttpSession session) {
+        cardService.checkCardExpire();
         session.getAttribute("clientId");
         var clientId = (Long) session.getAttribute("clientId");
         var myCards = cardService.findByClientId(clientId);

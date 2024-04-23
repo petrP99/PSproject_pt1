@@ -25,7 +25,7 @@ public class SecurityConfiguration {
             throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/login", "/users/registration", "/users", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/login", "/users/registration", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")

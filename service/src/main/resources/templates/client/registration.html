@@ -22,19 +22,23 @@
         <input type="hidden" name="balance" value="0">
         <div class="mb-3">
             <label for="firstName" class="form-label">First name:
-                <input id="firstName" type="text" class="form-control" name="firstName" th:value="*{firstName()}">
+                <input id="firstName" type="text" class="form-control" name="firstName" th:value="*{firstName()}"
+                       pattern="[а-яА-Яa-zA-Z]{3,}" maxlength="128">
+                <span style="color: #757575">Только буквы, не менее 3х</span>
             </label><br>
         </div>
         <div class="mb-3">
             <label for="lastName" class="form-label">Last name:
-                <input id="lastName" type="text" class="form-control" name="lastName" th:value="*{lastName()}">
+                <input id="lastName" type="text" class="form-control" name="lastName" pattern="[а-яА-Яa-zA-Z]{3,}"
+                       th:value="*{lastName()}" maxlength="128">
+                <span style="color: #757575">Только буквы, не менее 3х</span>
             </label><br>
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Phone number:
                 <input id="phone" type="tel" class="form-control" name="phone"
                        pattern="[8]{1}[9]{1}[0-9]{2}[0-9]{3}[0-9]{2}[0-9]{2}"
-                       th:value="*{phone()}" placeholder="8-9ХХ-ХХХ-ХХ-ХХ">
+                       th:value="*{phone()}" placeholder="8-9ХХ-ХХХ-ХХ-ХХ" maxlength="11">
             </label><br>
         </div>
         <button type="submit" class="btn btn-outline-success">Registration</button>

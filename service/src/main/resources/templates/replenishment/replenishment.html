@@ -58,7 +58,7 @@
 
         <div class="mb-3">
             <label for="amount" class="form-label">Amount:
-                <input id="amount" type="number" class="form-control" name="amount" th:value="*{amount()}">
+                <input id="amount" type="number" class="form-control" name="amount" th:value="*{amount()}" pattern="[0-9]*" min="0">
             </label><br>
         </div>
 

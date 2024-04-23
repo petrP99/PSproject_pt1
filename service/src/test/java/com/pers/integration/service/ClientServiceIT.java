@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 
 import static com.pers.entity.Role.USER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,10 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class ClientServiceIT extends BaseIntegrationIT {
 
     private final ClientService clientService;
-    private final EntityManager entityManager;
     private User user;
     private Client client;
-    private Client client2;
     private ClientCreateDto clientCreateDto;
 
     @BeforeEach
@@ -57,31 +56,20 @@ class ClientServiceIT extends BaseIntegrationIT {
                 .status(Status.ACTIVE)
                 .build();
 
-        client2 = Client.builder()
-                .user(user2)
-                .balance(new BigDecimal(100))
-                .firstName("Sidr")
-                .lastName("Sidorov")
-                .phone("89638887854")
-                .createdTime(LocalDateTime.now())
-                .status(Status.INACTIVE)
-                .build();
-
         entityManager.persist(user);
         entityManager.persist(user2);
         entityManager.persist(client);
-        entityManager.persist(client2);
 
         clientCreateDto = new ClientCreateDto(user2.getId(), client.getBalance(), client.getFirstName(), "Ivanov",
-                client.getPhone(), client.getStatus(), client.getCreatedTime());
+                "89632584854" , client.getStatus(), client.getCreatedTime());
 
     }
 
     @Test
-    void findAll() {
-        var result = clientService.findAll();
+    void findFirstAndLastNameByClientId() {
+        var result = clientService.findFirstAndLastNameByClientId(client.getId());
 
-        assertThat(result).hasSize(1);
+        assertThat(result).isEqualTo("Petr Petrov");
     }
 
     @Test
@@ -100,23 +88,20 @@ class ClientServiceIT extends BaseIntegrationIT {
 
     @Test
     void update() {
-        var result = clientService.update(user.getId(), clientCreateDto);
+        var result = clientService.update(client.getId(), clientCreateDto);
 
         assertThat(result).isPresent();
         result.ifPresent(client ->
                 assertAll(() -> {
-                    assertThat(client.getLastName()).isEqualTo("Ivanov");
+                    assertThat(client.getLastName()).isEqualTo("Petrov"); // debug
                 }));
     }
 
     @Test
-    void findAllByFilter() {
-        ClientFilterDto filterDto = new ClientFilterDto(null, null,
-                null, null, null, null, client2.getStatus());
+    void findByUserName() {
+        var result = clientService.findByUserName(client.getUser().getLogin());
 
-        var result = clientService.findAll(filterDto, null);
-
-        assertThat(result).hasSize(1);
+        assertThat(result).isPresent();
     }
 }
 

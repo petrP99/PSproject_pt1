@@ -1,16 +1,15 @@
 package com.pers.mapper;
 
-import static com.pers.entity.Status.FAILED;
-import com.pers.repository.CardRepository;
-import com.pers.repository.ClientRepository;
 import com.pers.dto.ReplenishmentCreateDto;
 import com.pers.entity.Replenishment;
+import static com.pers.entity.Status.FAILED;
+import static com.pers.entity.Status.SUCCESS;
+import com.pers.repository.CardRepository;
+import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
-import static com.pers.entity.Status.SUCCESS;
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class ReplenishmentCreateMapper implements Mapper<ReplenishmentCreateDto,
                 .clientTo(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
                 .cardNoTo(cardRepository.findById(object.cardId()).orElseThrow(IllegalArgumentException::new))
                 .amount(object.amount())
-                .timeOfReplenishment(LocalDateTime.now())
+                .timeOfReplenishment(Instant.now())
                 .status(object.status() == null ? SUCCESS : FAILED)
                 .build();
     }

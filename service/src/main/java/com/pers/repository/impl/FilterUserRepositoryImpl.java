@@ -3,6 +3,7 @@ package com.pers.repository.impl;
 
 import com.pers.dto.filter.UserFilterDto;
 import static com.pers.entity.QUser.user;
+import com.pers.entity.Role;
 import com.pers.entity.User;
 import com.pers.repository.FilterUserRepository;
 import com.pers.repository.predicate.QPredicate;
@@ -28,7 +29,7 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
         JPAQuery<User> query = new JPAQuery<>(entityManager)
                 .select(user)
                 .from(user)
-                .where(predicate);
+                .where(predicate, user.role.ne(Role.SUPER_ADMIN));
 
         List<User> content = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -38,4 +39,5 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
 
         return new PageImpl<>(content, pageable, totalCount);
     }
+
 }

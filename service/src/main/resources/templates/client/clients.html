@@ -54,11 +54,11 @@
                         <label for="status">Status:</label>
                         <input id="status" type="text" name="status" th:value="${filter.status()}" class="form-control">
                     </div>
-                    <!--                    <div class="col-auto">-->
-                    <!--                        <label for="page">Page:</label>-->
-                    <!--                        <input id="page" type="number" name="page" th:value="${clients.metadata.page}"-->
-                    <!--                               class="form-control">-->
-                    <!--                    </div>-->
+                    <div class="col-auto">
+                        <label for="page">Page:</label>
+                        <input id="page" type="number" name="page" th:value="${clients.metadata.page}"
+                               class="form-control">
+                    </div>
                     <div class="col-auto">
                         <label for="size">Size:</label>
                         <select id="size" name="size" th:value="${clients.metadata.size}" class="form-control">
@@ -101,24 +101,26 @@
             <td th:text="${client.getBalance()}"></td>
             <td th:text="${client.getStatus()}"></td>
             <td>
-                <a th:href="@{/clients/{clientId}/update(clientId=${client.id})}"
-                   class="btn btn-primary btn-update-status">Update
-                    status</a>
+                <form th:action="@{/clients/{clientId}/update(clientId=${client.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-outline-danger">Block client</button>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<div class="pagination">
-    <ul>
-        <li th:each="pageNumber : ${#numbers.sequence(1, clients.metadata.getTotalElements())}">
-            <a th:href="@{'?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>
-        </li>
-    </ul>
-</div>
+<!--<div class="pagination">-->
+<!--    <ul>-->
+<!--        <li th:each="pageNumber : ${#numbers.sequence(1, clients.metadata.getTotalElements())}">-->
+<!--            <a th:href="@{'?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
 

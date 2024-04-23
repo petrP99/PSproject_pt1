@@ -1,10 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Transfers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<header>
+    <div class="container border-top" style="border-top: darkslategray">
+        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>
+    </div>
+</header>
 
+<body>
+<div class="container mt6-m">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h4>Filter</h4>
+            <form action="/transfers/transfers">
+                <div class="form-row align-items-xl-center">
+                    <div class="col-auto">
+                        <input type="number" name="id" th:value="${filter.id()}" class="form-control"
+                               placeholder="id transfer">
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="clientId" th:value="${filter.clientId()}"
+                               class="form-control" placeholder="client Id">
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="cardNoFrom" th:value="${filter.cardNoFrom()}"
+                               class="form-control" placeholder="card no from">
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="cardNoTo" th:value="${filter.cardNoTo()}"
+                               class="form-control" placeholder="card no to">
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="amount" th:value="${filter.amount()}"
+                               class="form-control" placeholder="amount">
+                    </div>
+                    <div class="col-auto">
+                        <input type="datetime-local" name="timeOfTransfer" th:value="${filter.timeOfTransfer()}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="recipient" th:value="${filter.recipient()}"
+                               class="form-control" placeholder="recipient">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="message" th:value="${filter.message()}"
+                               class="form-control" placeholder="message">
+                    </div>
+                    <div class="col-auto">
+                        <input type="radio" class="btn-check" name="status" id="status" autocomplete="off"
+                               value="SUCCESS">
+                        <label class="btn btn-outline-success" for="status">Active</label>
+                        <input type="radio" class="btn-check" name="status" id="status1" autocomplete="off"
+                               value="FAILED">
+                        <label class="btn btn-outline-danger" for="status1">Failed</label>
+                    </div>
+                    <div class="col-auto">
+                        <label for="page">Page:</label>
+                        <input id="page" type="number" name="page" th:value="${transfers.metadata.page}"
+                               class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="size">Size:</label>
+                        <select id="size" name="size" th:value="${transfers.metadata.size}" class="form-control">
+                            <option value="5000">all</option>
+                            <option value="5">5</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-dark">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>My transfers</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Transfer id</th>
+            <th>Client id</th>
+            <th>Card id from</th>
+            <th>Card id to</th>
+            <th>Amount</th>
+            <th>Time</th>
+            <th>Recipient</th>
+            <th>Message</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transfer : ${transfers.content}">
+            <td th:text="${transfer.id()}"></td>
+            <td th:text="${transfer.clientId()}"></td>
+            <td th:text="${transfer.cardIdFrom()}"></td>
+            <td th:text="${transfer.cardIdTo()}"></td>
+            <td th:text="${transfer.amount()}"></td>
+            <td th:text="${transfer.timeOfTransfer()}"></td>
+            <td th:text="${transfer.recipient()}"></td>
+            <td th:text="${transfer.message()}"></td>
+            <td th:text="${transfer.status().name()}"
+                th:class="${transfer.status().name()  ==  'SUCCESS' ? 'text-success' : 'text-danger'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

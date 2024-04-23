@@ -20,14 +20,14 @@
 
 <div class="container">
     <h1>My cards</h1>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Card number</th>
             <th>Balance</th>
             <th>Expire date</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Block (balance should be 0)</th>
         </tr>
         </thead>
         <tbody>
@@ -37,10 +37,11 @@
             <td th:text="${card.expireDate()}"></td>
             <td th:text="${card.status().name()}"
                 th:class="${card.status().name()  ==  'ACTIVE' ? 'text-success' : 'text-danger'}"></td>
-        <td>
-            <form th:action="@{/cards/{cardId}/update(cardId=${card.id})}"
+            <td> <div th:if="${card.status().name() == 'ACTIVE' and card.balance() != 0}"></div>
+
+            <form th:if="${card.status().name() == 'ACTIVE' and card.balance() == 0}" th:action="@{/cards/{cardId}/update(cardId=${card.id})}"
                   method="post">
-                <button type="submit" onclick="return confirmDelete()">block card</button>
+                <button class="btn btn-outline-danger" type="submit" onclick="return confirmDelete()">block card</button>
             </form>
         </td>
         </tr>

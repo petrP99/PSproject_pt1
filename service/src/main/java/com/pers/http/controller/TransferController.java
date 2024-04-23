@@ -37,10 +37,18 @@ public class TransferController {
     private final CardService cardService;
     private final ClientService clientService;
 
+    @GetMapping("/transfer-between")
+    public String transferBetweenClientCards(@Validated @ModelAttribute("transfer") TransferCreateDto transfer, Model model, HttpSession session) {
+        session.getAttribute("clientId");
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        model.addAttribute("cards", cards);
+        model.addAttribute("transfer", transfer);
+        return "transfer/transfer-between";
+    }
+
     @GetMapping("/transfer")
     public String transfer(@Validated @ModelAttribute("transfer") TransferCreateDto transfer, Model model, HttpSession session) {
-        var clientId = (Long) session.getAttribute("clientId");
-        var cards = cardService.findByClientId(clientId).stream().toList();
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
         model.addAttribute("cards", cards);
         model.addAttribute("transfer", transfer);
         return "transfer/transfer";
@@ -55,23 +63,24 @@ public class TransferController {
         return "transfer/check";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated TransferCreateDto transfer, HttpSession session, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
-        transfer = (TransferCreateDto) session.getAttribute("transfer");
+    @PostMapping("/create-between")
+    public String createBetween(@Validated TransferCreateDto transfer, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("transfer", transfer);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/transfers";
         }
-        return transferService.checkTransfer(transfer);
+        return (transferService.checkAndCreateTransfer(transfer)) ? "transfer/success" : "transfer/fail";
     }
 
-    @PostMapping("/update")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
-    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated TransferCreateDto transfer) {
-        return transferService.update(id, transfer)
-                .map(it -> "redirect:/transfers/{id}")
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    @PostMapping("/create")
+    public String create(@Validated TransferCreateDto transfer, HttpSession session, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("transfer", transfer);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/transfers";
+        }
+        return (transferService.checkAndCreateTransfer(transfer)) ? "transfer/success" : "transfer/fail";
     }
 
     @PostMapping("/delete")
@@ -83,15 +92,15 @@ public class TransferController {
         return "redirect:/transfers";
     }
 
-    @GetMapping("/transfers")
-    public String findByClientId(@Validated Model model, HttpSession session) {
-        var clientId = (Long) session.getAttribute("clientId");
-        var myTransfers = transferService.findBySenderClientId(clientId);
-        model.addAttribute("transfers", myTransfers);
-        return "transfer/transfers";
+    @GetMapping("/clientTransfers")
+    public String findAllByClientByFilter(Model model, TransferFilterDto filter, Pageable pageable, HttpSession session) {
+        Page<TransferReadDto> page = transferService.findAllByClientByFilter(filter, pageable, (Long) session.getAttribute("clientId"));
+        model.addAttribute("transfers", PageResponse.of(page));
+        model.addAttribute("filter", filter);
+        return "transfer/clientTransfers";
     }
 
-    @GetMapping()
+    @GetMapping("/transfers")
     @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String findAll(Model model, TransferFilterDto filter, Pageable pageable) {
         Page<TransferReadDto> page = transferService.findAllByFilter(filter, pageable);
@@ -100,13 +109,4 @@ public class TransferController {
         return "transfer/transfers";
     }
 
-    @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        return transferService.findById(id)
-                .map(transfer -> {
-                    model.addAttribute("transfer", transfer);
-                    return "transfer/transfer";
-                })
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
-    }
 }

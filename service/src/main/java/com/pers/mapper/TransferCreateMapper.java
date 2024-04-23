@@ -1,16 +1,15 @@
 package com.pers.mapper;
 
-import static com.pers.entity.Status.FAILED;
-import com.pers.repository.CardRepository;
 import com.pers.dto.TransferCreateDto;
+import static com.pers.entity.Status.FAILED;
+import static com.pers.entity.Status.SUCCESS;
 import com.pers.entity.Transfer;
+import com.pers.repository.CardRepository;
 import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
-import static com.pers.entity.Status.SUCCESS;
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
@@ -26,12 +25,13 @@ public class TransferCreateMapper implements Mapper<TransferCreateDto, Transfer>
         var recipient = clientRepository.findFirstAndLastNameByClientId(recipientClientId);
 
         return Transfer.builder()
+                .clientId(clientRepository.findById(object.clientId()).orElseThrow(IllegalArgumentException::new))
                 .cardNoFrom(cardRepository.findById(object.cardIdFrom()).orElseThrow(IllegalArgumentException::new))
                 .cardNoTo(cardRepository.findById(object.cardIdTo()).orElseThrow(IllegalArgumentException::new))
                 .amount(object.amount())
                 .recipient(recipient)
                 .message(object.message())
-                .timeOfTransfer(LocalDateTime.now())
+                .timeOfTransfer(Instant.now())
                 .status(object.status() == null ? SUCCESS : FAILED)
                 .build();
     }
