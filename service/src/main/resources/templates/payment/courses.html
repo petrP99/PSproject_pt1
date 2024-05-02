@@ -31,15 +31,14 @@
             box-sizing: border-box;
         }
 
-        #headerImage {
-            width: 100%;
-            display: block;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
+<header>
+    <div th:insert="~{navbar :: navbar}"></div>
+</header>
 
 <body>
+<div>
 <form th:action="@{/payments/create}" method="post" th:object="${payment}">
     <h2>Pay DMdev courses</h2>
     <br>
@@ -76,6 +75,6 @@
                placeholder="amount" pattern="[0-9]*" min="0">
     </div>
     <button type="submit" class="btn btn-primary">Pay!</button>
-</form>
+</form></div>
 </body>
 </html>

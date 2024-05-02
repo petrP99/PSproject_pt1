@@ -7,44 +7,39 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 70vh;
+        /* Форма шире */
+        .card {
+            width: 400px; /* Ширина формы */
+            margin: 0 auto; /* Центрирование формы по горизонтали */
+            margin-top: 200px; /* Отступ сверху */
+
         }
 
-        .form-container {
-            text-align: center;
-        }
-
-        .form-container button {
-            margin: 12px;
-        }
-
+        /* Все поля и кнопки имеют одинаковую ширину */
         input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
+        input[type="password"],
+        .btn {
+            width: 100%; /* Ширина полей и кнопок */
+            margin-bottom: 10px; /* Отступ между полями и кнопкой */
         }
 
-        label {
+        .card-title,
+        .form-group label {
             text-align: center;
-            display: block;
         }
 
-        h3 {
+        .form-group label {
             text-align: center;
+            display: block; /* Разместить название поля на новой строке */
         }
     </style>
 </head>
+
 <body>
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h3 class="h3">Registration: </h3>
+            <h3 class="card-title">Registration</h3>
             <form th:action="@{/users}" method="post" th:object="${user}">
                 <div class="form-group">
                     <label for="login" class="text-center">login:
@@ -59,10 +54,18 @@
                     </label>
                 </div>
                 <div class="form-container text-center">
-                    <button type="submit" class="btn btn-outline-success">Registration</button>
+                    <button type="submit" class="btn btn-success">Registration</button>
                 </div>
-                <div style="color:red" th:if="${param.error}">Bad credentials</div>
+                <div th:if="${errors}">
+                    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
+                        Message</p>
+                </div>
             </form>
+            <div class="form-container">
+                <a href="/login">
+                    <button type="button" class="btn btn-dark">Login</button>
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -70,3 +73,25 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

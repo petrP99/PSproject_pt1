@@ -37,7 +37,15 @@ public class ClientController {
     @GetMapping("/registration/{id}")
     public String registration(@Validated @PathVariable(value = "id") Long userId,
                                Model model,
-                               @ModelAttribute("client") ClientCreateDto client) {
+                               @ModelAttribute("client") ClientCreateDto client,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("client", client);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/clients/registration/" + client.userId();
+        }
         model.addAttribute("userId", client.userId());
         model.addAttribute("client", client);
         return "client/registration";
@@ -49,11 +57,11 @@ public class ClientController {
                          RedirectAttributes redirectAttributes,
                          HttpServletRequest request) {
         if (clientService.findByUserId(client.userId()).isPresent()) {
-            return "redirect:/users/registration";
+            return "redirect:/login";
         }
         var newClient = clientService.create(client);
         request.getSession().setAttribute("clientId", newClient.getId());
-        if (bindingResult.hasErrors()) {
+        if (clientService.findByPhone(client.phone()).isPresent() || bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("client", client);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/clients/registration/" + client.userId();
@@ -68,12 +76,18 @@ public class ClientController {
         return "client/home";
     }
 
-
     @PostMapping("/{id}/update")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String update(@PathVariable("id") Long id, @ModelAttribute @Validated ClientCreateDto client) {
         return clientService.update(id, client)
-                .map(it -> "redirect:/clients/{id}")
+                .map(it -> "redirect:/clients/home/" + id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    }
+
+    @PostMapping("/{id}/update-by-admin")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
+    public String updateByAdmin(@PathVariable("id") Long id, @ModelAttribute @Validated ClientCreateDto client) {
+        return clientService.update(id, client)
+                .map(it -> "redirect:/clients")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
@@ -95,13 +109,15 @@ public class ClientController {
         return "client/clients";
     }
 
-    @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        return clientService.findById(id)
+    @GetMapping("/client")
+    @PreAuthorize("hasAnyAuthority('USER', 'SUPER_ADMIN')")
+    public String findById(Model model, HttpSession session) {
+        return clientService.findById((Long) session.getAttribute("clientId"))
                 .map(client -> {
                     model.addAttribute("client", client);
-                    return "client/client";
+                    return "client/client-update";
                 })
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
+
 }

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,7 +47,7 @@ class ReplenishmentServiceIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632587854")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .status(Status.ACTIVE)
                 .build();
 
@@ -71,7 +71,7 @@ class ReplenishmentServiceIT extends BaseIntegrationIT {
                 .clientTo(client)
                 .cardNoTo(card)
                 .amount(new BigDecimal(250))
-                .timeOfReplenishment(LocalDateTime.now())
+                .timeOfReplenishment(Instant.now())
                 .status(Status.SUCCESS)
                 .build();
 
@@ -79,7 +79,7 @@ class ReplenishmentServiceIT extends BaseIntegrationIT {
                 .clientTo(client)
                 .cardNoTo(card2)
                 .amount(new BigDecimal(200))
-                .timeOfReplenishment(LocalDateTime.now())
+                .timeOfReplenishment(Instant.now())
                 .status(Status.SUCCESS)
                 .build();
 

@@ -99,24 +99,37 @@
             <td th:text="${client.getLastName()}"></td>
             <td th:text="${client.getPhone()}"></td>
             <td th:text="${client.getBalance()}"></td>
-            <td th:text="${client.getStatus()}"></td>
+            <td th:text="${client.getStatus()}"
+                th:class="${client.getStatus().name()  ==  'ACTIVE' ? 'text-success' :  'text-danger'}"></td>
             <td>
-                <form th:action="@{/clients/{clientId}/update(clientId=${client.id})}"
+                <form th:if="${client.getStatus().name()  ==  'ACTIVE'}"
+                      th:action="@{/clients/{clientId}/update-by-admin(clientId=${client.id})}"
                       method="post">
+                    <input type="hidden" name="balance" th:value="${client.balance}">
+                    <input type="hidden" name="userId" th:value="${client.userId.id}">
+                    <input type="hidden" name="firstName" th:value="${client.firstName}">
+                    <input type="hidden" name="lastName" th:value="${client.lastName}">
+                    <input type="hidden" name="phone" th:value="${client.phone}">
+                    <input type="hidden" name="status" th:value="${client.status}">
                     <button type="submit" class="btn btn-outline-danger">Block client</button>
+                </form>
+
+                <form th:if="${client.getStatus().name()  ==  'BLOCKED'}"
+                      th:action="@{/clients/{clientId}/update-by-admin(clientId=${client.id})}"
+                      method="post">
+                    <input type="hidden" name="balance" th:value="${client.balance}">
+                    <input type="hidden" name="userId" th:value="${client.userId.id}">
+                    <input type="hidden" name="firstName" th:value="${client.firstName}">
+                    <input type="hidden" name="lastName" th:value="${client.lastName}">
+                    <input type="hidden" name="phone" th:value="${client.phone}">
+                    <input type="hidden" name="status" th:value="${client.status}">
+                    <button type="submit" class="btn btn-outline-success">Unblock client</button>
                 </form>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<!--<div class="pagination">-->
-<!--    <ul>-->
-<!--        <li th:each="pageNumber : ${#numbers.sequence(1, clients.metadata.getTotalElements())}">-->
-<!--            <a th:href="@{'?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>-->
-<!--        </li>-->
-<!--    </ul>-->
-<!--</div>-->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

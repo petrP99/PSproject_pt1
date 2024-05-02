@@ -38,7 +38,9 @@
         }
     </style>
 </head>
-
+<header>
+    <div th:insert="~{navbar :: navbar}"></div>
+</header>
 <body>
 <form th:action="@{/payments/create}" method="post" th:object="${payment}">
     <h2>Pay for electricity</h2>

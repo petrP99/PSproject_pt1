@@ -10,7 +10,7 @@ import com.pers.integration.BaseIntegrationIT;
 import jakarta.persistence.EntityManager;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,7 +69,7 @@ class ClientControllerIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632587854")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .status(Status.ACTIVE)
                 .build();
 

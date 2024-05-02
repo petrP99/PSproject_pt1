@@ -21,7 +21,7 @@ import org.springframework.security.access.method.P;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.filter;
@@ -52,7 +52,7 @@ class PaymentServiceIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632587854")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .status(Status.ACTIVE)
                 .build();
 
@@ -77,7 +77,7 @@ class PaymentServiceIT extends BaseIntegrationIT {
                 .card(card)
                 .amount(new BigDecimal(250))
                 .shopName("Ozon")
-                .timeOfPay(LocalDateTime.now())
+                .timeOfPay(Instant.now())
                 .status(Status.SUCCESS)
                 .build();
 
@@ -86,7 +86,7 @@ class PaymentServiceIT extends BaseIntegrationIT {
                 .card(card)
                 .amount(new BigDecimal(200))
                 .shopName("Ozon")
-                .timeOfPay(LocalDateTime.now())
+                .timeOfPay(Instant.now()) 
                 .status(Status.SUCCESS)
                 .build();
 

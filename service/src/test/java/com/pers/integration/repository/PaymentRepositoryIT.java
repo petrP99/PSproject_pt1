@@ -23,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @RequiredArgsConstructor
 class PaymentRepositoryIT extends BaseIntegrationIT {
@@ -52,7 +52,7 @@ class PaymentRepositoryIT extends BaseIntegrationIT {
                 .firstName("Ivan")
                 .lastName("Ivanov")
                 .phone("89638527412")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .balance(new BigDecimal(0))
                 .status(ACTIVE)
                 .build();
@@ -61,7 +61,7 @@ class PaymentRepositoryIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632589632")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .balance(new BigDecimal(0))
                 .status(ACTIVE)
                 .build();
@@ -84,7 +84,7 @@ class PaymentRepositoryIT extends BaseIntegrationIT {
                 .card(card)
                 .shopName("Ozon")
                 .amount(new BigDecimal(100))
-                .timeOfPay(LocalDateTime.now())
+                .timeOfPay(Instant.now())
                 .status(SUCCESS)
                 .build();
         payment2 = Payment.builder()
@@ -92,7 +92,7 @@ class PaymentRepositoryIT extends BaseIntegrationIT {
                 .card(card2)
                 .shopName("Amazon")
                 .amount(new BigDecimal(70))
-                .timeOfPay(LocalDateTime.now())
+                .timeOfPay(Instant.now())
                 .status(FAILED)
                 .build();
         userRepository.save(user);

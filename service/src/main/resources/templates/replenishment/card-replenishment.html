@@ -40,30 +40,19 @@
 <body>
 <div class="container">
     <form th:action="@{/replenishments/create}" method="post" th:object="${replenishment}">
-        <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
-        <!--        <div class="form-select">-->
-        <!--                <select id="cardId" name="cardId">-->
-        <!--                    <option th:each="card : ${cards}"-->
-        <!--                            th:value="${card.id()}"-->
-        <!--                            th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()} +'  Stastus: '+ ${card.status()}">-->
-        <!--                    </option>-->
-        <!--                </select>-->
-        <!--        </div>-->
-
-        <select class="form-select" aria-label="Default select example" id="cardId" name="cardId">
-            <option th:each="card : ${cards}"
-                    th:value="${card.id()}"
-                    th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()} +'  Stastus: '+ ${card.status()}">
-                Select card
-            </option>
-        </select>
-
+        <input type="hidden" name="clientId" th:value="${session.clientId}">
+        <input type="hidden" name="cardId" th:value="${id}">
         <div class="mb-3">
-            <label for="amount" class="form-label">Amount:
-                <input id="amount" type="number" class="form-control" name="amount" th:value="*{amount()}" pattern="[0-9]*" min="0">
+            <label for="cardId" class="form-label">Card:
+                <input id="cardId" class="form-control" th:value="${id}" disabled>
             </label><br>
         </div>
-
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount:
+                <input id="amount" type="number" class="form-control" name="amount" th:value="*{amount()}"
+                       pattern="[0-9]*" min="0">
+            </label><br>
+        </div>
         <button type="submit" class="btn btn-primary">Replenish!</button>
     </form>
 

@@ -6,11 +6,13 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import static org.springframework.util.StringUtils.hasText;
 
+import java.math.BigDecimal;
+
 public class TransferInfoValidator implements ConstraintValidator<TransferInfo, TransferCreateDto> {
 
 
     @Override
     public boolean isValid(TransferCreateDto value, ConstraintValidatorContext context) {
-        return hasText(String.valueOf(value.amount())) && hasText(String.valueOf(value.cardIdTo()));
+        return value.amount().compareTo(BigDecimal.ZERO) > 0  && value.cardIdTo() != 0;
     }
 }

@@ -12,7 +12,6 @@
     <form th:action="@{/logout}" method="post">
         <button type="submit" class="btn btn-outline-danger">Logout</button>
     </form>
-<!--    <div th:insert="~{fragment :: locale}"></div>-->
 </div>
 <div th:fragment="locale">
     <form class="dt-row-group center" action="">
@@ -20,17 +19,5 @@
             <button type="submit" class="btn btn-outline-dark" name="lang" value="ru" onchange="this.form.submit()">RU</button>
     </form>
 </div>
-
-<!--<div th:fragment="locale">-->
-<!--    <form action="">-->
-<!--        <label>-->
-<!--            <select name="lang" onchange="this.form.submit()">-->
-<!--                <option></option>-->
-<!--                <option value="en">EN</option>-->
-<!--                <option value="ru">RU</option>-->
-<!--            </select>-->
-<!--        </label>-->
-<!--    </form>-->
-<!--</div>-->
 </body>
 </html>

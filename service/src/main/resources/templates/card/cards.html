@@ -3,23 +3,36 @@
 <head>
     <title>Список карт</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .card-title,
+        .form-group label {
+            text-align: center;
+        }
+
+        .card {
+            width: 109px; /* Ширина формы */
+            margin: 0 auto; /* Центрирование формы по горизонтали */
+            margin-top: 10px; /* Отступ сверху */
+
+        }
+    </style>
 </head>
 
 <header>
-    <div class="container border-top" style="border-top: darkslategray">
-        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>
-    </div>
+    <div th:insert="~{navbar :: navbar}"></div>
 </header>
+
 <body>
-<div class="container">
-    <form th:action="@{/cards/create}" method="post">
-        <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
-        <button type="submit" class="btn btn-primary">Create card</button>
-    </form>
-</div>
 
 <div class="container">
-    <h1>My cards</h1>
+    <div class="card">
+        <form th:action="@{/cards/create}" method="post">
+            <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
+            <button type="submit" class="btn btn-success">Create card</button>
+        </form>
+    </div>
+    <h1 class="card-title">My cards</h1>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -27,7 +40,8 @@
             <th>Balance</th>
             <th>Expire date</th>
             <th>Status</th>
-            <th>Block (balance should be 0)</th>
+            <th>Replenish</th>
+            <th>Block</th>
         </tr>
         </thead>
         <tbody>
@@ -36,14 +50,23 @@
             <td th:text="${card.balance()}"></td>
             <td th:text="${card.expireDate()}"></td>
             <td th:text="${card.status().name()}"
-                th:class="${card.status().name()  ==  'ACTIVE' ? 'text-success' : 'text-danger'}"></td>
-            <td> <div th:if="${card.status().name() == 'ACTIVE' and card.balance() != 0}"></div>
-
-            <form th:if="${card.status().name() == 'ACTIVE' and card.balance() == 0}" th:action="@{/cards/{cardId}/update(cardId=${card.id})}"
-                  method="post">
-                <button class="btn btn-outline-danger" type="submit" onclick="return confirmDelete()">block card</button>
-            </form>
-        </td>
+                th:class="${card.status().name()  ==  'ACTIVE' ? 'text-success' : (card.status().name() == 'BLOCKED' ? 'text-danger' : 'text-warning')}"></td>
+            <td>
+                <form th:if="${card.status().name() == 'ACTIVE'}"
+                      th:action="@{/replenishments/replenishment/{cardId}(cardId=${card.id})}"
+                      method="get">
+                    <button class="btn btn-outline-success" type="submit">replenish
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form th:if="${card.status().name() == 'ACTIVE' and card.balance() == 0}"
+                      th:action="@{/cards/{cardId}/update(cardId=${card.id})}"
+                      method="post">
+                    <button class="btn btn-outline-danger" type="submit" onclick="return confirmDelete()">block card
+                    </button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -53,7 +76,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     function confirmDelete() {
-        return confirm("Are you sure do you want to update status this card?");
+        return confirm("Are you sure do you want to block this card?");
     }
 </script>
 </body>

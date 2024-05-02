@@ -5,6 +5,7 @@ import com.pers.service.ClientService;
 import com.pers.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +36,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         var client = clientService.findByUserName(userName);
         var userId = userService.findIdByLogin(userName).orElseThrow().getId();
-
         if (client.isPresent()) {
             var clientId = client.map(ClientReadDto::getId).orElseThrow();
             response.sendRedirect("/clients/home/" + clientId);

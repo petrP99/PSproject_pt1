@@ -9,7 +9,9 @@
         <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>
     </div>
 </header>
-
+<header>
+    <div th:insert="~{navbar :: navbar}"></div>
+</header>
 <body>
 <div class="container mt6-m">
     <div class="row justify-content-center mt-5">

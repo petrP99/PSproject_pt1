@@ -25,9 +25,20 @@ public class ClientCreateMapper implements Mapper<ClientCreateDto, Client> {
                 .firstName(object.firstName())
                 .lastName(object.lastName())
                 .phone(object.phone())
-                .status(object.status() != ACTIVE ? ACTIVE : BLOCKED)
+                .status(ACTIVE)
                 .createdTime(Instant.now())
                 .build();
     }
 
+    @Override
+    public Client map(ClientCreateDto fromObject, Client toObject) {
+        toObject.setUser(userRepository.findById(fromObject.userId()).orElseThrow(IllegalArgumentException::new));
+        toObject.setBalance(fromObject.balance());
+        toObject.setFirstName(fromObject.firstName());
+        toObject.setLastName(fromObject.lastName());
+        toObject.setPhone(fromObject.phone());
+        toObject.setStatus(fromObject.status() == ACTIVE ? BLOCKED : ACTIVE);
+        toObject.setCreatedTime(Instant.now());
+        return toObject;
+    }
 }

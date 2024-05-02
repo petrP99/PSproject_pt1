@@ -20,43 +20,46 @@
     <!--        }-->
     <!--    </style>-->
 </head>
-
+<header>
+    <div th:insert="~{navbar :: navbar}"></div>
+</header>
 <body>
-<div class="container">
-    <div class="row align-items-center">
-        <section>
-            <div class="col">
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="text-center">
                 <a th:href="@{/payments/ozon}">
                     <img src="https://play-lh.googleusercontent.com/9NW52L6nH8NCSI8KQEbtuF4sPeGLQO_gnq_x-PQW1_1lnTku6vhCVrpRMxB_27GGgZ8"
                          alt="Image 2"
                          class="img-fluid" style="max-width: 300px; max-height: 200px;">
-                    <h2 style="color: black" class="text-center">communal</h2>
+                    <!--                    <h2 style="color: black" class="text-center">communal</h2>-->
                 </a>
+                <p>Text 3</p>
             </div>
 
-        </section>
-        <section>
-            <div class="col">
-                <a th:href="@{/payments/mobile}">
-                    <img src="https://www.paysera.com/v2/images/render/3114/3757"
-                         alt="Image 1"
-                         class="img-fluid" style="max-width: 300px; max-height: 200px;">
-                    <h2 style="color: black" class="text-center">mobile</h2>
-                </a>
-            </div>
-        </section>
+            <section>
+                <div class="col">
+                    <a th:href="@{/payments/mobile}">
+                        <img src="https://www.paysera.com/v2/images/render/3114/3757"
+                             alt="Image 1"
+                             class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                        <h2 style="color: black" class="text-center">mobile</h2>
+                    </a>
+                </div>
+            </section>
 
-        <section>
-            <div class="col">
-                <a th:href="@{/payments/courses}">
-                    <img src="https://yt3.googleusercontent.com/ytc/AIdro_moVPZ42xQSAi663n7fa7lnOoBjkx_YgNSOUCFzoBlozA=s176-c-k-c0x00ffffff-no-rj"
-                         alt="Image 1"
-                         class="img-fluid" style="max-width: 300px; max-height: 200px;">
-                    <h2 style="color: black" class="text-center">courses</h2>
-                </a>
-            </div>
-        </section>
+            <section>
+                <div class="col">
+                    <a th:href="@{/payments/courses}">
+                        <img src="https://yt3.googleusercontent.com/ytc/AIdro_moVPZ42xQSAi663n7fa7lnOoBjkx_YgNSOUCFzoBlozA=s176-c-k-c0x00ffffff-no-rj"
+                             alt="Image 1"
+                             class="img-fluid" style="max-width: 300px; max-height: 200px;">
+                        <h2 style="color: black" class="text-center">courses</h2>
+                    </a>
+                </div>
+            </section>
+        </div>
     </div>
-</div>
 </body>
 </html>

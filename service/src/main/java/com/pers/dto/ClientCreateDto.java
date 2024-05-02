@@ -19,11 +19,11 @@ public record ClientCreateDto(Long userId,
                               BigDecimal balance,
 
                               @NotBlank
-                              @Pattern(regexp = "[a-zA-Z]+", message = "Разрешены только буквы")
+                              @Pattern(regexp = "[а-яА-яa-zA-Z]+")
                               String firstName,
 
                               @NotBlank
-                              @Pattern(regexp = "[a-zA-Z]+", message = "Разрешены только буквы")
+                              @Pattern(regexp = "[а-яА-яa-zA-Z]+")
                               String lastName,
 
                               @NotBlank

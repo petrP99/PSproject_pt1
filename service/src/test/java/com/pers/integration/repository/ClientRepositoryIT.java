@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @RequiredArgsConstructor
 class ClientRepositoryIT extends BaseIntegrationIT {
@@ -45,7 +45,7 @@ class ClientRepositoryIT extends BaseIntegrationIT {
                 .firstName("Ivan")
                 .lastName("Ivanov")
                 .phone("89638527412")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .balance(new BigDecimal(0))
                 .status(ACTIVE)
                 .build();
@@ -54,7 +54,7 @@ class ClientRepositoryIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632589632")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .balance(new BigDecimal(0))
                 .status(ACTIVE)
                 .build();

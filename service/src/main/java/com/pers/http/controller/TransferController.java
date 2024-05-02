@@ -39,7 +39,6 @@ public class TransferController {
 
     @GetMapping("/transfer-between")
     public String transferBetweenClientCards(@Validated @ModelAttribute("transfer") TransferCreateDto transfer, Model model, HttpSession session) {
-        session.getAttribute("clientId");
         var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
         model.addAttribute("cards", cards);
         model.addAttribute("transfer", transfer);
@@ -70,17 +69,18 @@ public class TransferController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/transfers";
         }
-        return (transferService.checkAndCreateTransfer(transfer)) ? "transfer/success" : "transfer/fail";
+        return transferService.checkAndCreateTransfer(transfer) ? "transfer/success" : "transfer/fail";
     }
 
     @PostMapping("/create")
     public String create(@Validated TransferCreateDto transfer, HttpSession session, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        transfer = (TransferCreateDto) session.getAttribute("transfer");
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("transfer", transfer);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/transfers";
         }
-        return (transferService.checkAndCreateTransfer(transfer)) ? "transfer/success" : "transfer/fail";
+        return transferService.checkAndCreateTransfer(transfer) ? "transfer/success" : "transfer/fail";
     }
 
     @PostMapping("/delete")

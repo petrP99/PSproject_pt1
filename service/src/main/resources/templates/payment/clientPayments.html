@@ -7,11 +7,7 @@
 </head>
 
 <header>
-<!--    <div class="container border-top" style="border-top: darkslategray">-->
-<!--        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>-->
-<!--    </div>-->
-
-    ~{client/home :: navbar}"></div>
+    <div th:insert="~{navbar :: navbar}"></div>
 </header>
 
 <body>

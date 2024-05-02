@@ -17,6 +17,9 @@ public interface ClientRepository extends JpaRepository<Client, Long>,
 
     Optional<Client> findById(Long id);
 
+    Optional<Client> findByPhone(String phone);
+
+
     Optional<Client> findByUserLogin(String login);
 
     @Query("select concat(c.firstName, ' ', c.lastName)from Client c where c.id = :id")

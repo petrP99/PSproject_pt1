@@ -13,7 +13,7 @@ import com.pers.service.ClientService;
 import jakarta.persistence.EntityManager;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +52,7 @@ class ClientServiceIT extends BaseIntegrationIT {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .phone("89632587854")
-                .createdTime(LocalDateTime.now())
+                .createdTime(Instant.now())
                 .status(Status.ACTIVE)
                 .build();
 

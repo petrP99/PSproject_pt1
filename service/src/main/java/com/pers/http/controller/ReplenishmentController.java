@@ -43,6 +43,13 @@ public class ReplenishmentController {
         return "replenishment/replenishment";
     }
 
+    @GetMapping("/replenishment/{id}")
+    public String cardReplenishment(@Validated @ModelAttribute("replenishment") ReplenishmentCreateDto replenishment, @PathVariable("id") Long cardId, Model model) {
+        model.addAttribute("id", cardId);
+        model.addAttribute("replenishment", replenishment);
+        return "replenishment/card-replenishment";
+    }
+
     @PostMapping("/create")
     public String create(@Validated @ModelAttribute("replenishment") ReplenishmentCreateDto replenishment,
                          BindingResult bindingResult,

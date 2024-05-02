@@ -87,6 +87,11 @@ public class ClientService {
                 .map(clientReadMapper::mapFrom);
     }
 
+    public Optional<ClientReadDto> findByPhone(String phone) {
+        return clientRepository.findByPhone(phone)
+                .map(clientReadMapper::mapFrom);
+    }
+
     public Optional<ClientReadDto> findByUserName(String username) {
         return clientRepository.findByUserLogin(username)
                 .map(clientReadMapper::mapFrom);

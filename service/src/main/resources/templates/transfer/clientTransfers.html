@@ -5,9 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <header>
-    <div class="container border-top" style="border-top: darkslategray">
-        <a style="color: black" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a>
-    </div>
+    <div th:insert="~{navbar :: navbar}"></div>
 </header>
 
 <body>

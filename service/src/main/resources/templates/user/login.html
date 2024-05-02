@@ -6,70 +6,66 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 70vh;
+        /* Форма шире */
+        .card {
+            width: 400px; /* Ширина формы */
+            margin: 0 auto; /* Центрирование формы по горизонтали */
+            margin-top: 200px; /* Отступ сверху */
+
         }
 
-        .form-container {
-            text-align: center;
-        }
-
-        .form-container button {
-            margin: 12px;
-        }
-
+        /* Все поля и кнопки имеют одинаковую ширину */
         input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
+        input[type="password"],
+        .btn {
+            width: 100%; /* Ширина полей и кнопок */
+            margin-bottom: 15px; /* Отступ между полями и кнопкой */
         }
 
-        label {
+        .card-title,
+        .form-group label {
             text-align: center;
-            display: block;
         }
 
-        h3 {
+        .form-group label {
             text-align: center;
+            display: block; /* Разместить название поля на новой строке */
         }
     </style>
 </head>
 <body>
+
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h3 class="h3" th:name="header"><span th:text="#{login.header}">log in</span></h3>
+            <h3 class="card-title">Log in</h3>
             <form th:action="@{/login}" method="post">
-                <div class="form-group row-cols-10">
-                    <label for="username"><span th:text="#{login.username}">login:</span>
-                        <input id="username" type="email" name="username" placeholder="example@bk.ru">
-                    </label>
+                <div class="form-group">
+                    <label for="username">Login:</label>
+                    <input id="username" type="email" name="username" class="form-control" placeholder="example@bk.ru">
                 </div>
-                <div class="form-group row-cols-10">
-                    <label for="password"><span th:text="#{login.password}">password:</span>
-                        <input id="password" type="password" name="password" placeholder="must not be empty">
-                    </label>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input id="password" type="password" name="password" class="form-control" placeholder="must not be empty">
                 </div>
-                <div class="form-container">
-                    <button type="submit" class="btn btn-outline-success">Login</button>
-                </div>
-                <div style="color:red" th:if="${param.error}"><span th:text="#{login.error}">Bad credentials</span>
-                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
             </form>
             <div class="form-container">
                 <a href="/users/registration">
-                    <button type="submit" class="btn btn-dark">Registration</button>
+                    <button type="button" class="btn btn-dark">Registration</button>
                 </a>
             </div>
+        <div th:if="${errors}">
+            <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
+                Message</p>
         </div>
-        <div th:insert="~{fragment :: locale}"></div>
+        </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
