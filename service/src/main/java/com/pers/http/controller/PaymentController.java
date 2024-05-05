@@ -67,19 +67,53 @@ public class PaymentController {
         return "payment/ozon";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated @ModelAttribute("payment") PaymentCreateDto payment,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes,
-                         HttpSession session,
-                         Model model) {
+    @PostMapping("/create/mobile")
+    public String createPayMobile(@Validated @ModelAttribute("payment") PaymentCreateDto payment,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes,
+                                  HttpSession session,
+                                  Model model) {
         session.getAttribute("clientId");
         model.addAttribute("payment", payment);
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("payment", payment);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/payments";
+            return "redirect:/payments/mobile";
+        }
+        return paymentService.checkAndCreatePayment(payment) ? "payment/success" : "payment/fail";
+    }
+
+    @PostMapping("/create/courses")
+    public String createPayCourses(@Validated @ModelAttribute("payment") PaymentCreateDto payment,
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes,
+                                   HttpSession session,
+                                   Model model) {
+        session.getAttribute("clientId");
+        model.addAttribute("payment", payment);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("payment", payment);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/payments/courses";
+        }
+        return paymentService.checkAndCreatePayment(payment) ? "payment/success" : "payment/fail";
+    }
+
+    @PostMapping("/create/ozon")
+    public String createPayCommunal(@Validated @ModelAttribute("payment") PaymentCreateDto payment,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes,
+                                    HttpSession session,
+                                    Model model) {
+        session.getAttribute("clientId");
+        model.addAttribute("payment", payment);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("payment", payment);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/payments/ozon";
         }
         return paymentService.checkAndCreatePayment(payment) ? "payment/success" : "payment/fail";
     }

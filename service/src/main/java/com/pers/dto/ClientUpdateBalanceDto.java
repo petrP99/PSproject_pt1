@@ -3,6 +3,7 @@ package com.pers.dto;
 import com.pers.entity.Status;
 import com.pers.validation.ClientInfo;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.experimental.FieldNameConstants;
@@ -19,14 +20,16 @@ public record ClientUpdateBalanceDto(
         @PositiveOrZero
         BigDecimal balance,
 
-        @NotBlank
+        @NotBlank(message = "")
+        @Pattern(regexp = "[а-яА-яa-zA-Z]+", message = "field 'firstName' only accepts letters")
         String firstName,
 
-        @NotBlank
+        @NotBlank(message = "")
+        @Pattern(regexp = "[а-яА-яa-zA-Z]+", message = "field 'lastName' only accepts letters")
         String lastName,
 
-        @NotBlank
-        @Size(min = 11, max = 11)
+        @NotBlank(message = "")
+        @Size(min = 11, max = 11, message = "field 'phone' only accepts numbers length 11")
         String phone,
         Status status,
         Instant createdTime) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clients</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .btn-filter {
             background-color: #007bff;
@@ -16,6 +16,9 @@
         }
     </style>
 </head>
+<header>
+    <div th:insert="~{adminHeader :: admin-header}"></div>
+</header>
 <body>
 <div class="container mt6-m">
     <div class="row justify-content-center mt-5">
@@ -24,44 +27,44 @@
                 <div class="form-row align-items-xl-center">
                     <div class="col-auto">
                         <label for="id">Id:</label>
-                        <input id="id" type="text" name="id" th:value="${filter.id()}" class="form-control">
+                        <input class="form-control" id="id" name="id" th:value="${filter.id()}" type="text">
                     </div>
                     <div class="col-auto">
                         <label for="userId">User Id:</label>
-                        <input id="userId" type="text" name="userId" th:value="${filter.userId()}" class="form-control">
+                        <input class="form-control" id="userId" name="userId" th:value="${filter.userId()}" type="text">
                     </div>
                     <div class="col-auto">
                         <label for="firstName">First name:</label>
-                        <input id="firstName" type="text" name="firstName" th:value="${filter.firstName()}"
-                               class="form-control">
+                        <input class="form-control" id="firstName" name="firstName" th:value="${filter.firstName()}"
+                               type="text">
                     </div>
                     <div class="col-auto">
                         <label for="lastName">Last name:</label>
-                        <input id="lastName" type="text" name="lastName" th:value="${filter.lastName()}"
-                               class="form-control">
+                        <input class="form-control" id="lastName" name="lastName" th:value="${filter.lastName()}"
+                               type="text">
                     </div>
                     <div class="col-auto">
                         <label for="phone">Phone:</label>
-                        <input id="phone" type="text" name="phone" th:value="${filter.phone()}" class="form-control">
+                        <input class="form-control" id="phone" name="phone" th:value="${filter.phone()}" type="text">
                     </div>
                     <div class="col-auto">
                         <label for="balance">Balance:</label>
-                        <input id="balance" type="text" name="balance" th:value="${filter.balance()}"
-                               class="form-control">
+                        <input class="form-control" id="balance" name="balance" th:value="${filter.balance()}"
+                               type="text">
                     </div>
 
                     <div class="col-auto">
                         <label for="status">Status:</label>
-                        <input id="status" type="text" name="status" th:value="${filter.status()}" class="form-control">
+                        <input class="form-control" id="status" name="status" th:value="${filter.status()}" type="text">
                     </div>
                     <div class="col-auto">
                         <label for="page">Page:</label>
-                        <input id="page" type="number" name="page" th:value="${clients.metadata.page}"
-                               class="form-control">
+                        <input class="form-control" id="page" name="page" th:value="${clients.metadata.page}"
+                               type="number">
                     </div>
                     <div class="col-auto">
                         <label for="size">Size:</label>
-                        <select id="size" name="size" th:value="${clients.metadata.size}" class="form-control">
+                        <select class="form-control" id="size" name="size" th:value="${clients.metadata.size}">
                             <option value="5">5</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
@@ -69,7 +72,7 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-filter">Filter</button>
+                        <button class="btn btn-filter" type="submit">Filter</button>
                     </div>
                 </div>
             </form>
@@ -99,31 +102,31 @@
             <td th:text="${client.getLastName()}"></td>
             <td th:text="${client.getPhone()}"></td>
             <td th:text="${client.getBalance()}"></td>
-            <td th:text="${client.getStatus()}"
-                th:class="${client.getStatus().name()  ==  'ACTIVE' ? 'text-success' :  'text-danger'}"></td>
+            <td th:class="${client.getStatus().name()  ==  'ACTIVE' ? 'text-success' :  'text-danger'}"
+                th:text="${client.getStatus()}"></td>
             <td>
-                <form th:if="${client.getStatus().name()  ==  'ACTIVE'}"
+                <form method="post"
                       th:action="@{/clients/{clientId}/update-by-admin(clientId=${client.id})}"
-                      method="post">
-                    <input type="hidden" name="balance" th:value="${client.balance}">
-                    <input type="hidden" name="userId" th:value="${client.userId.id}">
-                    <input type="hidden" name="firstName" th:value="${client.firstName}">
-                    <input type="hidden" name="lastName" th:value="${client.lastName}">
-                    <input type="hidden" name="phone" th:value="${client.phone}">
-                    <input type="hidden" name="status" th:value="${client.status}">
-                    <button type="submit" class="btn btn-outline-danger">Block client</button>
+                      th:if="${client.getStatus().name()  ==  'ACTIVE'}">
+                    <input name="balance" th:value="${client.balance}" type="hidden">
+                    <input name="userId" th:value="${client.userId.id}" type="hidden">
+                    <input name="firstName" th:value="${client.firstName}" type="hidden">
+                    <input name="lastName" th:value="${client.lastName}" type="hidden">
+                    <input name="phone" th:value="${client.phone}" type="hidden">
+                    <input name="status" th:value="${client.status}" type="hidden">
+                    <button class="btn btn-outline-danger" type="submit">Block client</button>
                 </form>
 
-                <form th:if="${client.getStatus().name()  ==  'BLOCKED'}"
+                <form method="post"
                       th:action="@{/clients/{clientId}/update-by-admin(clientId=${client.id})}"
-                      method="post">
-                    <input type="hidden" name="balance" th:value="${client.balance}">
-                    <input type="hidden" name="userId" th:value="${client.userId.id}">
-                    <input type="hidden" name="firstName" th:value="${client.firstName}">
-                    <input type="hidden" name="lastName" th:value="${client.lastName}">
-                    <input type="hidden" name="phone" th:value="${client.phone}">
-                    <input type="hidden" name="status" th:value="${client.status}">
-                    <button type="submit" class="btn btn-outline-success">Unblock client</button>
+                      th:if="${client.getStatus().name()  ==  'BLOCKED'}">
+                    <input name="balance" th:value="${client.balance}" type="hidden">
+                    <input name="userId" th:value="${client.userId.id}" type="hidden">
+                    <input name="firstName" th:value="${client.firstName}" type="hidden">
+                    <input name="lastName" th:value="${client.lastName}" type="hidden">
+                    <input name="phone" th:value="${client.phone}" type="hidden">
+                    <input name="status" th:value="${client.status}" type="hidden">
+                    <button class="btn btn-outline-success" type="submit">Unblock client</button>
                 </form>
             </td>
         </tr>

@@ -219,6 +219,7 @@
                             <goals>
                                 <goal>report</goal>
                             </goals>
+                            <phase>post-integration-test</phase>
                         </execution>
                     </executions>
                 </plugin>

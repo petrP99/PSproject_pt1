@@ -27,7 +27,6 @@ public class FilterReplenishmentRepositoryImpl implements FilterReplenishmentRep
                 .add(filter.clientId(), replenishment.clientTo.id::eq)
                 .add(filter.cardNo(), replenishment.cardNoTo.id::eq)
                 .add(filter.amount(), replenishment.amount::eq)
-//                .add(filter.timeOfReplenishment(), replenishment.timeOfReplenishment::between)
                 .add(filter.status(), replenishment.status::eq)
                 .buildAnd();
 
@@ -52,7 +51,6 @@ public class FilterReplenishmentRepositoryImpl implements FilterReplenishmentRep
                 .add(clientId, replenishment.clientTo.id::eq)
                 .add(filter.cardNo(), replenishment.cardNoTo.id::eq)
                 .add(filter.amount(), replenishment.amount::eq)
-//                .add(filter.timeOfReplenishment(), replenishment.timeOfReplenishment::before)
                 .add(filter.status(), replenishment.status::eq)
                 .buildAnd();
 

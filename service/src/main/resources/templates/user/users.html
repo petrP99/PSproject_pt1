@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<header>
+    <div th:insert="~{adminHeader :: admin-header}"></div>
+</header>
 <body>
 <div class="container mt6-m">
     <div class="row justify-content-center mt-5">
@@ -13,16 +16,16 @@
                 <div class="form-row align-items-xl-center">
                     <div class="col-auto">
                         <label for="login">Login:</label>
-                        <input id="login" type="text" name="login" th:value="${filter.login()}" class="form-control">
+                        <input class="form-control" id="login" name="login" th:value="${filter.login()}" type="text">
                     </div>
                     <div class="col-auto">
                         <label for="page">Page:</label>
-                        <input id="page" type="number" name="page" th:value="${users.metadata.page}"
-                               class="form-control">
+                        <input class="form-control" id="page" name="page" th:value="${users.metadata.page}"
+                               type="number">
                     </div>
                     <div class="col-auto">
                         <label for="size">Size:</label>
-                        <select id="size" name="size" th:value="${users.metadata.size}" class="form-control">
+                        <select class="form-control" id="size" name="size" th:value="${users.metadata.size}">
                             <option value="5000">all</option>
                             <option value="5">5</option>
                             <option value="20">20</option>
@@ -31,7 +34,7 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-outline-dark">Filter</button>
+                        <button class="btn btn-outline-dark" type="submit">Filter</button>
                     </div>
                 </div>
             </form>
@@ -54,12 +57,13 @@
         <tr th:each="user : ${users.content}">
             <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getId()}"></a></td>
             <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getLogin()}"></a></td>
-            <td><a th:href="@{'/users/' + ${user.id}}" th:text="${user.getRole().name()}"
-                   th:class="${user.getRole().name()  ==  'USER' ? 'text-success' : 'text-danger'}"></a></td>
+            <td><a th:class="${user.getRole().name()  ==  'USER' ? 'text-success' : 'text-danger'}" th:href="@{'/users/' + ${user.id}}"
+                   th:text="${user.getRole().name()}"></a></td>
             <td>
-                <form th:action="@{/users/{userId}/delete(userId=${user.id})}"
-                      method="post">
-                    <button type="submit" class="btn btn-outline-danger" onclick="return confirmDelete()">Remove User</button>
+                <form method="post"
+                      th:action="@{/users/{userId}/delete(userId=${user.id})}">
+                    <button class="btn btn-outline-danger" onclick="return confirmDelete()" type="submit">Remove User
+                    </button>
                 </form>
             </td>
         </tr>

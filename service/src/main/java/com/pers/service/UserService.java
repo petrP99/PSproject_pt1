@@ -101,4 +101,8 @@ public class UserService implements UserDetailsService {
                 .map(userReadMapper::mapFrom);
     }
 
+    public Page<UserReadDto> findAdminByFilter(UserFilterDto filterDto, Pageable pageable) {
+        return userRepository.findAdminByFilter(filterDto, pageable)
+                .map(userReadMapper::mapFrom);
+    }
 }

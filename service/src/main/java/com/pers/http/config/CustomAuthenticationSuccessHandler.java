@@ -1,11 +1,11 @@
 package com.pers.http.config;
 
 import com.pers.dto.ClientReadDto;
+import com.pers.entity.Role;
 import com.pers.service.ClientService;
 import com.pers.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,13 +34,20 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .map(UserDetails::getUsername)
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user"));
 
-        var client = clientService.findByUserName(userName);
-        var userId = userService.findIdByLogin(userName).orElseThrow().getId();
-        if (client.isPresent()) {
-            var clientId = client.map(ClientReadDto::getId).orElseThrow();
-            response.sendRedirect("/clients/home/" + clientId);
+        if (userService.findIdByLogin(userName).orElseThrow().getRole() != Role.USER) {
+            response.sendRedirect("/admin/main");
         } else {
-            response.sendRedirect("/clients/registration/" + userId);
+            var client = clientService.findByUserName(userName);
+            var userId = userService.findIdByLogin(userName).orElseThrow().getId();
+            if (client.isPresent()
+                && !client.orElseThrow().getFirstName().isEmpty()
+                && !client.orElseThrow().getLastName().isEmpty()
+                && !client.orElseThrow().getPhone().isEmpty()) {
+                var clientId = client.map(ClientReadDto::getId).orElseThrow();
+                response.sendRedirect("/clients/home/" + clientId);
+            } else {
+                response.sendRedirect("/clients/registration/" + userId);
+            }
         }
     }
 }

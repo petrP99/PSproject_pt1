@@ -1,4 +1,4 @@
 databaseChangeLog:
-  - include: 
+  - include:
       file: db\changelog\db.changelog-3.sql
 

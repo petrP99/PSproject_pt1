@@ -17,4 +17,9 @@ public class LoginController {
     public String homePage() {
         return "client/home";
     }
+
+    @GetMapping("/admin/main")
+    public String main() {
+        return "admin/main";
+    }
 }

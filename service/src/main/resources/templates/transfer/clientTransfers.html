@@ -2,8 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Transfers</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    .user-balance {
+        flex-grow: 1; /* Занимает все доступное пространство в строке */
+        text-align: center; /* Выравнивание текста по центру */
+        color: #02f833;
+        font-size: large;
+    }
+</style>
 <header>
     <div th:insert="~{navbar :: navbar}"></div>
 </header>
@@ -16,49 +24,49 @@
             <form action="/transfers/clientTransfers">
                 <div class="form-row align-items-xl-center">
                     <div class="col-auto">
-                        <input type="number" name="id" th:value="${filter.id()}" class="form-control"
-                               placeholder="id transfer">
+                        <input class="form-control" name="id" placeholder="id transfer" th:value="${filter.id()}"
+                               type="number">
                     </div>
                     <div class="col-auto">
-                        <input type="number" name="cardNoFrom" th:value="${filter.cardNoFrom()}"
-                               class="form-control" placeholder="card no from">
+                        <input class="form-control" name="cardNoFrom" placeholder="card no from"
+                               th:value="${filter.cardNoFrom()}" type="number">
                     </div>
                     <div class="col-auto">
-                        <input type="number" name="cardNoTo" th:value="${filter.cardNoTo()}"
-                               class="form-control" placeholder="card no to">
+                        <input class="form-control" name="cardNoTo" placeholder="card no to"
+                               th:value="${filter.cardNoTo()}" type="number">
                     </div>
                     <div class="col-auto">
-                        <input type="number" name="amount" th:value="${filter.amount()}"
-                               class="form-control" placeholder="amount">
+                        <input class="form-control" name="amount" placeholder="amount"
+                               th:value="${filter.amount()}" type="number">
                     </div>
                     <div class="col-auto">
-                        <input type="datetime-local" name="timeOfTransfer" th:value="${filter.timeOfTransfer()}"
-                               class="form-control">
+                        <input class="form-control" name="timeOfTransfer" th:value="${filter.timeOfTransfer()}"
+                               type="datetime-local">
                     </div>
                     <div class="col-auto">
-                        <input type="text" name="recipient" th:value="${filter.recipient()}"
-                               class="form-control" placeholder="recipient">
+                        <input class="form-control" name="recipient" placeholder="recipient"
+                               th:value="${filter.recipient()}" type="text">
                     </div>
                     <div class="col-auto">
-                        <input type="text" name="message" th:value="${filter.message()}"
-                               class="form-control" placeholder="message">
+                        <input class="form-control" name="message" placeholder="message"
+                               th:value="${filter.message()}" type="text">
                     </div>
                     <div class="col-auto">
-                        <input type="radio" class="btn-check" name="status" id="status" autocomplete="off"
+                        <input autocomplete="off" class="btn-check" id="status" name="status" type="radio"
                                value="SUCCESS">
                         <label class="btn btn-outline-success" for="status">Active</label>
-                        <input type="radio" class="btn-check" name="status" id="status1" autocomplete="off"
+                        <input autocomplete="off" class="btn-check" id="status1" name="status" type="radio"
                                value="FAILED">
                         <label class="btn btn-outline-danger" for="status1">Failed</label>
                     </div>
                     <div class="col-auto">
                         <label for="page">Page:</label>
-                        <input id="page" type="number" name="page" th:value="${transfers.metadata.page}"
-                               class="form-control">
+                        <input class="form-control" id="page" name="page" th:value="${transfers.metadata.page}"
+                               type="number">
                     </div>
                     <div class="col-auto">
                         <label for="size">Size:</label>
-                        <select id="size" name="size" th:value="${transfers.metadata.size}" class="form-control">
+                        <select class="form-control" id="size" name="size" th:value="${transfers.metadata.size}">
                             <option value="5000">all</option>
                             <option value="5">5</option>
                             <option value="20">20</option>
@@ -67,7 +75,7 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-dark">Filter</button>
+                        <button class="btn btn-dark" type="submit">Filter</button>
                     </div>
                 </div>
             </form>
@@ -99,8 +107,8 @@
             <td th:text="${transfer.timeOfTransfer()}"></td>
             <td th:text="${transfer.recipient()}"></td>
             <td th:text="${transfer.message()}"></td>
-            <td th:text="${transfer.status().name()}"
-                th:class="${transfer.status().name()  ==  'SUCCESS' ? 'text-success' : 'text-danger'}"></td>
+            <td th:class="${transfer.status().name()  ==  'SUCCESS' ? 'text-success' : 'text-danger'}"
+                th:text="${transfer.status().name()}"></td>
         </tr>
         </tbody>
     </table>

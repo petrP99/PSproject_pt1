@@ -2,36 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Replenishment</title>
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: white;
-            background-size: cover;
+        .card {
+            width: 400px; /* Ширина формы */
+            margin: 0 auto; /* Центрирование формы по горизонтали */
+            margin-top: 200px; /* Отступ сверху */
+
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #64edbd; /*rgba(255, 255, 255, 0.8);*/
-            padding: 10px;
-            text-align: right;
+        input[type="text"],
+        input[type="number"],
+        .btn-1 {
+            width: 100%; /* Ширина полей и кнопок */
+            margin-bottom: 10px; /* Отступ между полями и кнопкой */
         }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
+        .card-title,
+        .form-group label {
+            text-align: center;
         }
 
-        section {
-            padding: 20px;
-            color: white;
+        .form-group label {
+            text-align: center;
+            display: block; /* Разместить название поля на новой строке */
         }
+
+        ::placeholder {
+            text-align: center;
+        }
+
+        .user-balance {
+            flex-grow: 1; /* Занимает все доступное пространство в строке */
+            text-align: center; /* Выравнивание текста по центру */
+            color: #02f833;
+            font-size: large;
+        }
+
     </style>
 </head>
 <header>
@@ -39,39 +48,38 @@
 </header>
 <body>
 <div class="container">
-    <form th:action="@{/replenishments/create}" method="post" th:object="${replenishment}">
-        <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
-        <!--        <div class="form-select">-->
-        <!--                <select id="cardId" name="cardId">-->
-        <!--                    <option th:each="card : ${cards}"-->
-        <!--                            th:value="${card.id()}"-->
-        <!--                            th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()} +'  Stastus: '+ ${card.status()}">-->
-        <!--                    </option>-->
-        <!--                </select>-->
-        <!--        </div>-->
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Replenishment card</span></h3>
+            <form method="post" th:action="@{/replenishments/create}" th:object="${replenishment}">
+                <br>
+                <img alt="headerImage"
+                     class="headerImage"
+                     src="https://sun9-77.userapi.com/impf/wgG4LNm1K1eNruraUWlLE9OYbGfiZB30kIOwEg/r1VavPQzJws.jpg?size=500x500&quality=96&sign=e32374a81ae1e79254f0f9b75311b09d&type=album"
+                     style="width: 300px; display: block; margin: 0 auto;">
+                <input id="clientId" name="clientId" th:value="${session.clientId}" type="hidden">
+                <select aria-label="Default select example" class="form-select" id="cardId" name="cardId">
+                    <option th:each="card : ${cards}"
+                            th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()} +'  Stastus: '+ ${card.status()}"
+                            th:value="${card.id()}">
+                        Select card
+                    </option>
+                </select>
 
-        <select class="form-select" aria-label="Default select example" id="cardId" name="cardId">
-            <option th:each="card : ${cards}"
-                    th:value="${card.id()}"
-                    th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()} +'  Stastus: '+ ${card.status()}">
-                Select card
-            </option>
-        </select>
+                <div class="form-group row-cols-10">
+                    <label class="form-label" for="amount">Amount:
+                        <input class="form-control" id="amount" min="0" name="amount" pattern="[0-9]*"
+                               th:value="*{amount()}" type="number">
+                    </label><br>
+                </div>
 
-        <div class="mb-3">
-            <label for="amount" class="form-label">Amount:
-                <input id="amount" type="number" class="form-control" name="amount" th:value="*{amount()}" pattern="[0-9]*" min="0">
-            </label><br>
+                <button class="btn-1 btn btn-primary" type="submit"><span th:text="#{home.Replenish}">Replenish</span>!
+                </button>
+            </form>
+            <div th:if="${errors}">
+                <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Check amount</p>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Replenish!</button>
-    </form>
-
-    <div class="border-primary" style="border-top: #0f6925">
-        <a style="color: #ffffff" th:href="@{'/clients/home/' + ${session.clientId}}">Home</a><br>
     </div>
-
-</div>
-
 </body>
 </html>

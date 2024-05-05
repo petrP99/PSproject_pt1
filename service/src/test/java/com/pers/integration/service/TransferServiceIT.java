@@ -1,32 +1,25 @@
 package com.pers.integration.service;
 
-import com.pers.dto.PaymentCreateDto;
 import com.pers.dto.TransferCreateDto;
-import com.pers.dto.filter.PaymentFilterDto;
 import com.pers.dto.filter.TransferFilterDto;
 import com.pers.entity.Card;
 import com.pers.entity.Client;
-import com.pers.entity.Payment;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.Transfer;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
-import com.pers.service.PaymentService;
 import com.pers.service.TransferService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Instant;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.springframework.data.domain.Pageable;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class TransferServiceIT extends BaseIntegrationIT {

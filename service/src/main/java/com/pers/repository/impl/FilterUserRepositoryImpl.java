@@ -29,7 +29,7 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
         JPAQuery<User> query = new JPAQuery<>(entityManager)
                 .select(user)
                 .from(user)
-                .where(predicate, user.role.ne(Role.SUPER_ADMIN));
+                .where(predicate, user.role.eq(Role.USER));
 
         List<User> content = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -40,4 +40,22 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
         return new PageImpl<>(content, pageable, totalCount);
     }
 
+    public Page<User> findAdminByFilter(UserFilterDto userFilterDto, Pageable pageable) {
+        var predicate = QPredicate.builder()
+                .add(userFilterDto.login(), user.login::containsIgnoreCase)
+                .buildOr();
+
+        JPAQuery<User> query = new JPAQuery<>(entityManager)
+                .select(user)
+                .from(user)
+                .where(predicate, user.role.eq(Role.ADMIN));
+
+        List<User> content = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long totalCount = query.fetchCount();
+
+        return new PageImpl<>(content, pageable, totalCount);
+    }
 }

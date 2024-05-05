@@ -2,18 +2,11 @@ package com.pers.integration.controller;
 
 import com.pers.dto.ClientCreateDto;
 import com.pers.entity.Client;
-import com.pers.entity.QClient;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import jakarta.persistence.EntityManager;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,19 +16,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static com.pers.dto.UserCreateDto.Fields.login;
-import static com.pers.dto.UserCreateDto.Fields.role;
-import static com.pers.entity.Client_.firstName;
-import static com.pers.entity.Client_.lastName;
-import static com.pers.entity.QClient.client;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @AutoConfigureMockMvc

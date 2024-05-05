@@ -48,10 +48,10 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("admin", admin);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/users/registration";
+            return "redirect:/users/registration-admin";
         }
         userService.createAdmin(admin);
-        return "redirect:/users";
+        return "redirect:/admin/main";
     }
 
     @PostMapping("/{id}/update")
@@ -79,6 +79,15 @@ public class UserController {
         return "user/users";
     }
 
+    @GetMapping("/admins")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
+    public String findAdmins(Model model, UserFilterDto filter, Pageable pageable) {
+        Page<UserReadDto> page = userService.findAdminByFilter(filter, pageable);
+        model.addAttribute("users", PageResponse.of(page));
+        model.addAttribute("filter", filter);
+        return "admin/admins";
+    }
+
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model) {
         return userService.findById(id)
@@ -94,4 +103,11 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/registration";
     }
+
+    @GetMapping("/admin")
+    public String registrationAdmin(Model model, @ModelAttribute("user") UserCreateDto admin) {
+        model.addAttribute("admin", admin);
+        return "user/registration-admin";
+    }
+
 }

@@ -4,6 +4,7 @@ import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.dto.filter.TransferFilterDto;
+import static com.pers.entity.Status.ACTIVE;
 import com.pers.service.CardService;
 import com.pers.service.ClientService;
 import com.pers.service.TransferService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -53,13 +55,45 @@ public class TransferController {
         return "transfer/transfer";
     }
 
+    @GetMapping("/transfer-phone")
+    public String transferByPhone(@Validated @ModelAttribute("transfer") TransferCreateDto transfer, Model model, HttpSession session) {
+        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        model.addAttribute("cards", cards);
+        model.addAttribute("transfer", transfer);
+        return "transfer/transfer-phone";
+    }
+
     @GetMapping("/check")
     public String checkTransfer(@Validated TransferCreateDto transfer, HttpSession session, Model model) {
-        var cardTo = cardService.findById(transfer.cardIdTo()).orElseThrow();
-        var recipient = clientService.findFirstAndLastNameByClientId(cardTo.clientId());
+        var recipient = clientService.findFirstAndLastNameByClientId(cardService.findById(transfer.cardIdTo()).orElseThrow().clientId());
         session.setAttribute("transfer", transfer);
         model.addAttribute("recipient", recipient);
         return "transfer/check";
+    }
+
+    @GetMapping("/check-phone")
+    public String checkTransferByPhone(@RequestParam("phone") String phone, @Validated TransferCreateDto transfer, Model model, HttpSession session) {
+        var clientTo = clientService.findByPhone(phone).orElseThrow().getId();
+        var cardTo = cardService.findByClientId(clientTo).stream()
+                .filter(it -> it.status().equals(ACTIVE))
+                .findAny()
+                .orElseThrow().id();
+
+        var recipient = clientService.findFirstAndLastNameByClientId(clientTo);
+        var updateTransfer = new TransferCreateDto(transfer.clientId(), transfer.cardIdFrom(), cardTo, transfer.amount(), transfer.timeOfTransfer(), recipient, transfer.message(), transfer.status());
+        model.addAttribute("recipient", recipient);
+        session.setAttribute("transfer", updateTransfer);
+        return "transfer/check";
+    }
+
+    @PostMapping("/create-phone")
+    public String createByPhone(@Validated TransferCreateDto transfer, RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("transfer", transfer);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/transfers";
+        }
+        return transferService.checkAndCreateTransfer(transfer) ? "transfer/success" : "transfer/fail";
     }
 
     @PostMapping("/create-between")

@@ -4,19 +4,17 @@ import com.pers.integration.annotation.IT;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @IT
 //@WithMockUser(username = "user10@mail.ru", password = "test", authorities = {"USER, ADMIN, SUPER_ADMIN"})
 public abstract class BaseIntegrationIT {
 
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
     @Autowired
     protected EntityManager entityManager;
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
 
     @DynamicPropertySource
     static void postgresProperties(DynamicPropertyRegistry registry) {

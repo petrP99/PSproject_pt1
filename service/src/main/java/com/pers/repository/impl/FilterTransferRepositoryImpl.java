@@ -26,7 +26,7 @@ public class FilterTransferRepositoryImpl implements FilterTransferRepository {
                 .add(filter.cardNoFrom(), transfer.cardNoFrom.id::eq)
                 .add(filter.cardNoTo(), transfer.cardNoTo.id::eq)
                 .add(filter.amount(), transfer.amount::eq)
-//                .add(filter.timeOfTransfer(), transfer.timeOfTransfer::before)
+                .add(filter.message(), transfer.message::containsIgnoreCase)
                 .add(filter.recipient(), transfer.recipient::containsIgnoreCase)
                 .add(filter.status(), transfer.status::eq)
                 .buildAnd();
@@ -53,7 +53,6 @@ public class FilterTransferRepositoryImpl implements FilterTransferRepository {
                 .add(filter.cardNoFrom(), transfer.cardNoFrom.id::eq)
                 .add(filter.cardNoTo(), transfer.cardNoTo.id::eq)
                 .add(filter.amount(), transfer.amount::eq)
-//                .add(filter.timeOfTransfer(), transfer.timeOfTransfer::eq)
                 .add(filter.message(), transfer.message::containsIgnoreCase)
                 .add(filter.recipient(), transfer.recipient::containsIgnoreCase)
                 .add(filter.status(), transfer.status::eq)

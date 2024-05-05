@@ -9,15 +9,14 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.CardService;
 import lombok.RequiredArgsConstructor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Instant;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class CardServiceIT extends BaseIntegrationIT {
@@ -112,7 +111,7 @@ class CardServiceIT extends BaseIntegrationIT {
     }
 
     @Test
-    void findCardByClientPhone(){
+    void findCardByClientPhone() {
         var result = cardService.findCardByClientPhone("89632587854");
 
         assertThat(result).isPresent();

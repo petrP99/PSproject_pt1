@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Login Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Форма шире */
         .card {
@@ -17,7 +17,7 @@
         /* Все поля и кнопки имеют одинаковую ширину */
         input[type="email"],
         input[type="password"],
-        .btn {
+        .btn-1 {
             width: 100%; /* Ширина полей и кнопок */
             margin-bottom: 15px; /* Отступ между полями и кнопкой */
         }
@@ -34,31 +34,70 @@
     </style>
 </head>
 <body>
+<nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand">
+            <img alt="Logo"
+                 class="d-inline-block align-text-top" height="32" src="https://www.freedownloadlogo.com/logos/p/photoshop-cc-7.svg" width="40">
+            PSystem
+        </a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
+            <li class="nav-item">
+                <a aria-current="page" class="nav-link active"><span th:text="#{home.Mypayments}">My payments</span></a>
+            </li>
+            <li class="nav-item">
+                <a aria-current="page" class="nav-link active"><span
+                        th:text="#{home.Mytransfers}">My transfers</span></a>
+            </li>
+            <li class="nav-item">
+                <a aria-current="page" class="nav-link active"><span th:text="#{home.Myreplenishments}">My replenishments</span></a>
+            </li>
+            <li class="nav-item">
+                <a aria-current="page" class="nav-link active"><span th:text="#{home.Mycards}">My cards</span></a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
+
+            <form action="" class="dt-row-group center">
+                <button class="btn btn-outline-light" name="lang" onchange="this.form.submit()" type="submit"
+                        value="en">EN
+                </button>
+                <button class="btn btn-outline-light" name="lang" onchange="this.form.submit()" type="submit"
+                        value="ru">RU
+                </button>
+            </form>
+        </ul>
+    </div>
+</nav>
 
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title">Log in</h3>
-            <form th:action="@{/login}" method="post">
+            <h3 class="card-title"><span th:text="#{login.header}">Log in</span></h3>
+            <form method="post" th:action="@{/login}">
                 <div class="form-group">
-                    <label for="username">Login:</label>
-                    <input id="username" type="email" name="username" class="form-control" placeholder="example@bk.ru">
+                    <label for="username"><span th:text="#{login.username}">Login</span>:</label>
+                    <input class="form-control" id="username" name="username" placeholder="example@bk.ru" type="email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input id="password" type="password" name="password" class="form-control" placeholder="must not be empty">
+                    <label for="password"><span th:text="#{login.password}">Password</span>:</label>
+                    <input class="form-control" id="password" name="password" placeholder="must not be empty"
+                           type="password">
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button class="btn-1 btn btn-primary" type="submit"><span th:text="#{login.loginBtn}">Login</span>
+                </button>
             </form>
             <div class="form-container">
                 <a href="/users/registration">
-                    <button type="button" class="btn btn-dark">Registration</button>
+                    <button class="btn-1 btn btn-dark" type="button"><span
+                            th:text="#{login.registration}">Registration</span></button>
                 </a>
             </div>
-        <div th:if="${errors}">
-            <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
-                Message</p>
-        </div>
+            <div th:if="${errors}">
+                <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
+                    Message</p>
+            </div>
         </div>
     </div>
 </div>

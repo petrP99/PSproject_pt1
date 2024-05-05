@@ -1,28 +1,20 @@
 package com.pers.integration.service;
 
 import com.pers.dto.ClientCreateDto;
-import com.pers.dto.UserCreateDto;
-import com.pers.dto.filter.ClientFilterDto;
-import com.pers.dto.filter.UserFilterDto;
 import com.pers.entity.Client;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.ClientService;
-import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Pageable;
-
-import static com.pers.entity.Role.USER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RequiredArgsConstructor
 class ClientServiceIT extends BaseIntegrationIT {
@@ -61,7 +53,7 @@ class ClientServiceIT extends BaseIntegrationIT {
         entityManager.persist(client);
 
         clientCreateDto = new ClientCreateDto(user2.getId(), client.getBalance(), client.getFirstName(), "Ivanov",
-                "89632584854" , client.getStatus(), client.getCreatedTime());
+                "89632584854", client.getStatus(), client.getCreatedTime());
 
     }
 
@@ -93,7 +85,7 @@ class ClientServiceIT extends BaseIntegrationIT {
         assertThat(result).isPresent();
         result.ifPresent(client ->
                 assertAll(() -> {
-                    assertThat(client.getLastName()).isEqualTo("Petrov"); // debug
+                    assertThat(client.getLastName()).isEqualTo("Ivanov"); // debug
                 }));
     }
 

@@ -1,6 +1,5 @@
 package com.pers.integration.service;
 
-import com.pers.dto.CardCreateDto;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.dto.filter.PaymentFilterDto;
 import com.pers.entity.Card;
@@ -10,23 +9,17 @@ import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
-import com.pers.service.CardService;
 import com.pers.service.PaymentService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Instant;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.filter;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class PaymentServiceIT extends BaseIntegrationIT {
@@ -86,7 +79,7 @@ class PaymentServiceIT extends BaseIntegrationIT {
                 .card(card)
                 .amount(new BigDecimal(200))
                 .shopName("Ozon")
-                .timeOfPay(Instant.now()) 
+                .timeOfPay(Instant.now())
                 .status(Status.SUCCESS)
                 .build();
 

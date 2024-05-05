@@ -8,11 +8,9 @@ import com.pers.mapper.ClientCreateMapper;
 import com.pers.mapper.ClientReadMapper;
 import com.pers.mapper.ClientUpdateBalanceMapper;
 import com.pers.repository.ClientRepository;
-import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +60,6 @@ public class ClientService {
     }
 
     @Transactional
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public ClientReadDto updateBalance(ClientUpdateBalanceDto clientDto) {
         return Optional.of(clientDto)
                 .map(clientUpdateBalanceMapper::mapFrom)

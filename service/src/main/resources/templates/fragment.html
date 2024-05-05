@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <head>
     <meta charset="UTF-8">
@@ -8,15 +8,17 @@
 </head>
 <body>
 
-<div th:fragment="header" class="container">
-    <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-outline-danger">Logout</button>
+<div class="container" th:fragment="header">
+    <form method="post" th:action="@{/logout}">
+        <button class="btn btn-outline-danger" type="submit">Logout</button>
     </form>
 </div>
 <div th:fragment="locale">
-    <form class="dt-row-group center" action="">
-            <button type="submit" class="btn btn-outline-dark" name="lang" value="en" onchange="this.form.submit()">EN</button>
-            <button type="submit" class="btn btn-outline-dark" name="lang" value="ru" onchange="this.form.submit()">RU</button>
+    <form action="" class="dt-row-group center">
+        <button class="btn btn-outline-dark" name="lang" onchange="this.form.submit()" type="submit" value="en">EN
+        </button>
+        <button class="btn btn-outline-dark" name="lang" onchange="this.form.submit()" type="submit" value="ru">RU
+        </button>
     </form>
 </div>
 </body>

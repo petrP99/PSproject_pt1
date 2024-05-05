@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Список карт</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         .card-title,
@@ -16,6 +16,13 @@
             margin-top: 10px; /* Отступ сверху */
 
         }
+
+        .user-balance {
+            flex-grow: 1; /* Занимает все доступное пространство в строке */
+            text-align: center; /* Выравнивание текста по центру */
+            color: #02f833;
+            font-size: large;
+        }
     </style>
 </head>
 
@@ -27,9 +34,9 @@
 
 <div class="container">
     <div class="card">
-        <form th:action="@{/cards/create}" method="post">
-            <input type="hidden" id="clientId" name="clientId" th:value="${session.clientId}">
-            <button type="submit" class="btn btn-success">Create card</button>
+        <form method="post" th:action="@{/cards/create}">
+            <input id="clientId" name="clientId" th:value="${session.clientId}" type="hidden">
+            <button class="btn btn-success" type="submit">Create card</button>
         </form>
     </div>
     <h1 class="card-title">My cards</h1>
@@ -49,21 +56,21 @@
             <td th:text="${card.id()}"></td>
             <td th:text="${card.balance()}"></td>
             <td th:text="${card.expireDate()}"></td>
-            <td th:text="${card.status().name()}"
-                th:class="${card.status().name()  ==  'ACTIVE' ? 'text-success' : (card.status().name() == 'BLOCKED' ? 'text-danger' : 'text-warning')}"></td>
+            <td th:class="${card.status().name()  ==  'ACTIVE' ? 'text-success' : (card.status().name() == 'BLOCKED' ? 'text-danger' : 'text-warning')}"
+                th:text="${card.status().name()}"></td>
             <td>
-                <form th:if="${card.status().name() == 'ACTIVE'}"
+                <form method="get"
                       th:action="@{/replenishments/replenishment/{cardId}(cardId=${card.id})}"
-                      method="get">
+                      th:if="${card.status().name() == 'ACTIVE'}">
                     <button class="btn btn-outline-success" type="submit">replenish
                     </button>
                 </form>
             </td>
             <td>
-                <form th:if="${card.status().name() == 'ACTIVE' and card.balance() == 0}"
+                <form method="post"
                       th:action="@{/cards/{cardId}/update(cardId=${card.id})}"
-                      method="post">
-                    <button class="btn btn-outline-danger" type="submit" onclick="return confirmDelete()">block card
+                      th:if="${card.status().name() == 'ACTIVE' and card.balance() == 0}">
+                    <button class="btn btn-outline-danger" onclick="return confirmDelete()" type="submit">block card
                     </button>
                 </form>
             </td>

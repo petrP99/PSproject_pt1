@@ -27,7 +27,6 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
                 .add(filter.shopName(), payment.shopName::containsIgnoreCase)
                 .add(filter.amount(), payment.amount::eq)
                 .add(filter.cardId(), payment.card.id::eq)
-//                .add(filter.timeOfPay(), payment.timeOfPay::eq)
                 .add(filter.status(), payment.status::eq)
                 .buildAnd();
 
@@ -53,7 +52,6 @@ public class FilterPaymentRepositoryImpl implements FilterPaymentRepository {
                 .add(filter.shopName(), payment.shopName::containsIgnoreCase)
                 .add(filter.amount(), payment.amount::eq)
                 .add(filter.cardId(), payment.card.id::eq)
-//                .add(filter.timeOfPay(), payment.timeOfPay::eq)
                 .add(filter.status(), payment.status::eq)
                 .buildAnd();
 

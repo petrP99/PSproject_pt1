@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class TransferRepositoryIT extends BaseIntegrationIT {
