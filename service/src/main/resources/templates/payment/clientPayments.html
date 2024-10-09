@@ -27,7 +27,8 @@
                 <form action="/payments/clientPayments" id="myForm">
                     <div class="form-row align-items-xl-center">
                         <div class="col-auto">
-                            <input class="form-control" id="id" name="id" placeholder="id payment" th:value="${filter.id()}"
+                            <input class="form-control" id="id" name="id" placeholder="id payment"
+                                   th:value="${filter.id()}"
                                    type="number">
                         </div>
                         <div class="col-auto">
@@ -75,6 +76,12 @@
                             <button class="btn btn-dark" type="submit">Filter</button>
                         </div>
                     </div>
+                </form>
+            </div>
+            <div>
+                <form method="get"
+                      action="/payments/clientPayments/history">
+                <button class="btn-danger" type="submit">Download history</button>
                 </form>
             </div>
         </div>

@@ -1,11 +1,6 @@
 spring:
   application:
     name: PSproject
-  datasource:
-    url: jdbc:postgresql://localhost:5432/payments_system
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
@@ -13,4 +8,22 @@ spring:
         format_sql: true
         highlight_sql: true
         hbm2ddl.auto: validate
-    open-in-view: false
+        open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: user
+    password: password
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/payments_system
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+logging:
+  file:
+    name: MyLogs.log
+  level:
+    root: info
+
+

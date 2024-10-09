@@ -4,11 +4,13 @@ import com.pers.dto.ClientCreateDto;
 import com.pers.dto.ClientReadDto;
 import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.dto.filter.ClientFilterDto;
+import com.pers.listener.EntityEvent;
 import com.pers.mapper.ClientCreateMapper;
 import com.pers.mapper.ClientReadMapper;
 import com.pers.mapper.ClientUpdateBalanceMapper;
 import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,6 @@ public class ClientService {
     private final ClientReadMapper clientReadMapper;
     private final ClientCreateMapper clientCreateMapper;
     private final ClientUpdateBalanceMapper clientUpdateBalanceMapper;
-
 
     public Page<ClientReadDto> findAll(ClientFilterDto filter, Pageable pageable) {
         return clientRepository.findAllByFilter(filter, pageable)
@@ -54,7 +55,8 @@ public class ClientService {
     @Transactional
     public Optional<ClientReadDto> update(Long id, ClientCreateDto clientDto) {
         return clientRepository.findById(id)
-                .map(entity -> clientCreateMapper.map(clientDto, entity))
+                .map(entity ->
+                        clientCreateMapper.map(clientDto, entity))
                 .map(clientRepository::saveAndFlush)
                 .map(clientReadMapper::mapFrom);
     }

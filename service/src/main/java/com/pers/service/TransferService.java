@@ -4,7 +4,9 @@ import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.dto.filter.TransferFilterDto;
 import com.pers.entity.Status;
+
 import static com.pers.entity.Status.FAILED;
+
 import com.pers.mapper.TransferCreateMapper;
 import com.pers.mapper.TransferReadMapper;
 import com.pers.repository.CardRepository;
@@ -39,9 +41,9 @@ public class TransferService {
         var clientTo = clientService.findById(cardTo.clientId()).orElseThrow();
 
         if (clientTo.getStatus() == Status.ACTIVE
-            && cardTo.status() == Status.ACTIVE
-            && cardFrom.status() == Status.ACTIVE
-            && (transfer.amount()).compareTo(cardFrom.balance()) <= 0) {
+                && cardTo.status() == Status.ACTIVE
+                && cardFrom.status() == Status.ACTIVE
+                && (transfer.amount()).compareTo(cardFrom.balance()) <= 0) {
 
             create(transfer);
 
@@ -110,3 +112,5 @@ public class TransferService {
                 .map(transferReadMapper::mapFrom);
     }
 }
+
+

@@ -22,13 +22,13 @@ public class ServiceAspect {
         var methodName = joinPoint.getSignature().getName();
         var className = joinPoint.getTarget().getClass().getName();
         var args = joinPoint.getArgs();
-        log.info("Before: invoked method: {} in class: {} with args: {}", methodName, className, args);
+        log.info("Before method: {} in class: {} args: {}", methodName, className, args);
     }
 
     @AfterReturning(value = "isServiceLayer()", returning = "result")
     public void addLoggingReturnValues(JoinPoint joinPoint, Object result) {
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getSignature().getDeclaringTypeName();
-        log.info("After Returning: invoked method: {} in class: {} with returning value: {}", methodName, className, result);
+        log.info("After returning method: {} in class: {} returning value: {}", methodName, className, result);
     }
 }
