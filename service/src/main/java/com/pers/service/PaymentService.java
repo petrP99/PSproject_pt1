@@ -42,6 +42,7 @@ public class PaymentService {
     private final ClientService clientService;
     private final CardService cardService;
     private final CardRepository cardRepository;
+    private final SmsService smsService;
 
     @Transactional
     public boolean checkAndCreatePayment(PaymentCreateDto payment) {
@@ -54,6 +55,7 @@ public class PaymentService {
                 && amount.compareTo(cardReadDto.balance()) <= 0) {
 
             create(payment);
+            smsService.sendInfoPayment(payment, clientReadDto);
             var cardCreateDto = new CardUpdateBalanceDto(
                     cardReadDto.id(),
                     cardReadDto.clientId(),
