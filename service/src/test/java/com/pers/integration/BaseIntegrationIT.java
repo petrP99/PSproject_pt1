@@ -13,6 +13,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public abstract class BaseIntegrationIT {
 
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
+
     @Autowired
     protected EntityManager entityManager;
 

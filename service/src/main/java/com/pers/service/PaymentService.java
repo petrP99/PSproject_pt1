@@ -55,7 +55,6 @@ public class PaymentService {
                 && amount.compareTo(cardReadDto.balance()) <= 0) {
 
             create(payment);
-            smsService.sendInfoPayment(payment, clientReadDto);
             var cardCreateDto = new CardUpdateBalanceDto(
                     cardReadDto.id(),
                     cardReadDto.clientId(),
@@ -68,6 +67,7 @@ public class PaymentService {
 
             var newBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(payment.clientId()));
             var clientUpdateBalanceDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientReadDto, newBalance);
+            smsService.sendInfoPayment(payment, clientReadDto, newBalance);
 
             clientService.updateBalance(clientUpdateBalanceDto);
         } else {
