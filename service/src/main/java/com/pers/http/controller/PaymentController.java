@@ -159,12 +159,6 @@ public class PaymentController {
         return "payment/payments";
     }
 
-//    @GetMapping("/clientPayments/history")
-//    public String findAllByClientId(HttpSession session) {
-//        List<PaymentReadDto> list = paymentService.findAllByClientId((Long) session.getAttribute("clientId"));
-//        return "payment/clientPayments";
-//    }
-
     @SneakyThrows
     @GetMapping("/clientPayments/history")
     public ResponseEntity<byte[]> downloadFile(HttpSession session) {

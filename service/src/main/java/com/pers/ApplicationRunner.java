@@ -15,13 +15,13 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(ApplicationRunner.class, args);
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        long allocatedMemory = Runtime.getRuntime().totalMemory();
-        long freeMemory = Runtime.getRuntime().freeMemory();
-
-        System.out.println("Max Memory: " + maxMemory / (1024 * 1024) + " MB");
-        System.out.println("Allocated Memory: " + allocatedMemory / (1024 * 1024) + " MB");
-        System.out.println("Free Memory: " + freeMemory / (1024 * 1024) + " MB");
+//        long maxMemory = Runtime.getRuntime().maxMemory();
+//        long allocatedMemory = Runtime.getRuntime().totalMemory();
+//        long freeMemory = Runtime.getRuntime().freeMemory();
+//
+//        System.out.println("Max Memory: " + maxMemory / (1024 * 1024) + " MB");
+//        System.out.println("Allocated Memory: " + allocatedMemory / (1024 * 1024) + " MB");
+//        System.out.println("Free Memory: " + freeMemory / (1024 * 1024) + " MB");
     }
 }
 
