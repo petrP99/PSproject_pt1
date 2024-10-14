@@ -11,8 +11,6 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.TransferService;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @RequiredArgsConstructor
 class TransferServiceIT extends BaseIntegrationIT {

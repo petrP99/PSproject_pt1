@@ -7,12 +7,13 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.ClientReadMapper;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 class ClientReadMapperIT extends BaseIntegrationIT {

@@ -8,7 +8,6 @@ import com.pers.entity.Client;
 import com.pers.entity.Role;
 import com.pers.entity.Status;
 import com.pers.util.CheckOfOperationUtil;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -16,6 +15,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CheckOfOperationUtilTest {
 

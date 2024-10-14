@@ -5,8 +5,9 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.UserReadMapper;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 class UserReadMapperIT extends BaseIntegrationIT {

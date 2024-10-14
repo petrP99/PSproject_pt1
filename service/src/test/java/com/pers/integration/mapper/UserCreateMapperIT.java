@@ -6,10 +6,11 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.UserCreateMapper;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 class UserCreateMapperIT extends BaseIntegrationIT {

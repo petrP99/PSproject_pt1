@@ -10,17 +10,11 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,8 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.util.List;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Slf4j
@@ -162,18 +155,14 @@ public class PaymentController {
     @SneakyThrows
     @GetMapping("/clientPayments/history")
     public ResponseEntity<byte[]> downloadFile(HttpSession session) {
-        File file = paymentService.downloadHistory((Long) session.getAttribute("clientId"));
-        FileSystemResource resource = new FileSystemResource(file);
-        if (!resource.exists()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        byte[] pdf = paymentService.downloadHistory((Long) session.getAttribute("clientId"));
+        ByteArrayResource resource = new ByteArrayResource(pdf);
+
         HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=payments history.txt");
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=payments history.pdf");
         return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_PLAIN)
+                .contentType(MediaType.APPLICATION_PDF)
                 .headers(header)
-                .body(resource.getContentAsByteArray());
+                .body(resource.getByteArray());
     }
-
-
 }

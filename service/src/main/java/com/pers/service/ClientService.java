@@ -9,7 +9,6 @@ import com.pers.mapper.ClientReadMapper;
 import com.pers.mapper.ClientUpdateBalanceMapper;
 import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,6 @@ package com.pers.repository.impl;
 
 
 import com.pers.dto.filter.UserFilterDto;
-import static com.pers.entity.QUser.user;
 import com.pers.entity.Role;
 import com.pers.entity.User;
 import com.pers.repository.FilterUserRepository;
@@ -15,6 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+
+import static com.pers.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class FilterUserRepositoryImpl implements FilterUserRepository {

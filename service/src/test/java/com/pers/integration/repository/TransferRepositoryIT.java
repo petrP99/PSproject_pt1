@@ -4,10 +4,6 @@ import com.pers.dto.filter.TransferFilterDto;
 import com.pers.entity.Card;
 import com.pers.entity.Client;
 import com.pers.entity.Role;
-import static com.pers.entity.Status.ACTIVE;
-import static com.pers.entity.Status.BLOCKED;
-import static com.pers.entity.Status.FAILED;
-import static com.pers.entity.Status.SUCCESS;
 import com.pers.entity.Transfer;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
@@ -16,7 +12,6 @@ import com.pers.repository.ClientRepository;
 import com.pers.repository.TransferRepository;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +19,12 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+
+import static com.pers.entity.Status.ACTIVE;
+import static com.pers.entity.Status.BLOCKED;
+import static com.pers.entity.Status.FAILED;
+import static com.pers.entity.Status.SUCCESS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 class TransferRepositoryIT extends BaseIntegrationIT {

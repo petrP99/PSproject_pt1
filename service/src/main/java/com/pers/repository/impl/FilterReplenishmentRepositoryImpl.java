@@ -1,7 +1,6 @@
 package com.pers.repository.impl;
 
 import com.pers.dto.filter.ReplenishmentFilterDto;
-import static com.pers.entity.QReplenishment.replenishment;
 import com.pers.entity.Replenishment;
 import com.pers.repository.FilterReplenishmentRepository;
 import com.pers.repository.predicate.QPredicate;
@@ -13,6 +12,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+
+import static com.pers.entity.QReplenishment.replenishment;
 
 
 @RequiredArgsConstructor

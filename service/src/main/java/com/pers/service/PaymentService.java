@@ -1,15 +1,15 @@
 package com.pers.service;
 
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.pers.dto.CardUpdateBalanceDto;
 import com.pers.dto.PaymentCreateDto;
 import com.pers.dto.PaymentReadDto;
 import com.pers.dto.filter.PaymentFilterDto;
 import com.pers.entity.Status;
-
-import static com.pers.entity.Status.FAILED;
-import static com.pers.util.DateTimeParserUtil.*;
-
 import com.pers.mapper.PaymentCreateMapper;
 import com.pers.mapper.PaymentReadMapper;
 import com.pers.repository.CardRepository;
@@ -17,19 +17,17 @@ import com.pers.repository.PaymentRepository;
 import com.pers.util.CheckOfOperationUtil;
 import com.pers.util.DateTimeParserUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.pers.entity.Status.FAILED;
 
 @Service
 @Transactional(readOnly = true)
@@ -67,8 +65,7 @@ public class PaymentService {
 
             var newBalance = CheckOfOperationUtil.calculateClientBalance(cardRepository.findByClientId(payment.clientId()));
             var clientUpdateBalanceDto = CheckOfOperationUtil.createClientUpdateBalanceDto(clientReadDto, newBalance);
-            smsService.sendInfoPayment(payment, clientReadDto, newBalance);
-
+//            smsService.sendInfoPayment(payment, clientReadDto, newBalance);
             clientService.updateBalance(clientUpdateBalanceDto);
         } else {
             var paymentFail = new PaymentCreateDto(
@@ -125,20 +122,21 @@ public class PaymentService {
                 .collect(Collectors.toList());
     }
 
-    public File downloadHistory(Long id) {
+    public byte[] downloadHistory(Long id) throws DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Document document = new Document();
+        PdfWriter.getInstance(document, outputStream);
         List<PaymentReadDto> allByClientId = findAllByClientId(id);
-        File file = new File("History_of_payments.txt");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("time\t\t\t\t object name\t\t\t\t amount\t\t\tstatus\n");
-            for (int i = 0; i < allByClientId.size(); i++) {
-                writer.write(dateTimeParser(allByClientId.get(i).timeOfPay().toString()) + "\t" +
-                        allByClientId.get(i).shopName() + "\t\t\t" +
-                        allByClientId.get(i).amount().toString() + "\t\t" +
-                        allByClientId.get(i).status() + "\n");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Ну удалось записать файл");
+        document.open();
+        for (PaymentReadDto paymentReadDto : allByClientId) {
+            document.add(new Paragraph(String.format("%s: %s, amount %s rub, by card *%s, in %s",
+                    paymentReadDto.status().toString().toLowerCase(),
+                    paymentReadDto.shopName(),
+                    paymentReadDto.amount(),
+                    paymentReadDto.cardId().toString().substring(2),
+                    DateTimeParserUtil.dateTimeParser(paymentReadDto.timeOfPay().toString()))));
         }
-        return file;
+        document.close();
+        return outputStream.toByteArray();
     }
 }

@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Slf4j
@@ -40,7 +41,7 @@ public class ClientController {
                                @ModelAttribute("client") ClientCreateDto client,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes
-    ) {
+                               ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("client", client);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
@@ -72,7 +73,9 @@ public class ClientController {
     @GetMapping("/home/{id}")
     public String homePage(@PathVariable("id") Long id, HttpSession session) {
         session.setAttribute("clientId", id);
-        session.setAttribute("balance", clientService.findById(id).orElseThrow().getBalance());
+        ClientReadDto clientReadDto = clientService.findById(id).orElseThrow();
+        session.setAttribute("userId", clientReadDto.getUserId().getId());
+        session.setAttribute("balance", clientReadDto.getBalance());
         return "client/home";
     }
 

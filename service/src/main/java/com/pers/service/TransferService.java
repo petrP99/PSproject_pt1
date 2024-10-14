@@ -4,9 +4,6 @@ import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.dto.filter.TransferFilterDto;
 import com.pers.entity.Status;
-
-import static com.pers.entity.Status.FAILED;
-
 import com.pers.mapper.TransferCreateMapper;
 import com.pers.mapper.TransferReadMapper;
 import com.pers.repository.CardRepository;
@@ -20,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.pers.entity.Status.FAILED;
+
 
 @Service
 @Transactional
@@ -32,6 +31,7 @@ public class TransferService {
     private final ClientService clientService;
     private final CardService cardService;
     private final CardRepository cardRepository;
+    private final SmsService smsService;
 
     @Transactional
     public boolean checkAndCreateTransfer(TransferCreateDto transfer) {
@@ -59,6 +59,7 @@ public class TransferService {
 
             clientService.updateBalance(clientFromUpdateDto);
             clientService.updateBalance(clientToUpdateDto);
+//            smsService.sendInfoTransfer(transfer, clientFrom, clientFromNewBalance);
         } else {
             var transferFail = new TransferCreateDto(
                     transfer.clientId(),
@@ -111,6 +112,24 @@ public class TransferService {
         return transferRepository.findById(id)
                 .map(transferReadMapper::mapFrom);
     }
+
+//    public File downloadHistory(Long id) {
+//        List<PaymentReadDto> allByClientId = findAllByClientId(id);
+//        File file = new File("Payments history.txt");
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+//            writer.write("time\t\t\t\t object name\t\t\t\t amount\t\t\tstatus\n");
+//            for (int i = 0; i < allByClientId.size(); i++) {
+//                writer.write(dateTimeParser(allByClientId.get(i).timeOfPay().toString()) + "\t" +
+//                        allByClientId.get(i).shopName() + "\t\t\t" +
+//                        allByClientId.get(i).amount().toString() + "\t\t" +
+//                        allByClientId.get(i).status() + "\n");
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Ну удалось записать файл");
+//        }
+//        return file;
+//    }
+
 }
 
 

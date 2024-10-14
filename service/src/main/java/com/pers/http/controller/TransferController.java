@@ -4,7 +4,6 @@ import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.dto.filter.TransferFilterDto;
-import static com.pers.entity.Status.ACTIVE;
 import com.pers.service.CardService;
 import com.pers.service.ClientService;
 import com.pers.service.TransferService;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static com.pers.entity.Status.ACTIVE;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Slf4j

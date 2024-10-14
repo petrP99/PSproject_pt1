@@ -11,13 +11,14 @@ import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.CardCreateMapper;
 import com.pers.mapper.CardReadMapper;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 class CardCreateMapperIT extends BaseIntegrationIT {

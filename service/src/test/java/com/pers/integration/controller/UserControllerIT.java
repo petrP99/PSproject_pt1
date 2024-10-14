@@ -1,9 +1,6 @@
 package com.pers.integration.controller;
 
 import com.pers.dto.UserCreateDto;
-import static com.pers.dto.UserCreateDto.Fields.login;
-import static com.pers.dto.UserCreateDto.Fields.rawPassword;
-import static com.pers.dto.UserCreateDto.Fields.role;
 import com.pers.entity.Role;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
@@ -16,8 +13,15 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static com.pers.dto.UserCreateDto.Fields.login;
+import static com.pers.dto.UserCreateDto.Fields.rawPassword;
+import static com.pers.dto.UserCreateDto.Fields.role;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -25,9 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RequiredArgsConstructor
 @AutoConfigureMockMvc

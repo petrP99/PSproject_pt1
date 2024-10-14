@@ -6,9 +6,10 @@ import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RequiredArgsConstructor

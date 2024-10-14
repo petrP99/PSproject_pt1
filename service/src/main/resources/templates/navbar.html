@@ -56,15 +56,17 @@
                 <li class="nav-item dropdown">
                     <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
                        role="button">
-                        <span th:text="#{home.Myprofile}">My profile</span>
+                        <span th:text="#{home.Myprofile}">Update profile</span>
                     </a>
                     <ul class="dropdown-menu position-static">
-                        <li><a class="dropdown-item" href="/users/user"><span th:text="#{home.LoginPassword}">Login & Password</span></a>
+                        <li><a class="dropdown-item" th:href="@{/users/{userId}(userId=${session.userId})}">
+                            <span th:text="#{home.LoginPassword}">Login & Password</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" th:href="@{/clients/client}"><span th:text="#{home.NamePhone}">Phone&data</span></a>
+                        <li><a class="dropdown-item" th:href="@{/clients/client}">
+                            <span th:text="#{home.NamePhone}">Phone&data</span></a>
                         </li>
                     </ul>
                 </li>

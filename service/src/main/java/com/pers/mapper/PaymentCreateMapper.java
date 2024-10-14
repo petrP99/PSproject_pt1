@@ -2,14 +2,15 @@ package com.pers.mapper;
 
 import com.pers.dto.PaymentCreateDto;
 import com.pers.entity.Payment;
-import static com.pers.entity.Status.FAILED;
-import static com.pers.entity.Status.SUCCESS;
 import com.pers.repository.CardRepository;
 import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+
+import static com.pers.entity.Status.FAILED;
+import static com.pers.entity.Status.SUCCESS;
 
 @Component
 @RequiredArgsConstructor

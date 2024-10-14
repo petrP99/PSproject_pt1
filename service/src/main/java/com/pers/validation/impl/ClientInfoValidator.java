@@ -4,6 +4,7 @@ import com.pers.dto.ClientCreateDto;
 import com.pers.validation.ClientInfo;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+
 import static org.springframework.util.StringUtils.hasText;
 
 public class ClientInfoValidator implements ConstraintValidator<ClientInfo, ClientCreateDto> {
