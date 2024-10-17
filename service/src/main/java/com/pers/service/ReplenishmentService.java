@@ -65,6 +65,7 @@ public class ReplenishmentService {
             writeHistoryPayments(create(replenishmentFail));
             return false;
         }
+
         return true;
     }
 
