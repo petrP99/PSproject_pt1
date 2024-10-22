@@ -29,7 +29,8 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .successHandler(customAuthenticationSuccessHandler))
+                        .successHandler(customAuthenticationSuccessHandler)
+                        .successForwardUrl("/login/success"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
@@ -38,4 +39,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }

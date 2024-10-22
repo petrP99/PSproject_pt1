@@ -70,6 +70,7 @@ public class ClientController {
         return "redirect:/clients/home/" + newClient.getId();
     }
 
+    // TODO: 22.10.2024 перенести сет атрибут в момент аутента
     @GetMapping("/home/{id}")
     public String homePage(@PathVariable("id") Long id, HttpSession session) {
         session.setAttribute("clientId", id);

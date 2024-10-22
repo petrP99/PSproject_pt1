@@ -3,6 +3,7 @@ package com.pers.http.config;
 import com.pers.dto.ClientReadDto;
 import com.pers.entity.Role;
 import com.pers.service.ClientService;
+import com.pers.service.GenerateAndCheckCodeService;
 import com.pers.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +22,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final UserService userService;
     private final ClientService clientService;
+    private final GenerateAndCheckCodeService generateAndCheckCodeService;
 
-    public CustomAuthenticationSuccessHandler(UserService userService, ClientService clientService) {
+    public CustomAuthenticationSuccessHandler(UserService userService, ClientService clientService, GenerateAndCheckCodeService generateAndCheckCodeService) {
         this.userService = userService;
         this.clientService = clientService;
+        this.generateAndCheckCodeService = generateAndCheckCodeService;
     }
 
     @Override
@@ -34,15 +37,18 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .map(UserDetails::getUsername)
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user"));
 
+
         if (userService.findIdByLogin(userName).orElseThrow().getRole() != Role.USER) {
             response.sendRedirect("/admin/main");
         } else {
             var client = clientService.findByUserName(userName);
             var userId = userService.findIdByLogin(userName).orElseThrow().getId();
             if (client.isPresent()
-                && !client.orElseThrow().getFirstName().isEmpty()
-                && !client.orElseThrow().getLastName().isEmpty()
-                && !client.orElseThrow().getPhone().isEmpty()) {
+                    && !client.orElseThrow().getFirstName().isEmpty()
+                    && !client.orElseThrow().getLastName().isEmpty()
+                    && !client.orElseThrow().getPhone().isEmpty())
+//                    && generateAndCheckCodeService.checkCodeByUser((Integer) request.getSession().getAttribute("smsCode")))
+            {
                 var clientId = client.map(ClientReadDto::getId).orElseThrow();
                 response.sendRedirect("/clients/home/" + clientId);
             } else {
