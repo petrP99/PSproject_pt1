@@ -13,7 +13,7 @@ public class GenerateAndCheckCodeService {
     private final LocalTime SEND_CODE_TIME = LocalTime.now();
 
     public int generateCode() {
-        return nextInt(10000, 99999);
+        return nextInt(1000, 9999);
     }
 
     public boolean checkCodeByUser(int expectCode, int codeFromUser) {

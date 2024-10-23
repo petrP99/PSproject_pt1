@@ -40,7 +40,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login/verify")
+    @PostMapping("/login-check-sms")
     public String loginCodePage(HttpSession session, SmsCodeDto codeDto) {
         return generateAndCheckCodeService.checkCodeByUser((int) session.getAttribute("smsCode"), codeDto.getValue())
                 ? String.format("redirect:/clients/home/{%s}", session.getAttribute("clientId"))

@@ -1,5 +1,6 @@
 package com.pers.http.config;
 
+import com.pers.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -26,6 +27,8 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/login", "/users", "/users/registration", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/clients/home/**", "payments/clientPayments", "transfers/clientTransfers",
+                                "replenishments/clientReplenishments", "cards/cards").hasAuthority(Role.USER.getAuthority())
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login")

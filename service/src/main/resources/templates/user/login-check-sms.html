@@ -15,8 +15,7 @@
         }
 
         /* Все поля и кнопки имеют одинаковую ширину */
-        input[type="email"],
-        input[type="password"],
+        input[type="number"],
         .btn-1 {
             width: 100%; /* Ширина полей и кнопок */
             margin-bottom: 15px; /* Отступ между полями и кнопкой */
@@ -76,11 +75,10 @@
     <div class="card">
         <div class="card-body">
             <h3 class="card-title"><span th:text="#{login.header}">Log in</span></h3>
-            <form method="post" th:action="@{/login/verify}" th:object="${codeDto}">
+            <form method="post" action="/login-check-sms" th:object="${codeDto}">
                 <div class="form-group">
-                    <label for="value"><span th:text="#{login.password}">Sms code</span>:</label>
-                    <input class="form-control" id="value" name="value" th:value="${codeDto.getValue()}" placeholder="verification code" required
-                           type="number" maxlength="6">
+                    <input class="form-control" placeholder="verification code"
+                           type="number" value="value" minlength="6" maxlength="6">
                 </div>
                 <button class="btn-1 btn btn-primary" type="submit"><span th:text="#{login.loginBtn}">Check</span>
                 </button>
