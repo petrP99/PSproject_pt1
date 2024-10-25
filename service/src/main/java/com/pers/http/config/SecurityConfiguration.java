@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -33,14 +34,25 @@ public class SecurityConfiguration {
                 .formLogin(login -> login
                         .loginPage("/login")
                         .successHandler(customAuthenticationSuccessHandler)
-                        .successForwardUrl("/login/success"))
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true));
-
         return http.build();
     }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain2(HttpSecurity http, VerificationSmsAuthenticationSuccessHandler verificationSmsAuthenticationSuccessHandler)
+            throws Exception {
+        http
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .successHandler(verificationSmsAuthenticationSuccessHandler)
+                );
+        return http.build();
+    }
+
 
 }

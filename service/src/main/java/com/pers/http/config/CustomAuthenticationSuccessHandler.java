@@ -44,16 +44,16 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             var client = clientService.findByUserName(userName);
             var userId = userService.findIdByLogin(userName).orElseThrow().getId();
             if (client.isPresent()
-                    && !client.orElseThrow().getFirstName().isEmpty()
-                    && !client.orElseThrow().getLastName().isEmpty()
-                    && !client.orElseThrow().getPhone().isEmpty())
-//                    && generateAndCheckCodeService.checkCodeByUser((Integer) request.getSession().getAttribute("smsCode")))
-            {
-                var clientId = client.map(ClientReadDto::getId).orElseThrow();
-                response.sendRedirect("/clients/home/" + clientId);
+                && !client.orElseThrow().getFirstName().isEmpty()
+                && !client.orElseThrow().getLastName().isEmpty()
+                && !client.orElseThrow().getPhone().isEmpty()) {
+                Long clientId = client.map(ClientReadDto::getId).orElseThrow();
+                request.getSession().setAttribute("clientId", clientId);
+                response.sendRedirect("/login/success");
             } else {
                 response.sendRedirect("/clients/registration/" + userId);
             }
         }
     }
+
 }

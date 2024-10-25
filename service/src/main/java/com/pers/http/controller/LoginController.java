@@ -31,21 +31,20 @@ public class LoginController {
         return "user/login";
     }
 
-    @PostMapping("/login/success")
+    @GetMapping("/login/success")
     public String checkVerificationCode(@ModelAttribute("codeDto") SmsCodeDto codeDto, HttpSession session) {
         var code = generateAndCheckCodeService.generateCode();
-        System.out.println("code = " + code);
         session.setAttribute("smsCode", code);
-        return "user/login-check-sms";
+        return "user/login";
     }
 
 
-    @PostMapping("/login-check-sms")
-    public String loginCodePage(HttpSession session, SmsCodeDto codeDto) {
-        return generateAndCheckCodeService.checkCodeByUser((int) session.getAttribute("smsCode"), codeDto.getValue())
-                ? String.format("redirect:/clients/home/{%s}", session.getAttribute("clientId"))
-                : "user/login-check-sms";
-    }
+//    @PostMapping("/login-check-sms")
+//    public String loginCodePage(HttpSession session, SmsCodeDto codeDto) {
+//        return generateAndCheckCodeService.checkCodeByUser((int) session.getAttribute("smsCode"), codeDto.getValue())
+//                ? String.format("redirect:/clients/home/{%s}", session.getAttribute("clientId"))
+//                : "user/login-check-sms";
+//    }
 
     @GetMapping()
     public String homePage() {

@@ -10,5 +10,5 @@ import org.springframework.validation.annotation.Validated;
 public class SmsCodeDto {
 
     @Length(min = 4, max = 4, message = "Введите 6-значный цифровой код")
-    private int value;
+    private Integer value;
 }
