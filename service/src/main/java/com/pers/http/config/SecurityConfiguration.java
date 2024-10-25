@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                 .formLogin(login -> login
                         .loginPage("/login")
                         .successHandler(customAuthenticationSuccessHandler)
-                )
+                        .successForwardUrl("/login/success"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
