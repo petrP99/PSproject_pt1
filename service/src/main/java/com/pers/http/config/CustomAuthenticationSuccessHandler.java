@@ -1,7 +1,7 @@
 package com.pers.http.config;
 
 import com.pers.dto.ClientReadDto;
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.service.ClientService;
 import com.pers.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;

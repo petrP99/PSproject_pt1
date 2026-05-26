@@ -1,7 +1,7 @@
 package com.pers.mapper;
 
 import com.pers.dto.UserCreateDto;
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,6 +1,6 @@
 package com.pers.dto;
 
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import com.pers.validation.ClientInfo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

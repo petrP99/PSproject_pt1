@@ -1,6 +1,6 @@
 package com.pers.dto;
 
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.validation.UserInfo;
 import com.pers.validation.group.CreateAction;
 import com.pers.validation.group.UpdateAction;

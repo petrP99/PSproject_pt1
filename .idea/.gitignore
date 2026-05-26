@@ -6,3 +6,11 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/sqlDataSources.xml
+/encodings.xml
+/vcs.xml
+/claudeCodeTabState.xml
+/dataSources.xml
+/misc.xml
+/claudeCodeEditorTabs.xml
+/uiDesigner.xml

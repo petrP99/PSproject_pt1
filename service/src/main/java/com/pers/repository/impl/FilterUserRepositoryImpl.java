@@ -3,7 +3,7 @@ package com.pers.repository.impl;
 
 import com.pers.dto.filter.UserFilterDto;
 import static com.pers.entity.QUser.user;
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.entity.User;
 import com.pers.repository.FilterUserRepository;
 import com.pers.repository.predicate.QPredicate;

@@ -1,6 +1,6 @@
 package com.pers.dto;
 
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import com.pers.validation.ReplenishmentInfo;
 import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;

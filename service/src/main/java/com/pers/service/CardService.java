@@ -4,7 +4,7 @@ import com.pers.dto.CardCreateDto;
 import com.pers.dto.CardReadDto;
 import com.pers.dto.CardUpdateBalanceDto;
 import com.pers.dto.filter.CardFilterDto;
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import com.pers.mapper.CardCreateMapper;
 import com.pers.mapper.CardReadMapper;
 import com.pers.mapper.CardUpdateBalanceMapper;

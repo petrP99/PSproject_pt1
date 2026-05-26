@@ -1,7 +1,7 @@
 package com.pers.dto.filter;
 
 
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import lombok.Builder;
 
 import java.math.BigDecimal;
