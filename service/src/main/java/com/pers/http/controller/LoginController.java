@@ -1,6 +1,7 @@
 package com.pers.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -13,12 +14,14 @@ public class LoginController {
         return "user/login";
     }
 
-    @GetMapping()
+    // todo @GetMapping("/clients/home/")
+    // @PreAuthorize("hasAuthority('USER')")
     public String homePage() {
         return "client/home";
     }
 
     @GetMapping("/admin/main")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String main() {
         return "admin/main";
     }

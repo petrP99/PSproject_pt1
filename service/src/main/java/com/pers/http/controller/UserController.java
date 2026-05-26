@@ -105,6 +105,7 @@ public class UserController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'ADMIN')")
     public String registrationAdmin(Model model, @ModelAttribute("user") UserCreateDto admin) {
         model.addAttribute("admin", admin);
         return "user/registration-admin";

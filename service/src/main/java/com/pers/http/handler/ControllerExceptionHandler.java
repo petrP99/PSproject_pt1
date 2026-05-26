@@ -1,6 +1,7 @@
 package com.pers.http.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,5 +13,11 @@ public class ControllerExceptionHandler {
     public String handleException(Exception exception) {
         log.error("Failed to return response", exception);
         return "error/error500";
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleException(AccessDeniedException exception) {
+        log.error("Failed to return response", exception);
+        return "error/error403";
     }
 }
