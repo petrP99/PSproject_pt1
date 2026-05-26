@@ -1,6 +1,6 @@
 package com.pers.dto;
 
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import lombok.Value;
 
 import java.math.BigDecimal;

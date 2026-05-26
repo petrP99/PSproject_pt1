@@ -1,6 +1,6 @@
 package com.pers.dto;
 
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import lombok.Value;
 
 @Value

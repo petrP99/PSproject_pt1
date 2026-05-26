@@ -2,8 +2,8 @@ package com.pers.integration.service;
 
 import com.pers.dto.UserCreateDto;
 import com.pers.dto.filter.UserFilterDto;
-import com.pers.entity.Role;
-import static com.pers.entity.Role.USER;
+import com.pers.enums.Role;
+import static com.pers.enums.Role.USER;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.service.UserService;

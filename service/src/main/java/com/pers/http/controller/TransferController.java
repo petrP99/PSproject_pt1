@@ -4,7 +4,7 @@ import com.pers.dto.TransferCreateDto;
 import com.pers.dto.TransferReadDto;
 import com.pers.dto.filter.PageResponse;
 import com.pers.dto.filter.TransferFilterDto;
-import static com.pers.entity.Status.ACTIVE;
+import static com.pers.enums.Status.ACTIVE;
 import com.pers.service.CardService;
 import com.pers.service.ClientService;
 import com.pers.service.TransferService;

@@ -1,8 +1,8 @@
 package com.pers.integration.mapper;
 
 import com.pers.entity.Client;
-import com.pers.entity.Role;
-import com.pers.entity.Status;
+import com.pers.enums.Role;
+import com.pers.enums.Status;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.ClientReadMapper;

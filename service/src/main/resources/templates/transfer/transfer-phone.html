@@ -75,7 +75,13 @@
         </label>
         <div class="mb-3">
             <label class="form-label" for="phone">Phone number to:
-                <input class="form-control" id="phone" min="89000000000" name="phone" pattern="[0-9]*" type="number">
+                <input class="form-control"
+                       id="phone"
+                       name="phone"
+                       type="tel"
+                       pattern="^\+79[0-9]{9}$"
+                       placeholder="+79..."
+                       required>
             </label><br>
             <span class="text-danger" id="errorSpan"></span>
         </div>

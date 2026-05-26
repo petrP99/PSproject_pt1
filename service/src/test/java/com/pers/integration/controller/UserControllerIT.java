@@ -4,7 +4,7 @@ import com.pers.dto.UserCreateDto;
 import static com.pers.dto.UserCreateDto.Fields.login;
 import static com.pers.dto.UserCreateDto.Fields.rawPassword;
 import static com.pers.dto.UserCreateDto.Fields.role;
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.repository.UserRepository;

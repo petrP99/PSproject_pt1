@@ -2,8 +2,8 @@ package com.pers.mapper;
 
 import com.pers.dto.ClientCreateDto;
 import com.pers.entity.Client;
-import static com.pers.entity.Status.ACTIVE;
-import static com.pers.entity.Status.BLOCKED;
+import static com.pers.enums.Status.ACTIVE;
+import static com.pers.enums.Status.BLOCKED;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -37,3 +37,7 @@
 * Junit-5 (тестирование)
 * Maven (сборка)
 
+## Инструкции
+
+Подробные инструкции по использованию приложения: [Instructions for transfer.md](Instructions for transfer.md)
+

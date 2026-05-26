@@ -1,6 +1,6 @@
 package com.pers.integration.mapper;
 
-import com.pers.entity.Role;
+import com.pers.enums.Role;
 import com.pers.entity.User;
 import com.pers.integration.BaseIntegrationIT;
 import com.pers.mapper.UserReadMapper;

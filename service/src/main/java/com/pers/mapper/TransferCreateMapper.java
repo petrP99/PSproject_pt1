@@ -1,8 +1,8 @@
 package com.pers.mapper;
 
 import com.pers.dto.TransferCreateDto;
-import static com.pers.entity.Status.FAILED;
-import static com.pers.entity.Status.SUCCESS;
+import static com.pers.enums.Status.FAILED;
+import static com.pers.enums.Status.SUCCESS;
 import com.pers.entity.Transfer;
 import com.pers.repository.CardRepository;
 import com.pers.repository.ClientRepository;

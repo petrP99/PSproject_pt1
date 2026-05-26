@@ -2,8 +2,8 @@ package com.pers.mapper;
 
 import com.pers.dto.ReplenishmentCreateDto;
 import com.pers.entity.Replenishment;
-import static com.pers.entity.Status.FAILED;
-import static com.pers.entity.Status.SUCCESS;
+import static com.pers.enums.Status.FAILED;
+import static com.pers.enums.Status.SUCCESS;
 import com.pers.repository.CardRepository;
 import com.pers.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;

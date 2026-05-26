@@ -1,6 +1,6 @@
 package com.pers.dto.filter;
 
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

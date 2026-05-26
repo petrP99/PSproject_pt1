@@ -2,7 +2,7 @@ package com.pers.mapper;
 
 import com.pers.dto.ClientUpdateBalanceDto;
 import com.pers.entity.Client;
-import com.pers.entity.Status;
+import com.pers.enums.Status;
 import com.pers.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
