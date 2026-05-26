@@ -41,7 +41,7 @@ public class TransferController {
 
     @GetMapping("/transfer-between")
     public String transferBetweenClientCards(@Validated @ModelAttribute("transfer") TransferCreateDto transfer, Model model, HttpSession session) {
-        var cards = cardService.findActiveCardsAndPositiveBalanceByClientId((Long) session.getAttribute("clientId"));
+        var cards = cardService.findActiveCardsByClientId((Long) session.getAttribute("clientId"));
         model.addAttribute("cards", cards);
         model.addAttribute("transfer", transfer);
         return "transfer/transfer-between";

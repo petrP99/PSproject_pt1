@@ -70,7 +70,7 @@
                             name="cardId"
                             style="outline-color: #af3bde">
                         <option th:each="card : ${cards}"
-                                th:text="'Number: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
+                                th:text="'Card №: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
                                 th:value="${card.id()}">
                             Select card
                         </option>

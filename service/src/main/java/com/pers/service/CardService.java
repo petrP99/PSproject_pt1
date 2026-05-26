@@ -104,7 +104,7 @@ public class CardService {
     public List<CardReadDto> findActiveCardsByClientId(Long clientId) {
         return cardRepository.findByClientId(clientId).stream()
                 .map(cardReadMapper::mapFrom)
-                .filter(dto -> dto.status() == Status.ACTIVE && dto.balance().compareTo(BigDecimal.ZERO) > 0)
+                .filter(dto -> dto.status() == Status.ACTIVE)
                 .toList();
     }
 

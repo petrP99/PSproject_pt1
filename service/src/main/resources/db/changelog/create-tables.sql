@@ -11,7 +11,6 @@ create TABLE IF NOT EXISTS users
 --rollback DROP TABLE users;
 
 --changeset pers:2
-CREATE SEQUENCE IF NOT EXISTS card_id_seq RESTART WITH 100000 INCREMENT BY 56909;
 create TABLE IF NOT EXISTS client
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -27,6 +26,7 @@ create TABLE IF NOT EXISTS client
 
 --changeset pers:3
 
+CREATE SEQUENCE IF NOT EXISTS card_id_seq RESTART WITH 197456 INCREMENT BY 1909;
 create TABLE IF NOT EXISTS card
 (
     id BIGINT DEFAULT nextval('card_id_seq') PRIMARY KEY,
@@ -78,6 +78,9 @@ create TABLE IF NOT EXISTS replenishment
     status                VARCHAR(20)                                        NOT NULL
 );
 --rollback DROP TABLE replenishment;
+
+ALTER SEQUENCE users_id_seq RESTART WITH 99999;
+ALTER SEQUENCE client_id_seq RESTART WITH 99999;
 
 
 

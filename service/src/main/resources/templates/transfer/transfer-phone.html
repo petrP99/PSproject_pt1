@@ -68,7 +68,8 @@
     <form method="get" onsubmit="return checkCardIds()" th:action="@{/transfers/check-phone}" th:object="${transfer}">
         <label class="form-label" for="cardIdFrom">Select card from:
             <select aria-label="Default select example" class="form-select" id="cardIdFrom" name="cardIdFrom">
-                <option th:each="card : ${cards}" th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
+                <option th:each="card : ${cards}"
+                        th:text="'Card №: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
                         th:value="${card.id()}">
                 </option>
             </select>
