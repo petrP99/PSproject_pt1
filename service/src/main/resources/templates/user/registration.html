@@ -7,55 +7,100 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* Форма шире */
-        .card {
-            width: 400px; /* Ширина формы */
-            margin: 0 auto; /* Центрирование формы по горизонтали */
-            margin-top: 200px; /* Отступ сверху */
-
+        body {
+            background: linear-gradient(to right, #e0f2f7 0%, #21f953 100%); /* Light blue to dark blue gradient */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Все поля и кнопки имеют одинаковую ширину */
-        input[type="email"],
-        input[type="password"],
-        .btn-1 {
-            width: 100%; /* Ширина полей и кнопок */
-            margin-bottom: 10px; /* Отступ между полями и кнопкой */
+        .navbar {
+            width: 100%;
         }
 
-        .card-title,
-        .form-group label {
-            text-align: center;
-        }
-
-        .form-group label {
-            text-align: center;
-            display: block; /* Разместить название поля на новой строке */
+        .container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
         }
 
         .card {
-            width: 400px; /* Ширина формы */
-            margin: 0 auto; /* Центрирование формы по горизонтали */
-            margin-top: 200px; /* Отступ сверху */
-
+            width: 100%;
+            max-width: 450px; /* Increased max-width for a more modern look */
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+            padding: 30px;
+            background-color: #ffffff; /* White background for the card */
+            animation: fadeIn 1s ease-out; /* Fade in animation for the card */
         }
 
-        /* Все поля и кнопки имеют одинаковую ширину */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .form-group label {
+            text-align: left;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
         input[type="email"],
         input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
         .btn-1 {
-            width: 100%; /* Ширина полей и кнопок */
-            margin-bottom: 15px; /* Отступ между полями и кнопкой */
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .card-title,
-        .form-group label {
-            text-align: center;
+        .btn-1:hover {
+            transform: translateY(-3px);
         }
 
-        .form-group label {
+        .error-message {
+            color: red;
             text-align: center;
-            display: block; /* Разместить название поля на новой строке */
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .form-container {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -125,7 +170,7 @@
                 </a>
             </div>
             <div th:if="${errors}">
-                <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
+                <p class="error-message" style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error
                     Message</p>
             </div>
         </div>

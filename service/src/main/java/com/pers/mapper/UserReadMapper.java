@@ -13,7 +13,6 @@ public class UserReadMapper implements Mapper<User, UserReadDto> {
         return new UserReadDto(
                 object.getId(),
                 object.getLogin(),
-                object.getPassword(),
                 object.getRole());
     }
 }

@@ -68,7 +68,7 @@
         <div class="mb-3">
             <label class="form-label" for="cardIdFrom">Select card from:
                 <select aria-label="Default select example" class="form-select" id="cardIdFrom" name="cardIdFrom">
-                    <option th:each="card : ${cards}" th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
+                    <option th:each="card : ${cards}" th:text="'Card №: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
                             th:value="${card.id()}">
                     </option>
                 </select>
@@ -77,7 +77,7 @@
         <div class="mb-3">
             <label class="form-label" for="cardIdTo">Select card to:
                 <select aria-label="Default select example" class="form-select" id="cardIdTo" name="cardIdTo">
-                    <option th:each="card : ${cards}" th:text="'Card number: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
+                    <option th:each="card : ${cards}" th:text="'Card №: ' + ${card.id()} +'  Balance: '+ ${card.balance()}"
                             th:value="${card.id()}">
                     </option>
                 </select>
