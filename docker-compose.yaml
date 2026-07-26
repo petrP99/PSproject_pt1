@@ -275,6 +275,7 @@ services:
     container_name: ps_core
     ports:
       - "8080:8080"
+      - "127.0.0.1:9010:9010"
     build:
       context: .
     environment:
@@ -289,6 +290,13 @@ services:
       SPRING_KAFKA_TOPICS_PAYMENT_EVENTS: ps-payment-events
       OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy:4318/v1/traces
       TRACING_SAMPLING_PROBABILITY: ${TRACING_SAMPLING_PROBABILITY:-1.0}
+      JAVA_TOOL_OPTIONS: >-
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.port=9010
+        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
     depends_on:
       postgres:
         condition: service_healthy
